@@ -12,7 +12,7 @@ import json
 import os
 import argparse
 
-from logger import get_logger, change_log_level
+from logger import get_logger, change_log_level, change_log_file
 
 
 def read_json_file(filename):
