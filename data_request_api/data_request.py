@@ -10,15 +10,17 @@ from __future__ import division, print_function, unicode_literals, absolute_impo
 import copy
 import argparse
 import os
-import pprint
-from collections import defaultdict
 
 from logger import get_logger, change_log_file, change_log_level
-from dump_transformation import read_json_file
+from dump_transformation import read_json_file, transform_content
 from vocabulary_server import VocabularyServer
 
 
 class DRObjects(object):
+	"""
+	Base object to build the ones used within the DR API.
+	Use to define basic information needed.
+	"""
 	def __init__(self, id, vs, name=None, description=None, status=dict(general="New"), notes=None, references=None,
 	             **kwargs):
 		logger = get_logger()
@@ -36,12 +38,23 @@ class DRObjects(object):
 
 	@classmethod
 	def from_input(cls, **kwargs):
+		"""
+		Create instance of the class using specific arguments.
+		:param kwargs: list of arguments
+		:return: instance of the current class.
+		"""
 		return cls(**kwargs)
 
 	def __str__(self):
 		return os.linesep.join(self.print_content())
 
 	def print_content(self, level=0, add_content=True):
+		"""
+		Function to return a rintable version of the content of the current class.
+		:param level: level of indent of the result
+		:param add_content: should inner content be added?
+		:return: a list of strings that can be assembled to print the content.
+		"""
 		indent = "    " * level
 		return [f"{indent}{type(self).__name__}: {self.name} (id: {self.id})", ]
 
@@ -66,13 +79,16 @@ class ExperimentsGroup(DRObjects):
 	def print_content(self, level=0, add_content=True):
 		rep = super().print_content(level=level)
 		if add_content:
-			indent = "    " * (level + 1)
-			superindent = "    " * (level + 2)
+			indent = "    " * level
 			rep.append(f"{indent}Experiments included:")
 			for experiment in self.get_experiments():
-				exp_name = self.vs.get_experiment(element_id=experiment, element_key="experiment", default="???")
-				rep.append(f"{superindent}experiment {exp_name} (id: {experiment})")
+				rep.extend(experiment.print_content(level=level + 1))
 		return rep
+
+	@classmethod
+	def from_input(cls, vs, experiments=list(), **kwargs):
+		experiments = [vs.get_experiment(id) for id in experiments]
+		return cls(experiments=experiments, vs=vs, **kwargs)
 
 
 class VariablesGroup(DRObjects):
@@ -88,6 +104,11 @@ class VariablesGroup(DRObjects):
 		self.mips = mips
 		self.priority = priority
 
+	@classmethod
+	def from_input(cls, vs, variables=list(), **kwargs):
+		variables = [vs.get_variable(id) for id in variables]
+		return cls(variables=variables, vs=vs, **kwargs)
+
 	def count(self):
 		return len(self.variables)
 
@@ -100,15 +121,10 @@ class VariablesGroup(DRObjects):
 	def print_content(self, level=0, add_content=True):
 		rep = super().print_content(level=level)
 		if add_content:
-			indent = "    " * (level + 1)
-			superindent = "    " * (level + 2)
+			indent = "    " * level
 			rep.append(f"{indent}Variables included:")
 			for variable in self.get_variables():
-				var = self.vs.get_variable(element_id=variable)
-				var_name = var.get("mip_variables", "???")
-				var_title = var.get("title", "???")
-				var_freq = var.get("frequency", "???")
-				rep.append(f"{superindent}variable {var_name} at frequency {var_freq} (id: {variable}, title: {var_title})")
+				rep.extend(variable.print_content(level=level + 1))
 		return rep
 
 
@@ -191,10 +207,22 @@ class DataRequest(object):
 			del self.variables_groups[id]
 
 	@classmethod
-	def from_input(cls, DR_input_filename, VS_input_filename, **kwargs):
-		content = read_json_file(DR_input_filename)
-		VS = VocabularyServer(VS_input_filename)
-		return cls(input_database=content, VS=VS, **kwargs)
+	def from_input(cls, json_input_filename, **kwargs):
+		DR_content, VS_content = cls._split_content_from_input_json_file(json_input_filename)
+		VS = VocabularyServer(VS_content)
+		return cls(input_database=DR_content, VS=VS, **kwargs)
+
+	@classmethod
+	def from_separated_inputs(cls, DR_input_filename, VS_input_filename, **kwargs):
+		DR = read_json_file(DR_input_filename)
+		VS = VocabularyServer.from_input(VS_input_filename)
+		return cls(input_database=DR, VS=VS, **kwargs)
+
+	@staticmethod
+	def _split_content_from_input_json_file(input_filename):
+		content = read_json_file(input_filename)
+		DR, VS = transform_content(content)
+		return DR, VS
 
 	def __str__(self):
 		rep = list()
@@ -346,7 +374,7 @@ if __name__ == "__main__":
 	parser.add_argument("--DR_json", default="DR_request_basic_dump2.json")
 	parser.add_argument("--VS_json", default="VS_request_basic_dump2.json")
 	args = parser.parse_args()
-	DR = DataRequest.from_input(args.DR_json, args.VS_json)
+	DR = DataRequest.from_separated_inputs(args.DR_json, args.VS_json)
 	print(DR)
 	# print(DR.find_variables_per_opportunity("recD45ipnmfCTBH7B"))
 	# print(DR.find_experiments_per_opportunity("recD45ipnmfCTBH7B"))
