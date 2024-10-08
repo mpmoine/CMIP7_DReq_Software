@@ -15,7 +15,11 @@ from dump_transformation import read_json_file
 
 class VocabularyServer(object):
 	def __init__(self, input_database, **kwargs):
-		self.vocabulary_server = read_json_file(input_database)
+		self.vocabulary_server = copy.deepcopy(input_database)
+
+	@classmethod
+	def from_input(cls, input_database):
+		return cls(read_json_file(input_database))
 
 	def get_variable(self, element_id, element_key=None, default=False):
 		return self.get_element(element_table="data_request_opportunities_(public)", element_type="variables",

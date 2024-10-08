@@ -14,11 +14,15 @@ import pprint
 from collections import defaultdict
 
 from logger import get_logger, change_log_file, change_log_level
-from dump_transformation import read_json_file
+from dump_transformation import read_json_file, transform_content
 from vocabulary_server import VocabularyServer
 
 
 class DRObjects(object):
+	"""
+	Base object to build the ones used within the DR API.
+	Use to define basic information needed.
+	"""
 	def __init__(self, id, vs, name=None, description=None, status=dict(general="New"), notes=None, references=None,
 	             **kwargs):
 		logger = get_logger()
@@ -36,12 +40,23 @@ class DRObjects(object):
 
 	@classmethod
 	def from_input(cls, **kwargs):
+		"""
+		Create instance of the class using specific arguments.
+		:param kwargs: list of arguments
+		:return: instance of the current class.
+		"""
 		return cls(**kwargs)
 
 	def __str__(self):
 		return os.linesep.join(self.print_content())
 
 	def print_content(self, level=0, add_content=True):
+		"""
+		Function to return a rintable version of the content of the current class.
+		:param level: level of indent of the result
+		:param add_content: should inner content be added?
+		:return: a list of strings that can be assembled to print the content.
+		"""
 		indent = "    " * level
 		return [f"{indent}{type(self).__name__}: {self.name} (id: {self.id})", ]
 
@@ -191,10 +206,22 @@ class DataRequest(object):
 			del self.variables_groups[id]
 
 	@classmethod
-	def from_input(cls, DR_input_filename, VS_input_filename, **kwargs):
-		content = read_json_file(DR_input_filename)
-		VS = VocabularyServer(VS_input_filename)
-		return cls(input_database=content, VS=VS, **kwargs)
+	def from_input(cls, json_input_filename, **kwargs):
+		DR_content, VS_content = cls._split_content_from_input_json_file(json_input_filename)
+		VS = VocabularyServer(VS_content)
+		return cls(input_database=DR_content, VS=VS, **kwargs)
+
+	@classmethod
+	def from_separated_inputs(cls, DR_input_filename, VS_input_filename, **kwargs):
+		DR = read_json_file(DR_input_filename)
+		VS = VocabularyServer.from_input(VS_input_filename)
+		return cls(input_database=DR, VS=VS, **kwargs)
+
+	@staticmethod
+	def _split_content_from_input_json_file(input_filename):
+		content = read_json_file(input_filename)
+		DR, VS = transform_content(content)
+		return DR, VS
 
 	def __str__(self):
 		rep = list()

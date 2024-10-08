@@ -27,7 +27,10 @@ write_json_output_file_content(output_DR_json_file, data_request)
 write_json_output_file_content(output_VS_json_file, vocabulary_server)
 
 # Step 2: Build Data Request
-DR = DataRequest.from_input(DR_input_filename=output_DR_json_file, VS_input_filename=output_VS_json_file)
+DR = DataRequest.from_separated_inputs(DR_input_filename=output_DR_json_file, VS_input_filename=output_VS_json_file)
+
+# Or step 1-2:
+DR = DataRequest.from_input(json_input_filename=input_json_file)
 
 # Step 3: Get information from Data Request
 # -> Print DR content
