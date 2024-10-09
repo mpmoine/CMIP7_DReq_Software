@@ -70,7 +70,7 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
 
     tables = content[base_name]
 
-    all_opps = tables['Opportunity']
+    all_opps = tables['Opportunity']  # Opportunities table, specifying all defined data request opportunities
 
     discard_empty_opps = True
     if discard_empty_opps:
@@ -92,7 +92,7 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
             # Opportunity IDs have been given as input
             use_opp = [opp_id for opp_id,opp in all_opps['records'].items() if int(opp['Opportunity ID']) in use_opp]
         elif all([isinstance(s, str) for s in use_opp]):
-            # Assume Opportunity titles have been passed
+            # Opportunity titles have been given as input
             use_opp = [opp_id for opp_id,opp in all_opps['records'].items() if opp['Title of Opportunity'] in use_opp]
     use_opp = list(set(use_opp))
     if len(use_opp) == 0:
@@ -112,7 +112,9 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
         opp = all_opps['records'][opp_id] # one record from the Opportunity table
 
         if 'Experiment Groups' not in opp:
+            print('No experiment groups defined for opportunity: ' + opp['Title of Opportunity'])
             continue
+        opp_expts = set() # will hold names of experiments requested by this opportunity
         for expt_group_id in opp['Experiment Groups']:  # Loop over experiment groups in this opportunity
             expt_group = tables['Experiment Group']['records'][expt_group_id]
             # Get names of experiments in this experiment group
@@ -126,16 +128,18 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
 
                 expt = tables[expt_table_name]['records'][expt_id]
                 expt_key = expt[' Experiment'].strip()  # Name of experiment, e.g "historical"
+                opp_expts.add(expt_key)
                 if expt_key not in expt_vars:
                     expt_vars[expt_key] = {p : set() for p in priority_levels}
 
         if 'Variable Groups' not in opp:
+            print('No variable groups defined for opportunity: ' + opp['Title of Opportunity'])
             continue
         for var_group_id in opp['Variable Groups']:  # Loop over variable groups in this opportunity
             var_group = tables['Variable Group']['records'][var_group_id]
             priority = var_group['Priority Level']
 
-            if isinstance(priority, list):  # for content_type == 'version'
+            if isinstance(priority, list):  # True if priority is a link to a Priority Level record (instead of just a string)
                 assert len(priority) == 1, 'Variable Group should have one specified priority level'
                 prilev_id = priority[0]
                 prilev = tables['Priority Level']['records'][prilev_id]
@@ -147,16 +151,17 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
             for var_id in var_group['Variables']:  # Loop over variables in this variable group
                 var = tables['Variables']['records'][var_id]
                 var_key = var['Compound Name']  # Name of variable, e.g. "Amon.tas"
-                for expt_key, expt_var in expt_vars.items():
-                    # Add this variable to the experiment, at the priority level specified by the variable group
-                    expt_var[priority].add(var_key)
+                for expt_key in opp_expts:
+                    # Add this variable to the experiment's output set, at the priority level specified by the variable group
+                    expt_vars[expt_key][priority].add(var_key)
 
     # Remove overlaps between priority levels
     for expt_key, expt_var in expt_vars.items():
         # remove from Medium priority group any variables already occuring in High priority group
         expt_var['Medium'] = expt_var['Medium'].difference(expt_var['High'])  
-        # remove from Low priority group any variables already occuring in Medium priority group
+        # remove from Low priority group any variables already occuring in Medium or High priority groups
         expt_var['Low'] = expt_var['Low'].difference(expt_var['Medium'])
+        expt_var['Low'] = expt_var['Low'].difference(expt_var['High'])
 
     # Remove unwanted priority levels
     for expt_key, expt_var in expt_vars.items():
