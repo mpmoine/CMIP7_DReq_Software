@@ -37,17 +37,12 @@ dc.retrieve(use_dreq_version)
 # Load content into python dict
 content = dc.load(use_dreq_version)
 
-
-if True:
-    from importlib import reload
-    reload(dq)
-
-
 # Specify opportunities that modelling group chooses to support
+# This can be a subset:
 use_opps = []
 use_opps.append('Baseline Climate Variables for Earth System Modelling')
 use_opps.append('Synoptic systems and impacts')
-
+# Or to use all opportunities in the data request:
 # use_opps = 'all'
 
 # Get consolidated list of requested variables that supports these opportunities

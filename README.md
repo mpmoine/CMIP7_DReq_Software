@@ -9,4 +9,7 @@ Some guidelines:
 - Initial codes by individual contributors can be placed in a subdirectory of `sandbox` named by the contributor's initials.
 - Please open an issue in this repo to identify bugs or required functionality
 
+This software is a work in progress.
+An example basic workflow is provided in `scripts/workflow_example.py` (docstring & comments in the script give usage guidance).
+
 Content of the data request is managed separately from the software, [in this repo](https://github.com/CMIP-Data-Request/CMIP7_DReq_Content).
