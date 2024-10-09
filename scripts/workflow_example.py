@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 '''
 Example script for basic use of CMIP7 data request content
+
+Getting started
+---------------
+First create an environment with the required dependencies:
+
+    conda env create -n my_dreq_env --file env.yml
+
+(replacing my_dreq_env with your preferred env name). Then activate it and run the script:
+
+    conda activate my_dreq_env
+    python workflow_example.py
+
+will load the data request content and save a json file of requested variables in the current dir.
+To run interactively in ipython:
+
+    run -i workflow_example.py
+
 '''
 
 import sys
