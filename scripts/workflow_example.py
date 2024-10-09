@@ -29,26 +29,33 @@ for path in add_paths:
 import dreq_content as dc
 import dreq_query as dq
 
-use_dreq_version = 'first_export'
+# use_dreq_version = 'first_export'
+use_dreq_version = 'v1.0alpha'
 
 # Download specified version of data request content (if not locally cached)
 dc.retrieve(use_dreq_version)
 # Load content into python dict
 content = dc.load(use_dreq_version)
 
+
+if True:
+    from importlib import reload
+    reload(dq)
+
+
 # Specify opportunities that modelling group chooses to support
 use_opps = []
 use_opps.append('Baseline Climate Variables for Earth System Modelling')
 use_opps.append('Synoptic systems and impacts')
 
-use_opps = 'all'
-
+# use_opps = 'all'
 
 # Get consolidated list of requested variables that supports these opportunities
+dq.DREQ_VERSION = use_dreq_version
 expt_vars = dq.get_requested_variables(content, use_opps, max_priority='Low')
 
 # Show user what we found
-print('Number of requested variables found by experiment:')
+print(f'For data request version {use_dreq_version}, number of requested variables found by experiment:')
 priority_levels = ['High', 'Medium', 'Low']
 for expt, req in expt_vars.items():
     d = {p : 0 for p in priority_levels}

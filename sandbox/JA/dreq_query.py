@@ -71,6 +71,19 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
     tables = content[base_name]
 
     all_opps = tables['Opportunity']
+
+    discard_empty_opps = True
+    if discard_empty_opps:
+        # somehow empty opportunities are in the v1.0alpha base
+        # this will cause problems below
+        # discard them
+        discard_opp_id = []
+        for opp_id, opp in all_opps['records'].items():
+            if len(opp) == 0:
+                discard_opp_id.append(opp_id)
+        for opp_id in discard_opp_id:
+            all_opps['records'].pop(opp_id)
+
     if use_opp == 'all':
         # Include all opportunities
         use_opp = [opp_id for opp_id in all_opps['records']]
@@ -104,7 +117,14 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
             expt_group = tables['Experiment Group']['records'][expt_group_id]
             # Get names of experiments in this experiment group
             for expt_id in expt_group['Experiments']:
-                expt = tables['Experiment']['records'][expt_id]
+
+                match content_type: # cluge, fix later
+                    case 'working':
+                        expt_table_name = 'Experiment'
+                    case 'version':
+                        expt_table_name = 'Experiments'
+
+                expt = tables[expt_table_name]['records'][expt_id]
                 expt_key = expt[' Experiment'].strip()  # Name of experiment, e.g "historical"
                 if expt_key not in expt_vars:
                     expt_vars[expt_key] = {p : set() for p in priority_levels}
@@ -114,6 +134,15 @@ def get_requested_variables(content, use_opp='all', max_priority='Low', verbose=
         for var_group_id in opp['Variable Groups']:  # Loop over variable groups in this opportunity
             var_group = tables['Variable Group']['records'][var_group_id]
             priority = var_group['Priority Level']
+
+            if isinstance(priority, list):  # for content_type == 'version'
+                assert len(priority) == 1, 'Variable Group should have one specified priority level'
+                prilev_id = priority[0]
+                prilev = tables['Priority Level']['records'][prilev_id]
+                priority = prilev['Name']
+                assert priority in priority_levels, 'Unrecognized priority level: ' + priority
+                del prilev
+
             # Get names of variables in this variable group
             for var_id in var_group['Variables']:  # Loop over variables in this variable group
                 var = tables['Variables']['records'][var_id]
