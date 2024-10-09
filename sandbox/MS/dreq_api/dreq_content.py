@@ -10,10 +10,12 @@ import requests
 # Base URL template for fetching Dreq content json files from GitHub
 _json_export = "dreq_raw_export.json"
 _dev_branch = "main"
-REPO_RAW_URL = "https://raw.githubusercontent.com/WCRP-CMIP/CMIP7_DReq_Content/{version}/airtable_export/{_json_export}"
+# _github_org = "WCRP-CMIP"
+_github_org = "CMIP-Data-Request"
+REPO_RAW_URL = "https://raw.githubusercontent.com/{_github_org}/CMIP7_DReq_Content/{version}/airtable_export/{_json_export}"
 
 # API URL for fetching tags
-REPO_API_URL = "https://api.github.com/repos/WCRP-CMIP/CMIP7_DReq_content/tags"
+REPO_API_URL = f"https://api.github.com/repos/{_github_org}/CMIP7_DReq_content/tags"
 
 # List of tags - will be populated by get_versions()
 versions = []
@@ -158,6 +160,7 @@ def retrieve(version="latest_stable"):
                 url=REPO_RAW_URL.format(
                     version=_dev_branch if version == "dev" else version,
                     _json_export=_json_export,
+                    _github_org=_github_org,
                 ),
                 known_hash=None,
                 fname=_json_export,
