@@ -35,7 +35,7 @@ This includes descriptions of Opportunities and their lists of requested variabl
 The content is stored as `json` and read by the data request software as its input, but users should not interact with this `json` directly and its structure is not designed for readability.
 Users do not need to manually download the content as this is done automatically by the software (see "Getting Started", below, for further details).
 
-The data request content is an automatic export from [Airtable](LINK), a cloud platform used by the Data Request Task Team to facilitate ongoing community engagement in developing the data request.
+The data request content is an automatic export from Airtable, a cloud platform used by the Data Request Task Team to facilitate ongoing community engagement in developing the data request.
 Airtable provides users with a browseable web interface to explore data request information contained in relational databases that are referred to as "bases".
 These Airtable bases contain interlinked tables that constitute the primary source of data request information.
 
@@ -47,7 +47,7 @@ This view is complementary to the access to the content that is provided via the
 Using the data request **software** provides a way to interact programmatically with the data request content, such as to:
 
 - Given a list of supported opportunities and their priorities, produce lists of variables to output for each experiment
-- Output the CF-compliant metadata characterizing each variable, as needed by [CMOR](LINK)
+- Output the CF-compliant metadata characterizing each variable, as needed by CMOR
 - Compare the requested output of CMIP7 experiments to a given model's published CMIP6 output
 - Estimate output volumes
 
