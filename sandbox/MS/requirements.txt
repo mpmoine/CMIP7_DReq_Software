@@ -1,3 +1,0 @@
-pooch
-requests
-BeautifulSoup4
