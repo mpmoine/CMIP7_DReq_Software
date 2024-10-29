@@ -170,4 +170,3 @@ dreq_res
 !all_var_info.json
 # assume spreadsheets are also content of some kind, which we don't want in this repo
 *.xlsx
-
