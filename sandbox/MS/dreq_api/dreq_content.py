@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from mapping_table import mapping_table
 
 # TODO: remove after initial "sandbox" dev period
+#add_paths = ["../../JA", "../../../../CMIP7_DReq_Software_gr/sandbox/GR/"]
 add_paths = ["../../JA", "../../GR"]
 for path in add_paths:
     if path not in sys.path:

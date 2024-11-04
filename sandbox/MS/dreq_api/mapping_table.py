@@ -145,14 +145,14 @@ mapping_table = {
     },
     "CMIP6 Frequency (legacy)": {
         "source_base": "Data Request Variables (Public)",
-        "source_table": "Frequency",
+        "source_table": "CMIP6 Frequency (legacy)",
         "internal_mapping": {},
         "internal_filters": {},
         "rm_keys": [],
     },
     "CMIP7 Frequency": {
         "source_base": "Data Request Variables (Public)",
-        "source_table": "Frequency",
+        "source_table": "CMIP7 Frequency",
         "internal_mapping": {},
         "internal_filters": {},
         "rm_keys": ["Table Identifiers", "Variables"],
@@ -280,7 +280,7 @@ mapping_table = {
         "internal_filters": {
             "Final Opportunity selection": {"operator": "nonempty"},
             "Status (from Final Opportunity selection)": {
-                "operator": "any",
+                "operator": "in",
                 "values": ["Under review", "Accepted"],
             },
         },
@@ -323,5 +323,13 @@ mapping_table = {
             },
         },
         "rm_keys": ["CMIP7 Variable Groups"],
+    },
+}
+
+# Renaming of certain tables dependent on the release version
+#  version : {table_name_old : table_name_new}
+version_consistency = {
+    "v1.0alpha": {
+        "Frequency": "CMIP7 Frequency",
     },
 }
