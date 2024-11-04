@@ -5,12 +5,14 @@ import sys
 import warnings
 
 # TODO: remove after initial "sandbox" dev period
+#add_paths = ["../../JA", "../../../../CMIP7_DReq_Software_gr/sandbox/GR/"]
 add_paths = ["../../JA", "../../GR"]
 for path in add_paths:
     if path not in sys.path:
         sys.path.append(path)
 
 from logger import get_logger  # noqa
+from mapping_table import version_consistency
 
 # UID generation
 default_count = 0
@@ -18,6 +20,53 @@ default_template = "default_{:d}"
 
 # Filtered records
 filtered_records = []
+
+
+def _correct_key_string(input_string, *to_remove_strings):
+    """
+    Corrects a string by removing certain strings, stripping, and replacing some characters.
+
+    Parameters
+    ----------
+    input_string : str
+        The string to be corrected
+    *to_remove_strings : str
+      The strings to be removed from the input string
+
+    Returns
+    -------
+    str
+        The corrected string
+    """
+    # Convert the input string to lowercase
+    input_string = input_string.lower()
+    # Remove the specified strings from the input string
+    for to_remove_string in to_remove_strings:
+        input_string = input_string.replace(to_remove_string, "")
+    # Strip leading and trailing whitespace from the input string
+    input_string = input_string.strip()
+    # Replace '&' with 'and' and ' ' with '_' in the input string
+    input_string = input_string.replace("&", "and").replace(" ", "_")
+    return input_string
+
+
+def _correct_dictionaries(input_dict):
+    """
+    Corrects the keys in a dictionary.
+    """
+    rep = dict()
+    for key, value in input_dict.items():
+        # Correct the key using the correct_key_string function
+        new_key = _correct_key_string(key)
+        # If the value is a dictionary, recursively correct its keys
+        if isinstance(value, dict):
+            for elt in value:
+                value[elt] = _correct_dictionaries(value[elt])
+            rep[new_key] = value
+        # If the value is not a dictionary, simply assign it to the corrected key
+        else:
+            rep[new_key] = value
+    return rep
 
 
 def _map_record_id(record, records, keys):
@@ -101,10 +150,13 @@ def map_data(data, mapping_table):
                 and mapinfo["source_table"] in data[mapinfo["source_base"]]
             ):
                 if "internal_filters" in mapinfo:
-                    filters = mapinfo["internal_filters"]
-                    for record_id, record in data[mapinfo["source_base"]].items():
+                    for record_id, record in data[mapinfo["source_base"]][
+                        mapinfo["source_table"]
+                    ]["records"].items():
                         filter_results = []
-                        for filter_key, filter_val in filters.items():
+                        for filter_key, filter_val in mapinfo[
+                            "internal_filters"
+                        ].items():
                             if filter_key not in record:
                                 filter_results.append(False)
                             elif filter_val["operator"] == "nonempty":
@@ -124,7 +176,7 @@ def map_data(data, mapping_table):
                             elif filter_val["operator"] == "not in":
                                 if isinstance(record[filter_key], list):
                                     filter_results.append(
-                                        all(
+                                        any(
                                             fj not in filter_val["values"]
                                             for fj in record[filter_key]
                                         )
@@ -134,7 +186,11 @@ def map_data(data, mapping_table):
                                         record[filter_key] not in filter_val["values"]
                                     )
                         if not all(filter_results):
+                            logger.debug(
+                                f"Filtered out record '{record_id}' {'('+record['name']+')' if 'name' in record else ''} from '{table}'."
+                            )
                             filtered_records.append(record_id)
+        logger.info(f"Filtered {len(filtered_records)} records.")
 
         # Perform mapping in case of three-base structure
         for table, mapinfo in mapping_table.items():
@@ -269,6 +325,172 @@ def map_data(data, mapping_table):
         return mapped_data
     # Return the data if it is already one-base
     elif len(data.keys()) == 1:
-        return {"Data Request": next(iter(data.values()))}
+        version = next(iter(data.keys())).replace("Data Request ", "")
+        mapped_data = next(iter(data.values()))
+        if version in version_consistency:
+            for tfrom, tto in version_consistency[version].items():
+                logger.debug(
+                    f"Consistency across versions - renaming table: {tfrom} -> {tto}"
+                )
+                mapped_data[tto] = mapped_data.pop(tfrom)
+        return {"Data Request": mapped_data}
     else:
         raise ValueError("The loaded Data Request has an unexpected data structure.")
+
+
+def transform_content(data):
+    """
+    Transform the data request content into a tidy format.
+
+    This function takes the data request content as input, tidies it up by removing
+    unnecessary keys and renaming others, and returns the transformed data request
+    and vocabulary server.
+
+    Parameters:
+    data (dict): The data request content to be transformed.
+
+    Returns:
+    tuple: A tuple containing the transformed data request and vocabulary server.
+    """
+    logger = get_logger()
+    global default_count
+
+    # Create an index to map record IDs to UIDs
+    record_to_uid_index = dict()
+    # Separate dreq and vocabulary information
+    data_request = dict()
+    vocabulary_server = dict()
+    # Get the content of the Data Request
+    content = data["Data Request"]
+
+    # Define the keys to remove from each table
+    to_remove_keys = {}
+
+    # Iterate over each table in the content
+    for subelt in sorted(list(content)):
+        for record_id in sorted(list(content[subelt]["records"])):
+            # Get the keys to remove for this table
+            if subelt in to_remove_keys:
+                keys_to_remove = to_remove_keys[subelt]
+            else:
+                keys_to_remove = list()
+
+            # Get the list of keys for this record
+            list_keys = list(content[subelt]["records"][record_id])
+
+            # Add keys that match certain patterns to the list of keys to remove
+            keys_to_remove.extend(
+                [
+                    key
+                    for key in list_keys
+                    if "(MJ)" in key
+                    or "test" in key.lower()
+                    or ("last" in key.lower() and "modified" in key.lower())
+                    or "count" in key.lower()
+                ]
+            )
+
+            # Remove the keys that should be removed
+            for key in set(keys_to_remove) & set(list_keys):
+                del content[subelt]["records"][record_id][key]
+
+            # Rename the "UID" key to "uid" if it exists
+            if "UID" in list_keys:
+                content[subelt]["records"][record_id]["uid"] = content[subelt][
+                    "records"
+                ][record_id].pop("UID")
+            elif "uid" not in list_keys:
+                # If no "uid" key exists, create a default one
+                uid = default_template.format(default_count)
+                content[subelt]["records"][record_id]["uid"] = uid
+                default_count += 1
+                logger.debug(
+                    f"Undefined uid for element {os.sep.join([subelt, 'records', record_id])}, set {uid}"
+                )
+
+            # Add the record ID to UID mapping to the index
+            record_to_uid_index[record_id] = content[subelt]["records"][record_id][
+                "uid"
+            ]
+            if (
+                subelt
+                in [
+                    "Opportunity",
+                ]
+                and "Title of Opportunity" in list_keys
+            ):
+                content[subelt]["records"][record_id]["name"] = content[subelt][
+                    "records"
+                ][record_id].pop("Title of Opportunity")
+            elif "name" not in list_keys and "Name" not in list_keys:
+                content[subelt]["records"][record_id]["name"] = "undef"
+
+    # Replace record_id by uid
+    logger.debug("Replace record ids by uids")
+    content_string = json.dumps(content)
+    for record_id, uid in record_to_uid_index.items():
+        content_string = content_string.replace(f'"{record_id}"', f'"{uid}"')
+    content = json.loads(content_string)
+
+    # Alternative
+    # for key, value in content.items():
+    #    if isinstance(value, dict):
+    #        content[key] = {record_to_uid_index.get(k, k): v for k, v in value.items()}
+    #    elif isinstance(value, list):
+    #        content[key] = [{record_to_uid_index.get(k, k): v for k, v in item.items()} if isinstance(item, dict) else item for item in value]
+
+    # Build the data request
+    logger.debug("Build DR and VS")
+    for subelt in sorted(list(content)):
+        if subelt in [
+            "Opportunity",
+        ]:
+            new_subelt = "opportunities"
+            data_request[new_subelt] = dict()
+            vocabulary_server[new_subelt] = dict()
+            for uid in content[subelt]["records"]:
+                value = content[subelt]["records"][uid]
+                data_request[new_subelt][uid] = dict(
+                    experiments_groups=value.pop("Experiment Groups", list()),
+                    variables_groups=value.pop("Variable Groups", list()),
+                    themes=value.pop("Themes", list()),
+                    ensemble_size=value.pop("Ensemble Size", 1),
+                )
+                vocabulary_server[new_subelt][uid] = value
+        elif subelt in [
+            "Variable Group",
+        ]:
+            new_subelt = "variable_groups"
+            data_request[new_subelt] = dict()
+            vocabulary_server[new_subelt] = dict()
+            for uid in content[subelt]["records"]:
+                value = content[subelt]["records"][uid]
+                data_request[new_subelt][uid] = dict(
+                    variables=value.pop("Variables", list()),
+                    mips=value.pop("MIPs", list()),
+                    priority=value.pop("Priority Level", None),
+                )
+                vocabulary_server[new_subelt][uid] = value
+        elif subelt in [
+            "Experiment Group",
+        ]:
+            new_subelt = "experiment_groups"
+            data_request[new_subelt] = dict()
+            vocabulary_server[new_subelt] = dict()
+            for uid in content[subelt]["records"]:
+                value = content[subelt]["records"][uid]
+                data_request[new_subelt][uid] = dict(
+                    experiments=value.pop("Experiments", list())
+                )
+                vocabulary_server[new_subelt][uid] = value
+        else:
+            vocabulary_server[subelt] = content[subelt]["records"]
+    return data_request, vocabulary_server
+
+
+# def write_json_output_file_content(filename, content):
+#    with open(filename, "w") as fic:
+#        json.dump(content, fic, indent=4, allow_nan=True, sort_keys=True)
+# data_request, vocabulary_server = transform_content(content, args.version)
+# write_json_output_file_content(os.path.sep.join([output_directory, "DR_content.json"]), data_request)
+# write_json_output_file_content(os.path.sep.join([output_directory, "VS_content.json"]), vocabulary_server)
