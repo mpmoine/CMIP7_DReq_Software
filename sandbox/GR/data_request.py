@@ -8,6 +8,7 @@ Data request.
 from __future__ import division, print_function, unicode_literals, absolute_import
 
 import argparse
+import copy
 import os
 
 import six
@@ -29,6 +30,21 @@ class DRObjects(object):
 		self.id = id
 		self.vs = vs
 		self.DR_type = "undef"
+
+	def __eq__(self, other):
+		return isinstance(other, type(self)) and self.id == other.id and self.DR_type == other.DR_type
+
+	def __lt__(self, other):
+		return self.id < other.id
+
+	def __gt__(self, other):
+		return self.id > other.id
+
+	def __copy__(self):
+		return type(self).__call__(id=copy.deepcopy(self.id), vs=self.vs)
+
+	def __deepcopy__(self, memodict={}):
+		return self.__copy__()
 
 	def check(self):
 		pass
@@ -68,6 +84,12 @@ class ExperimentsGroup(DRObjects):
 		self.experiments = experiments
 		self.DR_type = "experiments_groups"
 
+	def __eq__(self, other):
+		return super().__eq__(other) and self.experiments == other.experiments
+
+	def __copy__(self):
+		return type(self).__call__(id=copy.deepcopy(self.id), vs=self.vs, experiments=copy.deepcopy(self.experiments))
+
 	def check(self):
 		super().check()
 		logger = get_logger()
@@ -83,10 +105,10 @@ class ExperimentsGroup(DRObjects):
 	def print_content(self, level=0, add_content=True):
 		rep = super().print_content(level=level)
 		if add_content:
-			indent = "    " * level
+			indent = "    " * (level + 1)
 			rep.append(f"{indent}Experiments included:")
 			for experiment in self.get_experiments():
-				rep.extend(experiment.print_content(level=level + 1))
+				rep.extend(experiment.print_content(level=level + 2))
 		return rep
 
 	@classmethod
@@ -103,6 +125,14 @@ class VariablesGroup(DRObjects):
 		self.mips = mips
 		self.priority = priority
 		self.DR_type = "variables_groups"
+
+	def __eq__(self, other):
+		return super().__eq__(other) and self.variables == other.variables and self.mips == other.mips and \
+			self.priority == other.priority
+
+	def __copy__(self):
+		return type(self).__call__(id=copy.deepcopy(self.id), vs=self.vs, variables=copy.deepcopy(self.variables),
+		                           mips=copy.deepcopy(self.mips), priority=copy.deepcopy(self.priority))
 
 	def check(self):
 		super().check()
@@ -127,10 +157,10 @@ class VariablesGroup(DRObjects):
 	def print_content(self, level=0, add_content=True):
 		rep = super().print_content(level=level)
 		if add_content:
-			indent = "    " * level
+			indent = "    " * (level + 1)
 			rep.append(f"{indent}Variables included:")
 			for variable in self.get_variables():
-				rep.extend(variable.print_content(level=level + 1))
+				rep.extend(variable.print_content(level=level + 2))
 		return rep
 
 
@@ -141,6 +171,15 @@ class Opportunity(DRObjects):
 		self.variables_groups = variables_groups
 		self.themes = themes
 		self.DR_type = "opportunities"
+
+	def __eq__(self, other):
+		return super().__eq__(other) and self.experiments_groups == other.experiments_groups and \
+			self.variables_groups == other.variables_groups and self.themes == other.themes
+
+	def __copy__(self):
+		return type(self).__call__(id=copy.deepcopy(self.id), vs=self.vs, themes=copy.deepcopy(self.themes),
+		                           experiments_groups=copy.deepcopy(self.experiments_groups),
+		                           variables_groups=copy.deepcopy(self.variables_groups))
 
 	def check(self):
 		super().check()
@@ -244,41 +283,56 @@ class DataRequest(object):
 
 	@classmethod
 	def from_separated_inputs(cls, DR_input, VS_input, **kwargs):
-		if isinstance(DR_input, six.string_types):
+		logger = get_logger()
+		if isinstance(DR_input, six.string_types) and os.path.isfile(DR_input):
 			DR = read_json_file(DR_input)
+		elif isinstance(DR_input, dict):
+			DR = copy.deepcopy(DR_input)
 		else:
-			DR = DR_input
-		if isinstance(VS_input, six.string_types):
+			logger.error("DR_input should be either the name of a json file or a dictionary.")
+			raise TypeError("DR_input should be either the name of a json file or a dictionary.")
+		if isinstance(VS_input, six.string_types) and os.path.isfile(VS_input):
 			VS = VocabularyServer.from_input(VS_input)
+		elif isinstance(VS_input, dict):
+			VS = VocabularyServer(copy.deepcopy(VS_input))
 		else:
-			VS = VocabularyServer(VS_input)
+			logger.error("VS_input should be either the name of a json file or a dictionary.")
+			raise TypeError("VS_input should be either the name of a json file or a dictionary.")
 		return cls(input_database=DR, VS=VS, **kwargs)
 
 	@staticmethod
 	def _split_content_from_input_json(input_json, version):
-		if isinstance(input_json, six.string_types):
+		logger = get_logger()
+		if not isinstance(version, six.string_types):
+			logger.error(f"Version should be a string, not {type(version)}.")
+			raise TypeError(f"Version should be a string, not {type(version)}.")
+		if isinstance(input_json, six.string_types) and os.path.isfile(input_json):
 			content = read_json_file(input_json)
-		else:
+		elif isinstance(input_json, dict):
 			content = input_json
+		else:
+			logger.error("input_json should be either the name of a json file or a dictionary.")
+			raise TypeError("input_json should be either the name of a json file or a dictionary.")
 		DR, VS = transform_content(content, version=version)
 		return DR, VS
 
 	def __str__(self):
 		rep = list()
+		indent = "    "
 		rep.append("Data Request content:")
-		rep.append("    Experiments groups:")
+		rep.append(f"{indent}Experiments groups:")
 		for elt in self.get_experiments_groups():
 			rep.extend(elt.print_content(level=2))
-		rep.append("    Variables groups:")
+		rep.append(f"{indent}Variables groups:")
 		for elt in self.get_variables_groups():
 			rep.extend(elt.print_content(level=2))
-		rep.append("    Opportunities:")
+		rep.append(f"{indent}Opportunities:")
 		for elt in self.get_opportunities():
 			rep.extend(elt.print_content(level=2))
 		return os.linesep.join(rep)
 
 	def get_experiments_groups(self):
-		return [self.experiments_groups[elt] for elt in self.experiments_groups]
+		return [self.experiments_groups[elt] for elt in sorted(list(self.experiments_groups))]
 
 	def get_experiments_group(self, id):
 		if id in self.experiments_groups:
@@ -287,7 +341,7 @@ class DataRequest(object):
 			raise ValueError(f"Could not find experiments group {id}.")
 
 	def get_variables_groups(self):
-		return [self.variables_groups[elt] for elt in self.variables_groups]
+		return [self.variables_groups[elt] for elt in sorted(list(self.variables_groups))]
 
 	def get_variables_group(self, id):
 		if id in self.variables_groups:
@@ -419,6 +473,103 @@ class DataRequest(object):
 				if experiment in exp_group.get_variables():
 					rep = rep.union(set(opportunity.get_themes()))
 		return sorted(list(rep))
+
+	def _find_filtering_reference(self, key, element):
+		logger = get_logger()
+		search_dict = dict(
+			default=dict(
+				obj_type=None,
+				search_func=self.vs.get_element,
+				search_options=dict(default=None),
+				id_types=["uid", "name"]
+			),
+			experiment=dict(
+				obj_type=Experiment,
+				search_func=self.vs.get_experiment,
+				id_types=["uid", "experiment"]
+			),
+			experiments_group=dict(
+				obj_type=ExperimentsGroup,
+				search_options=dict(element_type="experiments_groups")
+			),
+			opportunity=dict(
+				obj_type=Opportunity,
+				search_options=dict(element_type="opportunities")
+			),
+			priority=dict(
+				search_options=dict(element_type="priority_level")
+			),
+			theme=dict(
+				obj_type=Theme,
+				search_options=dict(element_type="data_request_themes")
+			),
+			variable=dict(
+				obj_type=Variable,
+				search_func=self.vs.get_variable,
+			),
+			variables_group=dict(
+				obj_type=VariablesGroup,
+				search_options=dict(element_type="variables_groups")
+			))
+		if key in search_dict:
+			obj_type = search_dict[key]["obj_type"]
+			search_func = search_dict[key].get("search_func", search_dict["default"]["search_func"])
+			search_options = copy.deepcopy(search_dict["default"]["search_options"])
+			search_options.update(copy.deepcopy(search_dict[key].get("search_options", dict())))
+			id_types = search_dict[key].get("id_types", search_dict["default"]["id_types"])
+			if obj_type is not None and isinstance(element, obj_type):
+				return element.id
+			elif isinstance(element, six.string_types):
+				i = 0
+				found = False
+				while i < len(id_types) and not found:
+					value = search_func.__call__(element, id_type=id_types[i], **search_options)
+					if value is None:
+						i += 1
+					else:
+						found = True
+				if found:
+					return element.get("id")
+			else:
+				logger.error(f"Unable to filter reference on value type {type(element)}.")
+				raise TypeError(f"Unable to filter reference on value type {type(element)}.")
+		else:
+			logger.error(f"Key {key} is not designed to filter references.")
+			raise ValueError(f"Key {key} is not designed to filter references.")
+
+	def _find_filtering_references(self, **kwargs):
+		filtering_references = dict()
+		for key in kwargs:
+			filtering_references[key] = [self._find_filtering_reference(key=key, element=value)
+			                             for value in kwargs[key]]
+		return copy.deepcopy(filtering_references)
+
+	def find_experiments(self, experiments_groups=list(), opportunities=list(), themes=list(), variables=list(),
+	                     variables_groups=list(), priorities=list()):
+		"""
+		Find the experiments which fit with all the filtering requests
+		:param experiments_groups: list of experiments_groups elements or ids
+		:param opportunities: list of opportunities elements or ids
+		:param priorities: list of priorities elements or ids
+		:param themes: list of themes elements or ids
+		:param variables: list of variables elements or ids
+		:param variables_groups: list of variables_groups elements or ids
+		:return:
+		"""
+
+	def export_data(self, main_data, filtering_requests=dict(), sorting_request=list()):
+		logger = get_logger()
+		main_data_choices = ["experiment", "experiments_group", "opportunity", "theme", "variable", "variables_group"]
+		if main_data not in main_data_choices:
+			logger.error(f"main_data possible values are {main_data_choices}.")
+			raise ValueError(f"main_data possible values are {main_data_choices}.")
+		filtering_requests_choices = copy.deepcopy(main_data_choices)
+		filtering_requests_choices.remove(main_data)
+		filtering_requests_choices.append("priority")
+		not_filtering_allowed = sorted(list(set(list(filtering_requests)) - set(filtering_requests_choices)))
+		if len(not_filtering_allowed) > 0:
+			logger.error(f"The following filtering requests are not allowed: {not_filtering_allowed}.")
+			raise ValueError(f"The following filtering requests are not allowed: {not_filtering_allowed}.")
 
 
 if __name__ == "__main__":

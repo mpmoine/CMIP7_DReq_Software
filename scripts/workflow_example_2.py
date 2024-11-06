@@ -26,6 +26,8 @@ import sys
 import pprint
 from collections import defaultdict
 
+import six
+
 add_paths = ['../sandbox/MS/dreq_api/', '../sandbox/JA', '../sandbox/GR']
 for path in add_paths:
     if path not in sys.path:
@@ -43,13 +45,13 @@ change_log_level("debug")
 
 ### Step 1: Get the content of the DR
 # Define content version to be used
-# use_dreq_version = 'v1.0alpha'
+use_dreq_version = 'v1.0beta'
 # use_dreq_version = "first_export"
-use_dreq_version = 'new_export_15Oct2024'
+# use_dreq_version = 'new_export_15Oct2024'
 # Download specified version of data request content (if not locally cached)
-dc.retrieve(use_dreq_version)
+# dc.retrieve(use_dreq_version)
 # Load content into python dict
-content = dc.load(use_dreq_version)
+# content = dc.load(use_dreq_version)
 
 ### Step 2: Load it into the software of the DR
 # DR = DataRequest.from_input(json_input=content, version=use_dreq_version)
@@ -74,5 +76,15 @@ for elt in DR.get_variables_groups():
             rep[elt.id][key] = rep[elt.id][key].union(set([elt.get("name", "???") if isinstance(elt, dict) else elt
                                                            for elt in var.__getattribute__(key)]))
 
+rep = defaultdict(lambda: defaultdict(set))
+for elt in DR.get_variables_groups():
+    for var in elt.get_variables():
+        param = var.physical_parameter["name"]
+        freq = var.frequency["name"]
+        realm = set([elt if isinstance(elt, six.string_types) else elt.get("name", "???") for elt in var.modelling_realm])
+        spt_shp = set([elt if isinstance(elt, six.string_types) else elt.get("name", "???") for elt in var.spatial_shape])
+        tmp_shp = set([elt if isinstance(elt, six.string_types) else elt.get("name", "???") for elt in var.temporal_shape])
+        for (rlm, freq, sshp, tshp) in zip(realm, [freq, ], spt_shp, tmp_shp):
+            rep[rlm][param].add(f"{freq} // {sshp} // {tshp}")
 pprint.pprint(rep)
 # pprint.pprint(rep_data)

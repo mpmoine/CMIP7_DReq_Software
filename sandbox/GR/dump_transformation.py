@@ -68,6 +68,7 @@ def transform_content_one_base(content):
             "Experiment Group": ["Opportunity", ],
             "Experiments": ["Experiment Group", ],
             "Frequency": ["Table Identifiers", "Variables"],
+            "CMIP7 Frequency": ["Table Identifiers", "Variables"],
             "Glossary": ["Opportunity", ],
             "MIPs": ["Variable Group", ],
             "Modelling Realm": ["Variables", ],
@@ -87,9 +88,6 @@ def transform_content_one_base(content):
         }
         record_to_uid_index = dict()
         for subelt in sorted(list(content)):
-            if subelt in ["CMIP7 Frequency", ]:
-                content["Frequency"] = content.pop(subelt)
-                subelt = "Frequency"
             for record_id in sorted(list(content[subelt]["records"])):
                 if subelt in to_remove_keys:
                     keys_to_remove = copy.deepcopy(to_remove_keys[subelt])

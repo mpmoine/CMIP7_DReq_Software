@@ -13,7 +13,7 @@ import sys
 
 sys.path.append("sandbox/GR")
 
-from tools import read_json_file
+from tools import read_json_file, write_json_output_file_content
 from dump_transformation import correct_key_string, correct_dictionaries, transform_content_one_base,\
 	transform_content_three_bases, transform_content
 
@@ -82,7 +82,7 @@ class TestCorrectDictionaries(unittest.TestCase):
 class TestTransformContent(unittest.TestCase):
 	def setUp(self):
 		self.input_one_base = read_json_file("tests/test_datasets/one_base_input.json")
-		# TODO : Create this file
+		# TODO: Create this file
 		# self.input_several_bases = read_json_file("tests/test_datasets/several_bases_input.json")
 		self.VS_output_noformat = read_json_file("tests/test_datasets/VS_input_noformat.json")
 		self.DR_output_complete = read_json_file("tests/test_datasets/DR_input.json")
