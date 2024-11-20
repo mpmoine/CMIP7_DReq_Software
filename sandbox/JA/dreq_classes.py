@@ -28,13 +28,17 @@ def format_attribute_name(k):
     k = k.strip()
     k = k.lower()
     substitute = {
-        # replacement character : [characters to replace with the replacement character]
-        '_' : [' ', '.', '#'],
-        '' : ['(', ')', ',']
+        # replacement character(s) : [characters to replace with the replacement character]
+        '_' : list(' .-+=?!@#$%^*:;') + ['_&_', '/', '\\'],
+        '' : list('(){}[]<>|,"~'),
+        # Note: list(str) = [single chars in the string], example: list('ab') = ['a', 'b']
     }
     for replacement in substitute:
         for s in substitute[replacement]:
             k = k.replace(s, replacement)
+    check_for_invalid_chars = ['&', '/', '-']
+    for s in check_for_invalid_chars:
+        assert s not in k, f'{s} is invalid character for attribute {k}'
     return k
 
 ###############################################################################

@@ -140,8 +140,15 @@ def create_dreq_tables_for_request(content, consolidated=True):
     Opps.rename_attr('title_of_opportunity', 'title') # rename title attribute for brevity in downstream code
     if content_type == 'working':
         if 'variable_groups' not in Opps.attr2field:
-            if 'originally_requested_variable_groups' in Opps.attr2field:
-                Opps.rename_attr('originally_requested_variable_groups', 'variable_groups')
+            # Try alternate names for the latest variable groups
+            try_vg_attr = []
+            try_vg_attr.append('working_updated_variable_groups') # takes precendence over originally requested groups
+            try_vg_attr.append('originally_requested_variable_groups')
+            for vg_attr in try_vg_attr:
+                if vg_attr in Opps.attr2field:
+                    Opps.rename_attr(vg_attr, 'variable_groups')
+                    break
+            assert 'variable_groups' in Opps.attr2field, f'unable to determine variable groups attribute for opportunity: {opp.title}'
     exclude_opps = set()
     for opp_id, opp in Opps.records.items():
         if not hasattr(opp, 'experiment_groups'):
@@ -377,12 +384,12 @@ def get_opp_ids(use_opps, Opps, verbose=False, quality_control=True):
         table object representing the opportunities table
     '''
     opp_ids = []
-    use_opps = sorted(set(use_opps))
     records = Opps.records
     if use_opps == 'all':
         # Include all opportunities
         opp_ids = list(records.keys())
     elif isinstance(use_opps, list):
+        use_opps = sorted(set(use_opps))
         if all([isinstance(s, str) for s in use_opps]):
             # opp_ids = [opp_id for opp_id,opp in records.items() if opp.title in use_opps]
             title2id = {opp.title : opp_id for opp_id,opp in records.items()}
