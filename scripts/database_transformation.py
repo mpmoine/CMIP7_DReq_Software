@@ -28,7 +28,8 @@ change_log_level("debug")
 # Define content version to be used
 # use_dreq_version = 'v1.0alpha'
 # use_dreq_version = "first_export"
-use_dreq_version = 'new_export_15Oct2024'
+# use_dreq_version = 'new_export_15Oct2024'
+use_dreq_version = "v1.0beta"
 # Download specified version of data request content (if not locally cached)
 dc.retrieve(use_dreq_version)
 # Load content into python dict

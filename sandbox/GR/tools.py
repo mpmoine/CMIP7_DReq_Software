@@ -28,6 +28,8 @@ def read_json_input_file_content(filename):
     return content
 
 
-def write_json_output_file_content(filename, content):
+def write_json_output_file_content(filename, content, **kwargs):
     with open(filename, "w") as fic:
-        json.dump(content, fic, indent=4, allow_nan=True, sort_keys=True)
+        defaults = dict(indent=4, allow_nan=True, sort_keys=True)
+        defaults.update(kwargs)
+        json.dump(content, fic, **defaults)

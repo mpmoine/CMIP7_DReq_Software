@@ -14,7 +14,6 @@ import sys
 sys.path.append("sandbox/GR")
 
 
-from tools import read_json_file
 from vocabulary_server import VSObject, Experiment, Variable, VocabularyServer
 
 
@@ -43,15 +42,16 @@ class TestVSObject(unittest.TestCase):
 
 	def test_buildins(self):
 		obj = VSObject(id="my_id", vs=self.vs)
-
 		self.assertEqual(str(obj), self.obj_str)
 		self.assertEqual(repr(obj), self.obj_str)
 		self.assertEqual(hash(obj), hash("my_id"))
+		self.assertEqual(obj.get("id"), "my_id")
 
 		obj2 = VSObject(id="other", vs=self.vs)
 		self.assertNotEqual(obj, obj2)
 		self.assertGreater(obj2, obj)
 		self.assertLess(obj, obj2)
+		self.assertEqual(obj2.get("id"), "other")
 
 	def test_print_content(self):
 		obj = VSObject(id="my_id", vs=self.vs)
@@ -162,13 +162,13 @@ class TestVariable(unittest.TestCase):
 
 	def test_properties(self):
 		test_var_dict = {"uid": "1aab80fc-b006-11e6-9289-ac72891c3257",
-		                 "cell_measures": ["default_99"],
+		                 "cell_measures": ["default_110"],
 		                 "cell_methods": ["CellMethods::amse-tmn"],
 		                 "cf_standard_name": ["default_76"],
+		                 "cmip7_frequency": ["default_99"],
 		                 "compound_name": "Omon.wo",
 		                 "description": "Prognostic z-ward velocity component resolved by the model.\n",
-		                 "esm-bcv_1.3": ["default_233"],
-		                 "frequency": ["default_319"],
+		                 "esm-bcv_1.3": ["default_244"],
 		                 "horizontal_mesh": 68400,
 		                 "link_to_ranking": ["default_525"],
 		                 "min_rank": [32],
@@ -229,15 +229,15 @@ class TestVariable(unittest.TestCase):
 		self.assertEqual(var.description, "Prognostic z-ward velocity component resolved by the model.\n")
 		self.assertEqual(var2.description, "Prognostic z-ward velocity component resolved by the model.\n")
 
-		self.assertEqual(var.frequency, [{'description': 'monthly mean samples', 'name': 'mon',
-		                                  'proposed_new_freq': 'mon', 'sampling_rate': 120}, ])
-		self.assertEqual(var2.frequency, [{'description': 'monthly mean samples', 'name': 'mon',
-		                                  'proposed_new_freq': 'mon', 'sampling_rate': 120}, ])
+		self.assertEqual(var.frequency, {'description': 'monthly mean samples', 'name': 'mon',
+		                                  'proposed_new_freq': 'mon', 'sampling_rate': 120}, )
+		self.assertEqual(var2.frequency, {'description': 'monthly mean samples', 'name': 'mon',
+		                                  'proposed_new_freq': 'mon', 'sampling_rate': 120}, )
 
 		self.assertEqual(var.modelling_realm, [{'id': 'ocean', 'name': 'Ocean', 'other_name': 'Ocean'}])
 		self.assertEqual(var2.modelling_realm, ["???", ])
 
-		self.assertEqual(var.physical_parameter, [{
+		self.assertEqual(var.physical_parameter, {
             "cf_standard_name": ["default_76"],
             "description": "A velocity is a vector quantity. \"Upward\" indicates a vector component which is positive"
                            " when directed upward (negative downward).\n",
@@ -247,8 +247,8 @@ class TestVariable(unittest.TestCase):
             "status": "Existing physical parameter",
             "title": "Sea Water Vertical Velocity",
             "units": "m s-1"
-        }])
-		self.assertEqual(var2.physical_parameter, [{
+        })
+		self.assertEqual(var2.physical_parameter, {
             "cf_standard_name": ["default_76"],
             "description": "A velocity is a vector quantity. \"Upward\" indicates a vector component which is positive"
                            " when directed upward (negative downward).\n",
@@ -258,7 +258,7 @@ class TestVariable(unittest.TestCase):
             "status": "Existing physical parameter",
             "title": "Sea Water Vertical Velocity",
             "units": "m s-1"
-        }])
+        })
 
 		self.assertEqual(var.spatial_shape, [{
             "hor_label_dd": "hxy",
@@ -320,9 +320,9 @@ class TestVariable(unittest.TestCase):
             "title": "Temporal mean, Global ocean field on model levels [XY-O] [tmean]"
         })
 
-		self.assertEqual(var.table, [{'alternative_label': 'Omon', 'frequency': ['default_319'], 'name': 'Omon',
+		self.assertEqual(var.table, [{'alternative_label': 'Omon', 'cmip7_frequency': ['default_99'], 'name': 'Omon',
 		                              'new_names': ['Omon'], 'title': 'Monthly ocean data'}, ])
-		self.assertEqual(var2.table, [{'alternative_label': 'Omon', 'frequency': ['default_319'], 'name': 'Omon',
+		self.assertEqual(var2.table, [{'alternative_label': 'Omon', 'cmip7_frequency': ['default_99'], 'name': 'Omon',
 		                              'new_names': ['Omon'], 'title': 'Monthly ocean data'}, ])
 
 		self.assertEqual(var.temporal_shape, [{'brand': 'tavg','comments': ['default_693', 'default_712'],'name': 'time-mean', 'title': 'Temporal mean'}, ])
@@ -333,7 +333,7 @@ class TestVariable(unittest.TestCase):
 
 	def test_print_content(self):
 		var = Variable(id="my_id", vs=self.vs, physical_parameter="d476e6113f5c466d27fd3aa9e9c35411",
-		               frequency="default_321", title="my_title")
+		               cmip7_frequency="default_101", title="my_title")
 		var_str = "variable wo at frequency day (id: my_id, title: my_title)"
 		self.assertEqual(var.print_content(), [var_str, ])
 		self.assertEqual(var.print_content(level=0), [var_str, ])
@@ -342,4 +342,5 @@ class TestVariable(unittest.TestCase):
 
 
 class TestVocabularyServer(unittest.TestCase):
+	# TODO: Implement tests for Vocabulary Server
 	pass

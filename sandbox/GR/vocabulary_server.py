@@ -10,6 +10,8 @@ from __future__ import division, print_function, unicode_literals, absolute_impo
 import copy
 import os
 
+import six
+
 from logger import get_logger
 from tools import read_json_file
 
@@ -27,16 +29,22 @@ class VSObject(object):
 		if element_type is None:
 			element_type = key
 		value = self.attributes[key]
-		if target_type in ["list", ] and not isinstance(value, list):
+		if not isinstance(value, list):
 			value = [value, ]
-		if isinstance(value, list):
-			value = [self.vs.get_element(element_type=element_type, element_id=val) for val in value]
-		else:
-			value = self.vs.get_element(element_type=element_type, element_id=value)
+		value = [self.vs.get_element(element_type=element_type, element_id=val) for val in value]
 		value = copy.deepcopy(value)
 		if not target_type in ["list", ] and isinstance(value, list) and len(value) == 1:
 			value = value[0]
 		return value
+
+	def __copy__(self):
+		return type(self).__call__(vs=self.vs, **copy.deepcopy(self.attributes))
+
+	def __deepcopy__(self, memodict={}):
+		return self.__copy__()
+
+	def get(self, item, default=None):
+		return self.attributes.get(item, default)
 
 	def __str__(self):
 		return os.linesep.join(self.print_content())
@@ -92,14 +100,16 @@ class Experiment(VSObject):
 class Variable(VSObject):
 	def __init__(self, id, **kwargs):
 		super().__init__(id, **kwargs)
-		keys = ["cf_standard_name", "cell_measures", "cell_methods", "description", "frequency",
+		keys = ["cf_standard_name", "cell_measures", "cell_methods", "description", "cmip7_frequency",
 		        "modelling_realm", "content_type", "title", "spatial_shape", "temporal_shape", "table", "compound_name",
 		        "structure_label", "structure_title", "physical_parameter"]
 		defaults_dict = {key: "???" for key in keys}
 		defaults_dict.update(kwargs)
 		for elt in set(list(defaults_dict)) - set(keys):
 			del defaults_dict[elt]
-		self.attributes.update(defaults_dict)
+		attrs = copy.deepcopy(self.attributes)
+		attrs.update(defaults_dict)
+		self.attributes = attrs
 
 	@property
 	def uid(self):
@@ -119,19 +129,19 @@ class Variable(VSObject):
 
 	@property
 	def compound_name(self):
-		return self.attributes["compound_name"]
+		return self.get("compound_name")
 
 	@property
 	def content_type(self):
-		return self.attributes["content_type"]
+		return self.get("content_type")
 
 	@property
 	def description(self):
-		return self.attributes["description"]
+		return self.get("description")
 
 	@property
 	def frequency(self):
-		return self.get_value_from_vs(key="frequency", target_type="list")
+		return self.get_value_from_vs(key="cmip7_frequency")
 
 	@property
 	def modelling_realm(self):
@@ -139,7 +149,7 @@ class Variable(VSObject):
 
 	@property
 	def physical_parameter(self):
-		return self.get_value_from_vs(key="physical_parameter", element_type="physical_parameters", target_type="list")
+		return self.get_value_from_vs(key="physical_parameter", element_type="physical_parameters")
 
 	@property
 	def spatial_shape(self):
@@ -159,12 +169,12 @@ class Variable(VSObject):
 
 	@property
 	def title(self):
-		return self.attributes["title"]
+		return self.get("title")
 
 	def print_content(self, level=0, add_content=True):
 		indent = "    " * level
-		physical_parameter = ", ".join([elt["name"] for elt in self.physical_parameter])
-		frequency = ", ".join([elt["name"] for elt in self.frequency])
+		physical_parameter = self.physical_parameter["name"]
+		frequency = self.frequency["name"]
 		return [f"{indent}variable {physical_parameter} at frequency {frequency} (id: {self.id}, title: {self.title})", ]
 
 	@classmethod
@@ -193,42 +203,69 @@ class VocabularyServer(object):
 		content = read_json_file(input_database)
 		return cls(content)
 
-	def get_variable(self, element_id, element_key=None, default=False):
-		rep = self.get_element(element_type="variables", element_id=element_id, default=default)
+	def get_variable(self, element_id, element_key=None, id_type="uid", default=False):
+		rep = self.get_element(element_type="variables", element_id=element_id, default=default, id_type=id_type)
 		if element_key is not None:
-			rep = rep.__getattribute__(element_key)
+			rep = rep.get(element_key)
 		return rep
 
-	def get_experiment(self, element_id, element_key=None, default=False):
-		rep = self.get_element(element_type="experiments", element_id=element_id, default=default)
+	def get_experiment(self, element_id, element_key=None, default=False, id_type="uid"):
+		rep = self.get_element(element_type="experiments", element_id=element_id, default=default, id_type=id_type)
 		if element_key is not None:
-			rep = rep.__getattribute__(element_key)
+			rep = rep.get(element_key)
 		return rep
 
-	def get_element(self, element_type, element_id, element_key=None, default=False):
+	def get_element(self, element_type, element_id, element_key=None, default=False, id_type="uid"):
 		logger = get_logger()
 		if element_type in self.vocabulary_server:
-			if element_id in self.vocabulary_server[element_type]:
-				value = self.vocabulary_server[element_type][element_id]
-				if element_key is not None:
-					if element_key in value:
-						value = value[element_key]
-					else:
-						logger.error(f"Could not find key {element_key} of id {element_id} of type {element_type} "
-						             f"in the vocabulary server.")
-						raise ValueError(f"Could not find key {element_key} of id {element_id} of type "
-						                 f"{element_type} in the vocabulary server.")
-				return value
-			elif element_id in ["???", ]:
+			if element_id in ["???", None]:
 				logger.critical(f"Undefined id of type {element_type}")
 				return element_id
-			elif default:
-				logger.critical(f"Could not find id {element_id} of type {element_type}"
-				                f" in the vocabulary server.")
-				return default
 			else:
-				logger.error(f"Could not find id {element_id} of type {element_type} in the vocabulary server.")
-				raise ValueError(f"Could not find id {element_id} of type {element_type} in the vocabulary server.")
+				found = False
+				if id_type in ["uid", ] and element_id in self.vocabulary_server[element_type]:
+					value = self.vocabulary_server[element_type][element_id]
+					found = True
+				elif isinstance(id_type, six.string_types):
+					value = list()
+					for (key, val) in self.vocabulary_server[element_type].items():
+						if element_id is None:
+							raise ValueError("None element_id found")
+						if element_id in val.get(id_type, list()) or element_id == val.get(id_type, list()):
+							value.append(key)
+					# value = [elt for (elt, val) in self.vocabulary_server[element_type].items()
+					#          if element_id in val.get(id_type, list()) or element_id == val.get(id_type, list())]
+					if len(value) == 1:
+						found = True
+						element_id = value[0]
+						value = self.vocabulary_server[element_type][element_id]
+					elif len(value) > 1:
+						logger.error(f"id_type {id_type} provided is not unique for element type {element_type} and "
+						             f"value {element_key}.")
+						raise ValueError(f"id_type {id_type} provided is not unique for element type {element_type} "
+						                 f"and value {element_key}.")
+				if found:
+					value = copy.deepcopy(value)
+					if element_key is not None:
+						if element_key in value:
+							value = value[element_key]
+						else:
+							logger.error(f"Could not find key {element_key} of id {element_id} of type {element_type} "
+							             f"in the vocabulary server.")
+							raise ValueError(f"Could not find key {element_key} of id {element_id} of type "
+							                 f"{element_type} in the vocabulary server.")
+					elif isinstance(element_key, dict):
+						value["uid"] = element_id
+					return value
+				elif default:
+					logger.critical(f"Could not find {id_type} {element_id} of type {element_type}"
+					                f" in the vocabulary server.")
+					return default
+				else:
+					logger.error(f"Could not find {id_type} {element_id} of type {element_type} "
+					             f"in the vocabulary server.")
+					raise ValueError(f"Could not find {id_type} {element_id} of type {element_type} "
+					                 f"in the vocabulary server.")
 		else:
 			logger.error(f"Could not find element type {element_type} in the vocabulary server.")
 			raise ValueError(f"Could not find element type {element_type} in the vocabulary server.")

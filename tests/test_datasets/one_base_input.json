@@ -9006,7 +9006,7 @@
                 }
             }
         },
-        "Frequency": {
+        "CMIP7 Frequency": {
             "base_id": "appK3F9nWhibRrv3X",
             "base_name": "Data Request v1.0alpha",
             "description": "Frequency of Time Steps to be Archived. See https://earthsystemcog.org/projects/wip/time_of_day for details of time of day for sub-hourly frequencies.",
@@ -24980,7 +24980,7 @@
                 "rec28aqq1XVOy40gE": {
                     "Alternative Label": "Oday",
                     "Description": "Daily Mean Atmosphere, Ocean and Surface Fields",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Name": "Oday",
@@ -25047,7 +25047,7 @@
                 },
                 "rec8WqeTi04gBJaQr": {
                     "Alternative Label": "SIday",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Name": "SIday",
@@ -25099,7 +25099,7 @@
                 },
                 "rec9vCwzOujQ9pN2m": {
                     "Alternative Label": "day",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Name": "day",
@@ -25194,7 +25194,7 @@
                 },
                 "recBNcoWXEeEogeRh": {
                     "Alternative Label": "emDay",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Name": "Eday",
@@ -25401,7 +25401,7 @@
                 },
                 "recGapQhY9gJRTEv5": {
                     "Alternative Label": "6hrPlevpt",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recxIcmmZib7mSsih"
                     ],
                     "Name": "6hrPlevPt",
@@ -25458,7 +25458,7 @@
                 },
                 "recGxzySZVsZOguIm": {
                     "Alternative Label": "6hrPlev",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recxIcmmZib7mSsih"
                     ],
                     "Name": "6hrPlev",
@@ -25501,7 +25501,7 @@
                 },
                 "recJb5lCFa19ouFQL": {
                     "Alternative Label": "cfDay",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Name": "CFday",
@@ -25591,7 +25591,7 @@
                 },
                 "recQCSh5nmmZ8JyK3": {
                     "Alternative Label": "emFx",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Name": "Efx",
@@ -25614,7 +25614,7 @@
                 },
                 "recUSDgezn7fXiGsa": {
                     "Alternative Label": "LImon",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Name": "LImon",
@@ -25703,7 +25703,7 @@
                 },
                 "recdBnlhHixPwFocD": {
                     "Alternative Label": "Ofx",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Name": "Ofx",
@@ -25743,7 +25743,7 @@
                 "recjFhNw5M0BzeopC": {
                     "Alternative Label": "fx",
                     "Description": "Variables with no time dependency",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Name": "fx",
@@ -25780,7 +25780,7 @@
                 "recjUYUNwHIsnlDaj": {
                     "Alternative Label": "SImon",
                     "Description": "Monthly Mean Ocean Cryosphere Fields",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Name": "SImon",
@@ -25980,7 +25980,7 @@
                 },
                 "reclGiParqBqWeENk": {
                     "Alternative Label": "3hr",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Name": "3hr",
@@ -26052,7 +26052,7 @@
                 },
                 "recmw5HKiKKD7KY0I": {
                     "Alternative Label": "3hrPt",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Name": "3hrPt",
@@ -26100,7 +26100,7 @@
                 },
                 "recn9nf97ivTjHqMF": {
                     "Alternative Label": "Amon",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Name": "Amon",
@@ -26267,7 +26267,7 @@
                 },
                 "recrOPtwxXTJ3p2D6": {
                     "Alternative Label": "Lmon",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Name": "Lmon",
@@ -26361,7 +26361,7 @@
                 "recvX1ViNlw6P5r2d": {
                     "Alternative Label": "Oyr",
                     "Description": "Annual mean variables on the ocean grid.",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "reccZ8wcujHavHieC"
                     ],
                     "Name": "Oyr",
@@ -26442,7 +26442,7 @@
                 },
                 "recx2pgXhShmvRfNu": {
                     "Alternative Label": "Omon",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Name": "Omon",
@@ -26839,7 +26839,7 @@
                 },
                 "recz7ppgk8N7ANDZP": {
                     "Alternative Label": "em1hr",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Name": "E1hr",
@@ -30911,7 +30911,7 @@
                     ],
                     "Compound Name": "3hr.hfls",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -30976,7 +30976,7 @@
                     ],
                     "Compound Name": "3hr.hfss",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31051,7 +31051,7 @@
                     "ESM-BCV 1.3": [
                         "rechxePZMf9TZrxem"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31123,7 +31123,7 @@
                     "ESM-BCV 1.3": [
                         "recxO15M7ezEbaYRU"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31188,7 +31188,7 @@
                     ],
                     "Compound Name": "3hr.ps",
                     "Description": "sampled synoptically to diagnose atmospheric tides, this is better than mean sea level pressure.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31254,7 +31254,7 @@
                     ],
                     "Compound Name": "3hr.rlds",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31319,7 +31319,7 @@
                     ],
                     "Compound Name": "3hr.rlus",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31387,7 +31387,7 @@
                     ],
                     "Compound Name": "3hr.rsds",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31453,7 +31453,7 @@
                     ],
                     "Compound Name": "3hr.rsus",
                     "Description": "This is the 3-hour mean flux.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31531,7 +31531,7 @@
                     "ESM-BCV 1.3": [
                         "reciurF4LYMq12dxv"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31595,7 +31595,7 @@
                     ],
                     "Compound Name": "3hr.tslsi",
                     "Description": "Surface temperature of all surfaces except open ocean, sampled synoptically.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31659,7 +31659,7 @@
                     ],
                     "Compound Name": "3hr.tos",
                     "Description": "temperature of surface of open ocean, sampled synoptically.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31734,7 +31734,7 @@
                     "ESM-BCV 1.3": [
                         "rec2st5qNeoMm535M"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31797,7 +31797,7 @@
                     ],
                     "Compound Name": "3hr.mrsol",
                     "Description": "In response to the opportunity \"Accurate assessment of land-atmosphere coupling\", I'm proposing a soil moisture for multiple layers in a frequency of 3hr.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recbt7yyiknrdnCvZ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31851,7 +31851,7 @@
                         "recw00BkjYkRgJTDz"
                     ],
                     "Description": "the mass of water in all phases in a thin surface soil layer.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -31927,7 +31927,7 @@
                     "ESM-BCV 1.3": [
                         "recNsFVrM21g9heST"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32001,7 +32001,7 @@
                         "reccMhgy0pYvub0PP",
                         "rec9KMMh4jtYjlYfJ"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recR9hlJj7dPuAudw"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32058,7 +32058,7 @@
                     "ESM-BCV 1.3": [
                         "recRZSJywYKPsQQYg"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recxIcmmZib7mSsih"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32127,7 +32127,7 @@
                     "ESM-BCV 1.3": [
                         "recHQDljTYeHW1ImM"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recwJolBUK6AoNKgx"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32196,7 +32196,7 @@
                     "ESM-BCV 1.3": [
                         "recckkXOJir8dYxpk"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recwJolBUK6AoNKgx"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32265,7 +32265,7 @@
                     "ESM-BCV 1.3": [
                         "rectB5FofsuAi4OAl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recwJolBUK6AoNKgx"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32330,7 +32330,7 @@
                     ],
                     "Compound Name": "E1hr.psl",
                     "Description": "Sea level pressure\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "rec1GiQgZ9HmzpDPA"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32396,7 +32396,7 @@
                     ],
                     "Compound Name": "E1hr.clt",
                     "Description": "or the whole atmospheric column, as seen from the surface or the top of the atmosphere. Include both large-scale and convective cloud. This is a 1-hour mean.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32446,7 +32446,7 @@
                     ],
                     "Compound Name": "E1hr.hurs",
                     "Description": "Hourly relative humidity at 2m above the surface\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32504,7 +32504,7 @@
                     "ESM-BCV 1.3": [
                         "rec7ixwJodixRT7Dm"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32568,7 +32568,7 @@
                     ],
                     "Compound Name": "E1hr.ps",
                     "Description": "Sampled synoptically to diagnose atmospheric tides, this is better than mean sea level pressure.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32618,7 +32618,7 @@
                     ],
                     "Compound Name": "E1hr.rlds",
                     "Description": "Surface Downwelling Longwave Radiation\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32670,7 +32670,7 @@
                     ],
                     "Compound Name": "E1hr.rsds",
                     "Description": "Hourly downward solar radiation flux at the surface\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32720,7 +32720,7 @@
                     "Compound Name": "E1hr.sfcWind",
                     "Contitional": true,
                     "Description": "Hourly near-surface wind speed at 10m above the ground\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32771,7 +32771,7 @@
                     ],
                     "Compound Name": "E1hr.tas",
                     "Description": "Hourly Temperature at 2m above the surface\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32821,7 +32821,7 @@
                     ],
                     "Compound Name": "E1hr.uas",
                     "Description": "**uas:** eastward component\u00a0of wind at 10 meters above the surface. It measures wind speed in the east-west direction (positive values indicate wind blowing toward the east).\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32875,7 +32875,7 @@
                     "ESM-BCV 1.3": [
                         "recBSKpa9zIMuB5kp"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32941,7 +32941,7 @@
                     ],
                     "Compound Name": "E1hr.vas",
                     "Description": "**vas:** Northward component\u00a0of wind at 10 meters above the surface. It measures wind speed in the north-south direction (positive values indicate wind blowing toward the north).\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recZ6itDuI8wCqnlO"
                     ],
                     "Horizontal Mesh": 68400,
@@ -32997,7 +32997,7 @@
                     "ESM-BCV 1.3": [
                         "recE1pXfeCAE3KVfk"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33068,7 +33068,7 @@
                     "ESM-BCV 1.3": [
                         "rec2qLdXdg2H60xDR"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33144,7 +33144,7 @@
                     "ESM-BCV 1.3": [
                         "rec6ujNFcCC8gNMxt"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33217,7 +33217,7 @@
                     "ESM-BCV 1.3": [
                         "recPAK3miAUgW3JXU"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33287,7 +33287,7 @@
                     "ESM-BCV 1.3": [
                         "recjWTHdEovB4fFxs"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33360,7 +33360,7 @@
                     "ESM-BCV 1.3": [
                         "rechkdQL58uKK9rKU"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33431,7 +33431,7 @@
                     "ESM-BCV 1.3": [
                         "recLczxGmEYwbmQje"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33507,7 +33507,7 @@
                     "ESM-BCV 1.3": [
                         "recRPKXQ7xtWJ6ukx"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33584,7 +33584,7 @@
                     "ESM-BCV 1.3": [
                         "recwt5UATZCjclwQJ"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33666,7 +33666,7 @@
                     "ESM-BCV 1.3": [
                         "rech5Hvo2B1o31VvV"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33746,7 +33746,7 @@
                     "ESM-BCV 1.3": [
                         "recCmJ36Ns0ZjHAck"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33840,7 +33840,7 @@
                     "ESM-BCV 1.3": [
                         "recc9N8ffd39C5GDS"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -33925,7 +33925,7 @@
                     "ESM-BCV 1.3": [
                         "rec95EcJpgjrbVVmv"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34009,7 +34009,7 @@
                     "ESM-BCV 1.3": [
                         "recGsRM2Fx2f2stTX"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34083,7 +34083,7 @@
                     "ESM-BCV 1.3": [
                         "recKZzpQHnYWyoCrX"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34157,7 +34157,7 @@
                     "ESM-BCV 1.3": [
                         "rec8jKFo4eyPkNabM"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34237,7 +34237,7 @@
                     "ESM-BCV 1.3": [
                         "rec2yn7C889QG4D6i"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34313,7 +34313,7 @@
                     "ESM-BCV 1.3": [
                         "recx3Gg0Yc8OeDXJr"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34394,7 +34394,7 @@
                     "ESM-BCV 1.3": [
                         "recCEpxUKpvMtL307"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34471,7 +34471,7 @@
                     "ESM-BCV 1.3": [
                         "recUlBj6vc7Tl5vwl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34551,7 +34551,7 @@
                     "ESM-BCV 1.3": [
                         "recPSry7d6LrEDNFD"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34623,7 +34623,7 @@
                     "ESM-BCV 1.3": [
                         "recC5oMw0ktE5KvdA"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34698,7 +34698,7 @@
                     "ESM-BCV 1.3": [
                         "rec4TMEkxBW7MitMX"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34770,7 +34770,7 @@
                     "ESM-BCV 1.3": [
                         "recpFnI6LuBTjb0Pe"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34837,7 +34837,7 @@
                     "ESM-BCV 1.3": [
                         "recTzBosAxS0SRC2f"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34908,7 +34908,7 @@
                     "ESM-BCV 1.3": [
                         "recDP4ZKqIdrqnM1M"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -34977,7 +34977,7 @@
                     "ESM-BCV 1.3": [
                         "recDTmlilO3Zluk4X"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35055,7 +35055,7 @@
                     "ESM-BCV 1.3": [
                         "recdJEgMIE5jr32cP"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35124,7 +35124,7 @@
                     "ESM-BCV 1.3": [
                         "recNauhQjT3XP80Md"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35194,7 +35194,7 @@
                     "ESM-BCV 1.3": [
                         "rec0kuuE3MxnE9Tha"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35262,7 +35262,7 @@
                     "ESM-BCV 1.3": [
                         "rec4k0JbeFdBszm4z"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35329,7 +35329,7 @@
                     "ESM-BCV 1.3": [
                         "recwF8Qz2VJQvjYME"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35401,7 +35401,7 @@
                     "ESM-BCV 1.3": [
                         "rec7PyCX5sFywTiWD"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35475,7 +35475,7 @@
                     "ESM-BCV 1.3": [
                         "recebcrfbI6b1lft1"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35551,7 +35551,7 @@
                     "ESM-BCV 1.3": [
                         "recsvGsTp79DF7XpZ"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35622,7 +35622,7 @@
                     "ESM-BCV 1.3": [
                         "rec8fG02MNXkCjZg6"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35700,7 +35700,7 @@
                     "ESM-BCV 1.3": [
                         "recSrcJq712kx5Vzu"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35771,7 +35771,7 @@
                     "ESM-BCV 1.3": [
                         "rec7kcpENetjDJSlU"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35844,7 +35844,7 @@
                     "ESM-BCV 1.3": [
                         "recFX8kWJcmcjDKiv"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -35922,7 +35922,7 @@
                     "ESM-BCV 1.3": [
                         "recMEMNbdaacvSBvI"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36003,7 +36003,7 @@
                     "ESM-BCV 1.3": [
                         "recvAzJzsNJDoWnBz"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36087,7 +36087,7 @@
                     "ESM-BCV 1.3": [
                         "rec2t9sQkFxbkpYdS"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36163,7 +36163,7 @@
                     "ESM-BCV 1.3": [
                         "rec76SrlH1Pp4gHvr"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36247,7 +36247,7 @@
                     "ESM-BCV 1.3": [
                         "recZ0yFpusiqyrmY9"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36335,7 +36335,7 @@
                     "ESM-BCV 1.3": [
                         "recqpHxj5yIT2rDlr"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36406,7 +36406,7 @@
                     "ESM-BCV 1.3": [
                         "recBJtV0yrUMgbUfL"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36488,7 +36488,7 @@
                     "ESM-BCV 1.3": [
                         "recjgVMlDaWcstmdw"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36567,7 +36567,7 @@
                     "ESM-BCV 1.3": [
                         "reckD7wNMdKXistvf"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36647,7 +36647,7 @@
                     "ESM-BCV 1.3": [
                         "recHWPY1byxEdIyAT"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36716,7 +36716,7 @@
                     ],
                     "Compound Name": "Amon.pfull",
                     "Description": "Air pressure on model levels\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recgz415W7naGNWgm"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36792,7 +36792,7 @@
                     "ESM-BCV 1.3": [
                         "recSs65cVcGDe0MZY"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36862,7 +36862,7 @@
                     ],
                     "Compound Name": "Amon.prra",
                     "Description": "rainfall flux at surface; includes precipitation of all forms of water in the liquid phase\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36916,7 +36916,7 @@
                     "ESM-BCV 1.3": [
                         "recIOirShmYGUxcRT"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -36991,7 +36991,7 @@
                     "ESM-BCV 1.3": [
                         "recTYvK9VzOI36XEE"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37071,7 +37071,7 @@
                     "ESM-BCV 1.3": [
                         "rec1fpGyhs2g5CA4L"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37155,7 +37155,7 @@
                     "ESM-BCV 1.3": [
                         "recDR4ifkBgCj8KZx"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37233,7 +37233,7 @@
                     "ESM-BCV 1.3": [
                         "recVTJf10LfEHlNah"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37310,7 +37310,7 @@
                     "ESM-BCV 1.3": [
                         "reczMo5jupFrQvYDf"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37394,7 +37394,7 @@
                     "ESM-BCV 1.3": [
                         "recLDX24lVDNfM3Es"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37473,7 +37473,7 @@
                     "ESM-BCV 1.3": [
                         "rec63yTWt0YqXktVx"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37558,7 +37558,7 @@
                     "ESM-BCV 1.3": [
                         "recIfVauvST99pyHb"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37632,7 +37632,7 @@
                     "ESM-BCV 1.3": [
                         "recrludCwf1tXtH0r"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37709,7 +37709,7 @@
                     "ESM-BCV 1.3": [
                         "recAHvdQ2s8WivHX3"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37793,7 +37793,7 @@
                     "ESM-BCV 1.3": [
                         "recvTzMJ0RN32jxqG"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37866,7 +37866,7 @@
                     "ESM-BCV 1.3": [
                         "recbLhjkPyaTyRBvn"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -37941,7 +37941,7 @@
                     "ESM-BCV 1.3": [
                         "recxyclGZUzcJRdwM"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38015,7 +38015,7 @@
                     "ESM-BCV 1.3": [
                         "recIz5xRS6681TwIg"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38086,7 +38086,7 @@
                     "ESM-BCV 1.3": [
                         "recf4sCwoxESWewXM"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38155,7 +38155,7 @@
                     "ESM-BCV 1.3": [
                         "recYG4htqrdRfG7Zl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38226,7 +38226,7 @@
                     "ESM-BCV 1.3": [
                         "recJZqeyQK98g7kvE"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38295,7 +38295,7 @@
                     "ESM-BCV 1.3": [
                         "recvXWjJM7Z0zqPx6"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38369,7 +38369,7 @@
                     "ESM-BCV 1.3": [
                         "rec5y8Kbw0usCJici"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38442,7 +38442,7 @@
                     "ESM-BCV 1.3": [
                         "recoQFLx6tKO3qhjM"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38513,7 +38513,7 @@
                     "ESM-BCV 1.3": [
                         "recmZOqz2EVvj4Cp5"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38590,7 +38590,7 @@
                     "ESM-BCV 1.3": [
                         "rec89JuhkFt094zse"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38655,7 +38655,7 @@
                     ],
                     "Compound Name": "Oday.chl",
                     "Description": "Sum of chlorophyll from all phytoplankton group concentrations. In most models this is equal to chldiat+chlmisc, that is the sum of Diatom Chlorophyll Mass Concentration and Other Phytoplankton Chlorophyll Mass Concentration\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38710,7 +38710,7 @@
                         "rec6qYURpjK1iToXS"
                     ],
                     "Description": "This is just uo at high frequency so as to compute KE and vorticity.\t\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38761,7 +38761,7 @@
                     ],
                     "Compound Name": "Oday.o2",
                     "Description": "'Mole concentration' means number of moles per unit volume, also called \"molarity\", and is used in the construction mole\\_concentration\\_of\\_X\\_in\\_Y, where X is a material constituent of Y. A chemical or biological species denoted by X may be described by a single term such as 'nitrogen' or a phrase such as 'nox\\_expressed\\_as\\_nitrogen'.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38811,7 +38811,7 @@
                     ],
                     "Compound Name": "Oday.ph",
                     "Description": "negative log10 of hydrogen ion concentration with the concentration expressed as mol H kg-1.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38860,7 +38860,7 @@
                     ],
                     "Compound Name": "Oday.so",
                     "Description": "Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38914,7 +38914,7 @@
                     "ESM-BCV 1.3": [
                         "recFIDqXUCKZ0PvC2"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -38980,7 +38980,7 @@
                     ],
                     "Compound Name": "Oday.thetao",
                     "Description": "Diagnostic should be contributed even for models using conservative temperature as prognostic field.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39041,7 +39041,7 @@
                     "ESM-BCV 1.3": [
                         "recRDqkCBG8tryIKF"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39109,7 +39109,7 @@
                     ],
                     "Compound Name": "Oday.tossq",
                     "Description": "Square of temperature of liquid ocean, averaged over the day.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39180,7 +39180,7 @@
                         "rec6qYURpjK1iToXS"
                     ],
                     "Description": "This is just vo for comparison of high-res vs. coarse models and for compound extremes.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39230,7 +39230,7 @@
                     "Compound Name": "Oday.zos",
                     "Contitional": true,
                     "Description": "This is the dynamic sea level, so should have zero global area mean. zos is the effective sea level as if sea ice (and snow) at a grid cell were converted to liquid seawater (Campin et al., 2008). For OMIP, do _not _record inverse barometer responses from sea-ice (and snow) loading in zos. See (Griffies et al, 2016, https://doi.org/10.5194/gmd-9-3231-2016).\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39277,7 +39277,7 @@
                     ],
                     "Compound Name": "Oday.zostoga",
                     "Description": "Global Average Thermosteric Sea Level Change\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 1,
@@ -39339,7 +39339,7 @@
                     "ESM-BCV 1.3": [
                         "recBmEXSzUzcPokJh"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39411,7 +39411,7 @@
                     "ESM-BCV 1.3": [
                         "rechQZ5IOi3FjwOqX"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39480,7 +39480,7 @@
                     "ESM-BCV 1.3": [
                         "recKLJxtBqYzVQ1we"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39544,7 +39544,7 @@
                     ],
                     "Compound Name": "Omon.calc",
                     "Description": "sum of particulate calcite component concentrations (e.g. Phytoplankton, Detrital, etc.)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39612,7 +39612,7 @@
                     "ESM-BCV 1.3": [
                         "recpU3aGC6KXzLjsl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39684,7 +39684,7 @@
                     "ESM-BCV 1.3": [
                         "recMbNabQPaipcNKB"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39760,7 +39760,7 @@
                     "ESM-BCV 1.3": [
                         "recdG5hrrvsOkkCxw"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39831,7 +39831,7 @@
                     "ESM-BCV 1.3": [
                         "recm4vOHH07HabIOl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recjWSRPji3whd5Zj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39895,7 +39895,7 @@
                     ],
                     "Compound Name": "Omon.arag",
                     "Description": "sum of particulate aragonite components (e.g. Phytoplankton, Detrital, etc.)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -39960,7 +39960,7 @@
                     ],
                     "Compound Name": "Omon.aragos",
                     "Description": "sum of particulate aragonite components (e.g. Phytoplankton, Detrital, etc.)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40029,7 +40029,7 @@
                     "ESM-BCV 1.3": [
                         "rec1RIPpBc88XRxwC"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40094,7 +40094,7 @@
                     ],
                     "Compound Name": "Omon.calcos",
                     "Description": "sum of particulate calcite component concentrations (e.g. Phytoplankton, Detrital, etc.)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40163,7 +40163,7 @@
                     ],
                     "Compound Name": "Omon.dissic",
                     "Description": "Dissolved inorganic carbon (CO3+HCO3+H2CO3) concentration\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40237,7 +40237,7 @@
                     "ESM-BCV 1.3": [
                         "recoRGqaohskAInSS"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40312,7 +40312,7 @@
                     "ESM-BCV 1.3": [
                         "recSMx2Du5RSgwSnR"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40391,7 +40391,7 @@
                     "ESM-BCV 1.3": [
                         "rec0ZO03mHM7e7Cg2"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40474,7 +40474,7 @@
                     "ESM-BCV 1.3": [
                         "recl2BzT5gBLclMAD"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40558,7 +40558,7 @@
                     "ESM-BCV 1.3": [
                         "rec8MGkahLmdStksl"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40635,7 +40635,7 @@
                     "ESM-BCV 1.3": [
                         "recIxLVIKL06yauK4"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40705,7 +40705,7 @@
                     "ESM-BCV 1.3": [
                         "recChyHtW8xOhWxMe"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40774,7 +40774,7 @@
                     ],
                     "Compound Name": "Omon.talk",
                     "Description": "total alkalinity equivalent concentration (including carbonate, borate, phosphorus, silicon, and nitrogen components)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40844,7 +40844,7 @@
                     "ESM-BCV 1.3": [
                         "recYxZ4ZTpEg1OPZY"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40925,7 +40925,7 @@
                     "ESM-BCV 1.3": [
                         "recNLcnc8LlpputTq"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -40997,7 +40997,7 @@
                     "ESM-BCV 1.3": [
                         "recpcpMnspRuprPm6"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41074,7 +41074,7 @@
                     "ESM-BCV 1.3": [
                         "recqt31THtJDHpMfS"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41148,7 +41148,7 @@
                     "ESM-BCV 1.3": [
                         "recBcCuYjGv30fVey"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41227,7 +41227,7 @@
                     "ESM-BCV 1.3": [
                         "recCjXqlTL2HW01GP"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41301,7 +41301,7 @@
                     "ESM-BCV 1.3": [
                         "reccYqF5FbBU5zo0M"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41372,7 +41372,7 @@
                     "ESM-BCV 1.3": [
                         "recBlcH2BH72ASHgH"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41449,7 +41449,7 @@
                     "ESM-BCV 1.3": [
                         "reciBCbv4jBN7aHLk"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41528,7 +41528,7 @@
                     "ESM-BCV 1.3": [
                         "rec18sTVIZEEn4HKL"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41598,7 +41598,7 @@
                     ],
                     "Compound Name": "Omon.zossq",
                     "Description": "Surface ocean geoid defines z=0.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41667,7 +41667,7 @@
                     "ESM-BCV 1.3": [
                         "rec34fARBoKyCfsS0"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 1,
@@ -41741,7 +41741,7 @@
                     "ESM-BCV 1.3": [
                         "rechAoR4oNwVdE8G0"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41813,7 +41813,7 @@
                     "ESM-BCV 1.3": [
                         "rectdTmI4B7At3jnn"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41898,7 +41898,7 @@
                     "ESM-BCV 1.3": [
                         "recOHJrdArf3COaWs"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -41971,7 +41971,7 @@
                     "ESM-BCV 1.3": [
                         "recnuZuOE8fSQlAbI"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42054,7 +42054,7 @@
                     "ESM-BCV 1.3": [
                         "recwZi8weuVSMdvhh"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42131,7 +42131,7 @@
                     "ESM-BCV 1.3": [
                         "recwBCpvtTPWDcKxG"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42213,7 +42213,7 @@
                     "ESM-BCV 1.3": [
                         "recgIwK4qSNpKX6z3"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42307,7 +42307,7 @@
                     "ESM-BCV 1.3": [
                         "reckYxiCHGEQ1nSn8"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42373,7 +42373,7 @@
                     ],
                     "Compound Name": "Oyr.tnkebto",
                     "Description": "Depth integrated impacts on kinetic energy arising from parameterized eddy-induced advection. For CMIP5, this diagnostic was 3d, whereas the CMIP6 depth integrated diagnostic is sufficient for many purposes and reduces archive requirements.\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "reccZ8wcujHavHieC"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42456,7 +42456,7 @@
                     "ESM-BCV 1.3": [
                         "reckjasIJaNZeulT5"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42546,7 +42546,7 @@
                     "ESM-BCV 1.3": [
                         "recQtUABPfWDagCSg"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42615,7 +42615,7 @@
                     ],
                     "Compound Name": "SIday.sithick",
                     "Description": "Actual (floe) thickness of sea ice (NOT volume divided by grid area as was done in CMIP5)\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42682,7 +42682,7 @@
                     ],
                     "Compound Name": "SIday.siu",
                     "Description": "The x-velocity of ice on native model grid\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42749,7 +42749,7 @@
                     ],
                     "Compound Name": "SIday.siv",
                     "Description": "The y-velocity of ice on native model grid\n",
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42821,7 +42821,7 @@
                     "ESM-BCV 1.3": [
                         "recRlfgpfrX614yuV"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -42908,7 +42908,7 @@
                     "ESM-BCV 1.3": [
                         "recfogNREzoHDCUKz"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recErQme3u2GBBvKQ"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43002,7 +43002,7 @@
                     "ESM-BCV 1.3": [
                         "recpoM3EfIk4b0WvT"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43098,7 +43098,7 @@
                     "ESM-BCV 1.3": [
                         "recWvgKEyhuUg4jDV"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43194,7 +43194,7 @@
                     "ESM-BCV 1.3": [
                         "recABYSvRqtYZsDpW"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43270,7 +43270,7 @@
                     "ESM-BCV 1.3": [
                         "recUVLQNE06eM5X1n"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43350,7 +43350,7 @@
                     "ESM-BCV 1.3": [
                         "rec0A6FXVNoKC31yJ"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43426,7 +43426,7 @@
                     "ESM-BCV 1.3": [
                         "recyXMUadVrf7OhhD"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43506,7 +43506,7 @@
                     "ESM-BCV 1.3": [
                         "rec1uZhNm8oz55ImW"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
@@ -43578,7 +43578,7 @@
                     "ESM-BCV 1.3": [
                         "recFY8kHeHFFe0hQ2"
                     ],
-                    "Frequency": [
+                    "CMIP7 Frequency": [
                         "recRIcsnAcrk7VRDj"
                     ],
                     "Horizontal Mesh": 68400,
