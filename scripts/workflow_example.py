@@ -28,6 +28,9 @@ for path in add_paths:
         sys.path.append(path)
 import dreq_content as dc
 import dreq_query as dq
+# from importlib import reload
+# reload(dq)
+
 
 use_dreq_version = 'v1.0beta'
 
@@ -46,28 +49,30 @@ use_opps = 'all'
 
 # Get consolidated list of requested variables that supports these opportunities
 dq.DREQ_VERSION = use_dreq_version
-expt_vars = dq.get_requested_variables(content, use_opps, max_priority='Low')
+expt_vars = dq.get_requested_variables(content, use_opps, priority_cutoff='Low', verbose=False)
 
-# Show user what we found
-print(f'\nFor data request version {use_dreq_version}, number of requested variables found by experiment:')
-priority_levels = ['Core', 'High', 'Medium', 'Low']
-for expt, req in expt_vars.items():
-    d = {p : 0 for p in priority_levels}
-    for p in priority_levels:
-        if p in req:
-            d[p] = len(req[p])
-    n_total = sum(d.values())
-    print(f'  {expt} : ' + ' ,'.join(['{p}={n}'.format(p=p,n=d[p]) for p in priority_levels]) + f', TOTAL={n_total}')
 
-# Write the results to json
-filename = 'requested.json'
-for expt, req in expt_vars.items():
-    # Change sets to lists
-    for p in req:
-        req[p] = sorted(req[p])
-with open(filename, 'w') as f:
-    json.dump(expt_vars, f, indent=4, sort_keys=True)
-    print('\nWrote requested variables to ' + filename)
+if len(expt_vars['experiment']) > 0:
+
+    # Show user what was found
+    print(f'\nFor data request version {use_dreq_version}, number of requested variables found by experiment:')
+    priority_levels = ['Core', 'High', 'Medium', 'Low']
+    for expt, req in expt_vars['experiment'].items():
+        d = {p : 0 for p in priority_levels}
+        for p in priority_levels:
+            if p in req:
+                d[p] = len(req[p])
+        n_total = sum(d.values())
+        print(f'  {expt} : ' + ' ,'.join(['{p}={n}'.format(p=p,n=d[p]) for p in priority_levels]) + f', TOTAL={n_total}')
+
+    # Write the results to json
+    filename = 'requested.json'
+    with open(filename, 'w') as f:
+        json.dump(expt_vars, f, indent=4, sort_keys=True)
+        print('\nWrote requested variables to ' + filename)
+
+else:
+    print(f'\nFor data request version {use_dreq_version}, no requested variables were found')
 
 # To remove locally cached version:
 # dc.delete(use_dreq_version)
