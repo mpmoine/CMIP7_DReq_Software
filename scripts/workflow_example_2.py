@@ -45,9 +45,8 @@ change_log_level("debug")
 
 ### Step 1: Get the content of the DR
 # Define content version to be used
-use_dreq_version = 'v1.0beta'
-# use_dreq_version = "first_export"
-# use_dreq_version = 'new_export_15Oct2024'
+# use_dreq_version = 'v1.0beta'
+use_dreq_version = 'v1.0'
 # Download specified version of data request content (if not locally cached)
 # dc.retrieve(use_dreq_version)
 # Load content into python dict
