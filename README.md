@@ -13,6 +13,8 @@ Those trying out the Software should use:
 - the `v1.0` tag, or
 - the latest stable version, which will be the most recent commmit on the `main` branch.
 
+For the **Quick Start** guide, please see below.
+
 **This Software is under active development** and will continue evolving after the `v1.0` release. 
 Accordingly we encourage users to try the latest stable version in order to access the latest features.
 
@@ -22,7 +24,6 @@ We are releasing v1.0 at an early stage of development in order to encourage com
 Here are some ways to provide feedback:
 - For specific questions or issues (such as bugs) please [open a github issue](https://github.com/CMIP-Data-Request/CMIP7_DReq_Software/issues).
 - For more general questions or concerns, such as suggestions for new features, contribute to the Software's [github discussion forum](https://github.com/CMIP-Data-Request/CMIP7_DReq_Software/discussions).
-
 
 
 ## Overview
@@ -59,7 +60,7 @@ During development, the Software and Content repositories reside in the github o
 Stable releases will eventually be migrated into the https://github.com/WCRP-CMIP organisation.
 
 
-## Getting started
+## Quick Start
 
 To begin, clone the Software and navigate to the `scripts/` directory:
 ```
@@ -79,7 +80,22 @@ and run the the example script:
 ```
 python workflow_example.py
 ```
-This script contains a workflow to access the data request Content, specify a list of Opportunities and priority levels of variables, and output the lists of variables requested from each experiment in the specified Opportunities.
+to produce a `json` file listing requested variables for each CMIP7 experiment.
+A command-line interface provides the same functionality, for example:
+```
+./export_dreq_lists_json.py v1.0 dreq_list.json --all_opportunities
+```
+will produce a file a listing the variables requested from all CMIP7 AR7 Fast Track experiments assuming that all Data Request Opportunities are supported.
+The list can also be customized by specifying which Opportunities are supported or filtering based on one or more experiment names.
+For further usage guidances:
+```
+./export_dreq_lists_json.py -h
+```
+
+
+## Further details
+
+Th example script (or equivalently, the command-line tool) contains a workflow to access the data request Content, specify a list of Opportunities and priority levels of variables, and output the lists of variables requested from each experiment in the specified Opportunities.
 An example of the json file produced by running this script, which contains the names of output variables requested for each experiment, is available in `scripts/examples/`.
 (The example output file assumes that all data request Opportunities are supported at all priority levels, but this choice can be modified by the user.)
 Each listed variable is currently identified by a unique "compound name" using CMIP6-era table names and short variable names (`Amon.tas`, `Omon.tos`, etc).
@@ -87,7 +103,7 @@ Variable names may change in upcoming releases, but in any case a mapping to CMI
 
 
 To access the data request Content, the example script first needs to identify the version of the data request Content that is being used. 
-This is done by specifying a tag in the Content repo and calling the retrieval function.
+This is done in the script by specifying a tag in the Content repo and calling the retrieval function.
 For example:
 ```
 dc.retrieve('v1.0beta')
