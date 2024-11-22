@@ -19,10 +19,15 @@ To run interactively in ipython:
     run -i workflow_example.py
 
 '''
-
 import sys
 import json
-add_paths = ['../sandbox/MS/dreq_api/', '../sandbox/JA', '../sandbox/GR']
+import os
+import hashlib
+from collections import OrderedDict
+add_paths = []
+add_paths.append('../data_request_api/stable/content/dreq_api')
+add_paths.append('../data_request_api/stable/query')
+add_paths.append('../data_request_api/stable/transform')
 for path in add_paths:
     if path not in sys.path:
         sys.path.append(path)
@@ -49,7 +54,8 @@ use_opps = 'all'
 
 # Get consolidated list of requested variables that supports these opportunities
 dq.DREQ_VERSION = use_dreq_version
-expt_vars = dq.get_requested_variables(content, use_opps, priority_cutoff='Low', verbose=False)
+priority_cutoff = 'Low'
+expt_vars = dq.get_requested_variables(content, use_opps, priority_cutoff=priority_cutoff, verbose=False)
 
 
 if len(expt_vars['experiment']) > 0:
@@ -57,7 +63,7 @@ if len(expt_vars['experiment']) > 0:
     # Show user what was found
     print(f'\nFor data request version {use_dreq_version}, number of requested variables found by experiment:')
     priority_levels = ['Core', 'High', 'Medium', 'Low']
-    for expt, req in expt_vars['experiment'].items():
+    for expt, req in sorted(expt_vars['experiment'].items()):
         d = {p : 0 for p in priority_levels}
         for p in priority_levels:
             if p in req:
@@ -65,10 +71,48 @@ if len(expt_vars['experiment']) > 0:
         n_total = sum(d.values())
         print(f'  {expt} : ' + ' ,'.join(['{p}={n}'.format(p=p,n=d[p]) for p in priority_levels]) + f', TOTAL={n_total}')
 
+    # Write results to json file
+    Header = OrderedDict({
+        'Description' : 'This file gives the names of output variables that are requested from CMIP experiments by the supported Opportunities. The variables requested from each experiment are listed under each experiment name, grouped according to the priority level at which they are requested. For each experiment, the prioritized list of variables was determined by compiling together all requests made by the supported Opportunities for output from that experiment.',
+        'Opportunities supported' : sorted(expt_vars['Header']['Opportunities'], key=str.lower)
+    })
+
+    m = priority_levels.index(priority_cutoff)+1
+    Header.update({
+        'Priority levels supported' : priority_levels[:m]
+    })
+    for req in expt_vars['experiment'].values():
+        for p in priority_levels[m:]:
+            assert req[p] == []
+            req.pop(p)
+
+    # Get provenance of content to include in the Header
+    content_path = dc._dreq_content_loaded['json_path']
+    with open(content_path, 'rb') as f:
+        content_hash = hashlib.sha256(f.read()).hexdigest()
+    Header.update({
+        'dreq version' : use_dreq_version,
+        'dreq content file' : os.path.basename(os.path.normpath(content_path)),
+        'dreq content sha256 hash' : content_hash,
+    })
+
+    out = {
+        'Header' : Header,
+        'experiment' : OrderedDict(),
+    }
+    expt_names = sorted(expt_vars['experiment'].keys(), key=str.lower)
+    for expt_name in expt_names:
+        out['experiment'][expt_name] = OrderedDict()
+        req = expt_vars['experiment'][expt_name]
+        for p in priority_levels:
+            if p in req:
+                out['experiment'][expt_name][p] = req[p]
+
     # Write the results to json
-    filename = 'requested.json'
+    filename = f'requested_{use_dreq_version}.json'
     with open(filename, 'w') as f:
-        json.dump(expt_vars, f, indent=4, sort_keys=True)
+        # json.dump(expt_vars, f, indent=4, sort_keys=True)
+        json.dump(out, f, indent=4)
         print('\nWrote requested variables to ' + filename)
 
 else:
