@@ -16,7 +16,7 @@ import six
 from logger import get_logger, change_log_file, change_log_level
 from dump_transformation import transform_content
 from tools import read_json_file
-from vocabulary_server import VocabularyServer, Variable, Experiment
+from vocabulary_server import VocabularyServer, Variable, Experiment, is_link_id_or_value, build_link_from_id
 
 version = "0.1"
 
@@ -69,7 +69,8 @@ class DRObjects(object):
 		:return: a list of strings that can be assembled to print the content.
 		"""
 		indent = "    " * level
-		return [f"{indent}{type(self).__name__}: {self.vs.get_element(self.DR_type, self.id, 'name')} (id: {self.id})", ]
+		return [f"{indent}{type(self).__name__}: {self.vs.get_element(element_type=self.DR_type, element_id=self.id, element_key='name')} "
+		        f"(id: {is_link_id_or_value(self.id)[1]})", ]
 
 
 class Theme(DRObjects):
@@ -82,7 +83,7 @@ class ExperimentsGroup(DRObjects):
 	def __init__(self, experiments=list(), **kwargs):
 		super().__init__(**kwargs)
 		self.experiments = experiments
-		self.DR_type = "experiments_groups"
+		self.DR_type = "experiment_groups"
 
 	def __eq__(self, other):
 		return super().__eq__(other) and self.experiments == other.experiments
@@ -124,7 +125,7 @@ class VariablesGroup(DRObjects):
 		self.variables = variables
 		self.mips = mips
 		self.priority = priority
-		self.DR_type = "variables_groups"
+		self.DR_type = "variable_groups"
 
 	def __eq__(self, other):
 		return super().__eq__(other) and self.variables == other.variables and self.mips == other.mips and \
@@ -192,10 +193,10 @@ class Opportunity(DRObjects):
 			logger.critical(f"No theme defined for {type(self).__name__} id {self.id}")
 
 	@classmethod
-	def from_input(cls, dr, experiments_groups=list(), variables_groups=list(), themes=list(), **kwargs):
+	def from_input(cls, dr, experiment_groups=list(), variable_groups=list(), themes=list(), **kwargs):
 		return super().from_input(
-			experiments_groups=[dr.get_experiments_group(exp_group) for exp_group in experiments_groups],
-			variables_groups=[dr.get_variables_group(var_group) for var_group in variables_groups],
+			experiments_groups=[dr.get_experiments_group(exp_group) for exp_group in experiment_groups],
+			variables_groups=[dr.get_variables_group(var_group) for var_group in variable_groups],
 			themes=[Theme(id=id, vs=kwargs["vs"]) for id in themes],
 			**kwargs)
 
@@ -212,7 +213,6 @@ class Opportunity(DRObjects):
 		rep = super().print_content(level=level)
 		if add_content:
 			indent = "    " * (level + 1)
-			superindent = "    " * (level + 2)
 			rep.append(f"{indent}Experiments groups included:")
 			for experiments_group in self.get_experiments_groups():
 				rep.extend(experiments_group.print_content(level=level + 2, add_content=False))
@@ -229,13 +229,18 @@ class DataRequest(object):
 	def __init__(self, input_database, VS, **kwargs):
 		self.VS = VS
 		self.content_version = input_database["version"]
-		self.experiments_groups = {id: ExperimentsGroup.from_input(id=id, vs=self.VS, **input_dict)
-		                           for (id, input_dict) in input_database["experiments_groups"].items()}
-		self.variables_groups = {id: VariablesGroup.from_input(id=id, vs=self.VS, **input_dict)
-		                         for (id, input_dict) in input_database["variables_groups"].items()}
-		self.opportunities = {id: Opportunity.from_input(id=id, dr=self, vs=self.VS, **input_dict)
-		                      for (id, input_dict) in input_database["opportunities"].items()}
+		self.experiments_groups = self.build_dict_id(object_target=ExperimentsGroup, vs=self.VS,
+		                                             input_database=input_database["experiment_groups"], **kwargs)
+		self.variables_groups = self.build_dict_id(object_target=VariablesGroup, vs=self.VS,
+		                                           input_database=input_database["variable_groups"], **kwargs)
+		self.opportunities = self.build_dict_id(object_target=Opportunity, vs=self.VS, dr=self,
+		                                        input_database=input_database["opportunities"], **kwargs)
 		self.clean()
+
+	@staticmethod
+	def build_dict_id(object_target, input_database, **kwargs):
+		return {id: object_target.from_input(id=build_link_from_id(id), **input_dict, **kwargs)
+		        for (id, input_dict) in input_database.items()}
 
 	def check(self):
 		logger = get_logger()
@@ -260,18 +265,17 @@ class DataRequest(object):
 
 	def clean(self):
 		logger = get_logger()
-		to_delete = list()
-		for exp_group in self.get_experiments_groups():
-			if not(any([exp_group in opportunity.get_experiments_groups() for opportunity in self.get_opportunities()])):
-				to_delete.append(exp_group.id)
-		for id in to_delete:
+		opportunities_exp_groups = list()
+		opportunities_var_groups = list()
+		for op in self.get_opportunities():
+			opportunities_var_groups.extend([var_grp.id for var_grp in op.get_variables_groups()])
+			opportunities_exp_groups.extend([exp_grp.id for exp_grp in op.get_experiments_groups()])
+		opportunities_var_groups = [is_link_id_or_value(id)[1] for id in set(opportunities_var_groups)]
+		opportunities_exp_groups = [is_link_id_or_value(id)[1] for id in set(opportunities_exp_groups)]
+		for id in [elt.id for elt in self.get_experiments_groups() if is_link_id_or_value(elt.id)[1] not in opportunities_exp_groups]:
 			logger.debug(f"Experiments group with id {id} is not associated with any opportunity - skip it.")
 			del self.experiments_groups[id]
-		to_delete = list()
-		for var_group in self.get_variables_groups():
-			if not (any([var_group in opportunity.get_variables_groups() for opportunity in self.get_opportunities()])):
-				to_delete.append(var_group.id)
-		for id in to_delete:
+		for id in [elt.id for elt in self.get_variables_groups() if is_link_id_or_value(elt.id)[1] not in opportunities_var_groups]:
 			logger.debug(f"Variables group with id {id} is not associated with any opportunity - skip it.")
 			del self.variables_groups[id]
 
@@ -335,15 +339,17 @@ class DataRequest(object):
 		return [self.experiments_groups[elt] for elt in sorted(list(self.experiments_groups))]
 
 	def get_experiments_group(self, id):
+		_, id = is_link_id_or_value(id)
 		if id in self.experiments_groups:
 			return self.experiments_groups[id]
 		else:
-			raise ValueError(f"Could not find experiments group {id}.")
+			raise ValueError(f"Could not find experiments group {id} among {list(self.experiments_groups)}.")
 
 	def get_variables_groups(self):
 		return [self.variables_groups[elt] for elt in sorted(list(self.variables_groups))]
 
 	def get_variables_group(self, id):
+		_, id = is_link_id_or_value((id))
 		if id in self.variables_groups:
 			return self.variables_groups[id]
 		else:
@@ -490,7 +496,7 @@ class DataRequest(object):
 			),
 			experiments_group=dict(
 				obj_type=ExperimentsGroup,
-				search_options=dict(element_type="experiments_groups")
+				search_options=dict(element_type="experiment_groups")
 			),
 			opportunity=dict(
 				obj_type=Opportunity,
@@ -509,7 +515,7 @@ class DataRequest(object):
 			),
 			variables_group=dict(
 				obj_type=VariablesGroup,
-				search_options=dict(element_type="variables_groups")
+				search_options=dict(element_type="variable_groups")
 			))
 		if key in search_dict:
 			obj_type = search_dict[key]["obj_type"]
@@ -559,7 +565,7 @@ class DataRequest(object):
 
 	def export_data(self, main_data, filtering_requests=dict(), sorting_request=list()):
 		logger = get_logger()
-		main_data_choices = ["experiment", "experiments_group", "opportunity", "theme", "variable", "variables_group"]
+		main_data_choices = ["experiment", "experiment_group", "opportunity", "theme", "variable", "variable_group"]
 		if main_data not in main_data_choices:
 			logger.error(f"main_data possible values are {main_data_choices}.")
 			raise ValueError(f"main_data possible values are {main_data_choices}.")

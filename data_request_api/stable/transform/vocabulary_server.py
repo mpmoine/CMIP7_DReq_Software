@@ -16,6 +16,20 @@ from logger import get_logger
 from tools import read_json_file
 
 
+def is_link_id_or_value(elt):
+	if elt.startswith("link::"):
+		return True, elt.replace("link::", "")
+	else:
+		return False, elt
+
+
+def build_link_from_id(elt):
+	if elt.startswith("link::"):
+		return elt
+	else:
+		return f"link::{elt}"
+
+
 class VSObject(object):
 	def __init__(self, id, vs, **kwargs):
 		self.vs = vs
@@ -31,8 +45,10 @@ class VSObject(object):
 		value = self.attributes[key]
 		if not isinstance(value, list):
 			value = [value, ]
+		print(key, element_type, target_type, value)
 		value = [self.vs.get_element(element_type=element_type, element_id=val) for val in value]
 		value = copy.deepcopy(value)
+		is_dict = [isinstance(val, dict) for val in value]
 		if not target_type in ["list", ] and isinstance(value, list) and len(value) == 1:
 			value = value[0]
 		return value
@@ -94,15 +110,15 @@ class Experiment(VSObject):
 
 	@classmethod
 	def from_input(cls, id, vs, input_dict):
-		return cls(id, vs=vs, name=input_dict["experiment"])
+		return cls(id, vs=vs, **input_dict)
 
 
 class Variable(VSObject):
 	def __init__(self, id, **kwargs):
 		super().__init__(id, **kwargs)
 		keys = ["cf_standard_name", "cell_measures", "cell_methods", "description", "cmip7_frequency",
-		        "modelling_realm", "content_type", "title", "spatial_shape", "temporal_shape", "table", "compound_name",
-		        "structure_label", "structure_title", "physical_parameter"]
+		        "modelling_realm", "content_type", "title", "spatial_shape", "temporal_shape", "table", "name",
+		        "structure_label", "structure_title", "physical_parameter", "type"]
 		defaults_dict = {key: "???" for key in keys}
 		defaults_dict.update(kwargs)
 		for elt in set(list(defaults_dict)) - set(keys):
@@ -117,7 +133,8 @@ class Variable(VSObject):
 
 	@property
 	def cf_standard_name(self):
-		return self.get_value_from_vs(key="cf_standard_name", element_type="cf_standard_names")
+		return self.vs.get_element(element_type="cf_standard_names",
+		                           element_id=self.physical_parameter["cf_standard_name"][0])
 
 	@property
 	def cell_measures(self):
@@ -128,12 +145,12 @@ class Variable(VSObject):
 		return self.get_value_from_vs(key="cell_methods", target_type="list")
 
 	@property
-	def compound_name(self):
-		return self.get("compound_name")
+	def name(self):
+		return self.get("name")
 
 	@property
 	def content_type(self):
-		return self.get("content_type")
+		return self.get("type")
 
 	@property
 	def description(self):
@@ -172,17 +189,22 @@ class Variable(VSObject):
 		return self.get("title")
 
 	def print_content(self, level=0, add_content=True):
+		logger = get_logger()
 		indent = "    " * level
-		physical_parameter = self.physical_parameter["name"]
-		frequency = self.frequency["name"]
+		physical_parameter = self.physical_parameter
+		if isinstance(physical_parameter, dict):
+			physical_parameter = physical_parameter["name"]
+		else:
+			logger.critical(f"Unable to find the associated physical parameter to variable {self.id}.")
+		frequency = self.frequency
+		if isinstance(frequency, dict):
+			frequency = frequency["name"]
+		else:
+			logger.critical(f"Unable to find the associated frequency to variable {self.id}.")
 		return [f"{indent}variable {physical_parameter} at frequency {frequency} (id: {self.id}, title: {self.title})", ]
 
 	@classmethod
 	def from_input(cls, id, vs, input_dict):
-		if "content_type" not in input_dict:
-			input_dict["content_type"] = input_dict.pop("type", "???")
-		if "cf_standard_name" not in input_dict:
-			input_dict["cf_standard_name"] = input_dict.pop("cf_standard_name_(from_physical_parameter)", "???")
 		return cls(id=id, vs=vs, **input_dict)
 
 
@@ -217,11 +239,9 @@ class VocabularyServer(object):
 
 	def get_element(self, element_type, element_id, element_key=None, default=False, id_type="uid"):
 		logger = get_logger()
-		if element_type in self.vocabulary_server:
-			if element_id in ["???", None]:
-				logger.critical(f"Undefined id of type {element_type}")
-				return element_id
-			else:
+		is_id, element_id = is_link_id_or_value(element_id)
+		if is_id:
+			if element_type in self.vocabulary_server:
 				found = False
 				if id_type in ["uid", ] and element_id in self.vocabulary_server[element_type]:
 					value = self.vocabulary_server[element_type][element_id]
@@ -255,7 +275,7 @@ class VocabularyServer(object):
 							raise ValueError(f"Could not find key {element_key} of id {element_id} of type "
 							                 f"{element_type} in the vocabulary server.")
 					elif isinstance(element_key, dict):
-						value["uid"] = element_id
+						value["id"] = f"link::{element_id}"
 					return value
 				elif default:
 					logger.critical(f"Could not find {id_type} {element_id} of type {element_type}"
@@ -266,6 +286,11 @@ class VocabularyServer(object):
 					             f"in the vocabulary server.")
 					raise ValueError(f"Could not find {id_type} {element_id} of type {element_type} "
 					                 f"in the vocabulary server.")
+			else:
+				logger.error(f"Could not find element type {element_type} in the vocabulary server.")
+				raise ValueError(f"Could not find element type {element_type} in the vocabulary server.")
+		elif element_id in ["???", None]:
+			logger.critical(f"Undefined id of type {element_type}")
+			return element_id
 		else:
-			logger.error(f"Could not find element type {element_type} in the vocabulary server.")
-			raise ValueError(f"Could not find element type {element_type} in the vocabulary server.")
+			return element_id
