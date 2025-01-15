@@ -16,8 +16,8 @@ from collections import defaultdict
 
 import six
 
-from logger import get_logger, change_log_level, change_log_file
-from tools import read_json_input_file_content, write_json_output_file_content
+from utilities.logger import get_logger, change_log_level, change_log_file
+from utilities.tools import read_json_input_file_content, write_json_output_file_content
 
 
 def correct_key_string(input_string, *to_remove_strings):
@@ -53,7 +53,7 @@ def correct_dictionaries(input_dict, is_record_ids=False):
         raise TypeError(f"Deal with dict types, not {type(input_dict).__name__}")
 
 
-def transform_content_three_bases(content, version):
+def transform_content_three_bases(content):
     logger = get_logger()
     if isinstance(content, dict) and len(content) > 2:
         new_content = dict()
@@ -71,10 +71,11 @@ def transform_content_three_bases(content, version):
         new_content["Variables"] = content[variables_table].pop("Variable")
         new_content["Coordinates and Dimensions"] = content[variables_table].pop("Coordinate or Dimension")
         new_content["Variable Comments"] = content[variables_table].pop("Comment")
-        new_content["Modelling Realm"] = content[variables_table].pop("Modeling Realm")
+        if "Modeling Realm" in content[variables_table]:
+            new_content["Modelling Realm"] = content[variables_table].pop("Modeling Realm")
         for elt in list(content[variables_table]):
             new_content[elt] = content[variables_table].pop(elt)
-        new_content["Physical Parameters Comments"] = content[physical_parameters_table].pop("Comment")
+        new_content["Physical Parameter Comments"] = content[physical_parameters_table].pop("Comment")
         new_content["Physical Parameters"] = content[physical_parameters_table].pop("Physical Parameter")
         new_content["CF Standard Names"] = content[physical_parameters_table].pop("CF Standard Name")
         for elt in list(content[physical_parameters_table]):
@@ -96,22 +97,6 @@ def transform_content_three_bases(content, version):
             new_content["Variables"]["records"][var_id]["Physical Parameter"] = \
                 [new_physical_parameters_ids[old_physical_parameters_ids[elt]] for elt in
                  new_content["Variables"]["records"][var_id]["Physical Parameter"]]
-        # Create a new frequency entry if none
-        if "CMIP7 Frequency" not in new_content:
-            if "Frequency" not in new_content:
-                new_content["CMIP7 Frequency"] = dict(records=dict())
-                for var_id in new_content["Variables"]["records"]:
-                    for frequency_id in copy.deepcopy(new_content["Variables"]["records"][var_id]["Frequency"]):
-                        if frequency_id not in new_content["CMIP7 Frequency"]["records"]:
-                            new_content["CMIP7 Frequency"]["records"][frequency_id] = dict(name=frequency_id, uid=frequency_id)
-            else:
-                new_content["CMIP7 Frequency"] = new_content.pop("Frequency")
-        if "Data Request Themes" not in new_content:
-            new_content["Data Request Themes"] = dict(records=dict())
-            for opportunity_id in new_content["Opportunity"]["records"]:
-                for theme_id in copy.deepcopy(new_content["Opportunity"]["records"][opportunity_id]["Themes"]):
-                    if theme_id not in new_content["Data Request Themes"]["records"]:
-                        new_content["Data Request Themes"]["records"][theme_id] = dict(name=theme_id, uid=theme_id)
         # Harmonise record ids through bases
         logger.info("Harmonise bases content record ids")
         content_str = json.dumps(new_content)
@@ -121,7 +106,10 @@ def transform_content_three_bases(content, version):
             content_str = re.sub(f'"{id}"', f'"{new_physical_parameters_ids[old_physical_parameters_ids[id]]}"', content_str)
         new_content = json.loads(content_str)
         # Return the content
-        return {f"Data Request {version}": new_content}
+        return {"Data Request": new_content}
+    elif isinstance(content, dict):
+        logger.error(f"Deal with several bases dict.")
+        raise ValueError(f"Deal with several bases dict.")
     else:
         logger.error(f"Deal with dict types, not {type(content).__name__}")
         raise TypeError(f"Deal with dict types, not {type(content).__name__}")
@@ -129,7 +117,7 @@ def transform_content_three_bases(content, version):
 
 def transform_content_one_base(content):
     logger = get_logger()
-    if isinstance(content, dict):
+    if isinstance(content, dict) and len(content) == 1:
         default_count = 0
         default_template = "default_{:d}"
         content = content[list(content)[0]]
@@ -139,7 +127,7 @@ def transform_content_one_base(content):
             esm_bcv = esm_bcv[0]
             content["esm-bcv"] = content.pop(esm_bcv)
         for (key, new_key) in [("opportunity", "opportunities"), ("experiment_group", "experiment_groups"),
-                               ("variable_group", "variable_groups")]:
+                               ("variable_group", "variable_groups"), ("structure", "structure_title")]:
             if key in content:
                     content[new_key] = content.pop(key)
         for pattern in [".*rank.*", ]:
@@ -153,7 +141,7 @@ def transform_content_one_base(content):
         # Tidy the content of the export file
         default_patterns_to_remove = [r".*\(from.*\).*", r".*proposed.*", r".*review.*", r".*--.*",
                                       r".*created.*", r".*rank.*", ".*count.*", ".*alert.*", ".*tagged.*", ".*unique.*",
-                                      "last_modified.*", ".*validation.*", ".*number.*", ".*\(mj\).*"]
+                                      "last_modified.*", ".*validation.*", ".*number.*", ".*mj.*", r".*proposal.*"]
         to_remove_keys_patterns = {
             "cell_measures": [r"variables", "structure"],
             "cell_methods": [r"structure", r"variables"],
@@ -162,57 +150,67 @@ def transform_content_one_base(content):
             "cmip7_frequency": [r"table_identifiers.*", r"variables.*"],
             "coordinates_and_dimensions": [r"spatial_shape", r"structure", "temporal_shape", "variables", "size"],
             "data_request_themes": [r"experiment_group.*", r".*opportunit.*", r"variable_group.*"],
-            "esm-bcv": [r"v\d.*", "cf_standard_name"],
+            "esm-bcv": [r"v\d.*", "cf_standard_name", ".*variables"],
             "experiment_groups": [r"opportunit.*", r"theme.*", "comments.+"],
             "experiments": [r"experiment_group.*", r"opportunit.*", "variables", "mip"],
             "glossary": ["opportunit.*", ],
-            "mips": ["variable_group.*", "experiments.*", ".*opportunit.*"],
+            "mips": ["variable_group.*", "experiments.*", ".*opportunit.*", "variables"],
             "modelling_realm": ["variables", ],
             "opportunities": [".*data_volume_estimate", "opportunity_id", "originally_requested_variable_groups"],
             "opportunity/variable_group_comments": ["experiment_groups", "opportunities", "theme", "variable_groups"],
             "physical_parameters": ["variables", "conditional", "does_a_cf.*"],
-            "physical_parameters_comments": ["physical_parameters", "does_a.*"],
+            "physical_parameter_comments": ["physical_parameters", "does_a.*", "cf_standard_names", "physical_parameters"],
             "priority_level": ["variable_group", ],
-            "spatial_shape": [r"dimensions.*", r"structure.*", r"variables.*", "hor.*", "vert.*"],
-            "structure": [r"variables.*", "brand_.*", "calculation.*"],
+            "spatial_shape": [r"dimensions.*", r"structure.*", r".*variables.*", "hor.*", "vert.*"],
+            "structure_title": [r"variables.*", "brand_.*", "calculation.*"],
             "table_identifiers": ["variables", ],
             "temporal_shape": ["variables", "structure"],
-            "time_slice": ["uid.+", ],
-            "variable_comments": ["variable.*", ],
+            "time_slice": ["uid.+", "opportunit.*"],
+            "variable_comments": ["variable.*", "spatial_shape", "temporal_shape", "coordinates_and_dimensions",
+                                  "cell_methods", "cell_measures"],
             "variable_groups": [".*opportunit.*", "theme", r"size.*", "mip_ownership"],
             "variables": [r"priority.*", r".*variable_group.*", ".*experiment.*", "size", "vertical_dimension",
                           "temporal_sampling_rate", "horizontal_mesh", r"brand.*\[link\]", "structure_label",
                           "table_section.*", "theme"],
         }
         to_rename_keys_patterns = {
-            "cell_methods": [("comments", "variables_comments"), ("label", "name")],
-            "cf_standard_names": [("comments", "physical_parameters_comments")],
+            "cell_methods": [("comments", "variable_comments"), ("label", "name")],
+            "cf_standard_names": [("comments", "physical_parameter_comments")],
             "cmip7_frequency": [("cmip6_frequency.*", "cmip6_frequency")],
-            "coordinates_and_dimensions": [("requested_bounds.+", "requested_bounds")],
+            "coordinates_and_dimensions": [("requested_bounds.+", "requested_bounds"), ("comments", "variable_comments")],
             "data_request_themes": [("comments", "opportunity/variable_group_comments"), ("uid.+", "uid")],
-            "esm-bcv": [('cmor_variables', "variables")],
             "experiments": [("experiment", "name")],
             "experiment_groups": [("comments", "opportunity/variable_group_comments")],
+            "modelling_realm": [("id", "uid")],
             "opportunities": [("title_of_opportunity", "name"), ("comments", "opportunity/variable_group_comments"),
-                            ("ensemble_size", "minimum_ensemble_size"),
+                              ("ensemble_size", "minimum_ensemble_size"), ("themes", "data_request_themes"),
                               ("working/updated_variable_groups", "variable_groups")],
-            "physical_parameters": [("comments", "physical_parameters_comments"),
-                                    ("cf_proposal_github_issue", "proposal_github_issue")],
-            "spatial_shape": [("comments", "variables_comments")],
-            "temporal_shape": [("comments", "variables_comments")],
-            "structure": [("label", "name")],
-            "table_identifiers": [("comment", "notes")],
+            "physical_parameters": [("comments", "physical_parameter_comments"),
+                                    ("cf_proposal_github_issue", "proposal_github_issue"),
+                                    ("flag.*change.*", "flag_change_since_cmip6")],
+            "spatial_shape": [("comments", "variable_comments")],
+            "temporal_shape": [("comments", "variable_comments")],
+            "structure_title": [("label", "name")],
+            "table_identifiers": [("comment", "notes"), ("frequency", "cmip6_frequency")],
             "variable_groups": [(".*mips.*", "mips"), ("comments", "opportunity/variable_group_comments")],
-            "variables": [("compound_name", "name"), ("cmip6_frequency.+", "cmip6_frequency"),
-                          ("modeling_realm", "modelling_realm"), ("comments", "variables_comments")],
+            "variables": [("compound_name", "name"), ("cmip6_frequency.+", "cmip6_frequency"), (esm_bcv, "esm-bcv"),
+                          ("modeling_realm", "modelling_realm"), ("comments", "variable_comments"),
+                          ("table", "table_identifier")],
         }
         to_merge_keys_patterns = {
-            # "opportunities": [(".+variable_groups", "variable_groups")]
+            "opportunities": [("mips.*", "mips"), ]  # (".+variable_groups", "variable_groups")]
         }
         to_sort_keys_content = {
-            "opportunities": ["variable_groups", "themes", "experiment_groups", "time_slice"],
+            "opportunities": ["variable_groups", "data_request_themes", "experiment_groups", "time_slice"],
             "experiment_groups": ["experiments", ],
             "variable_groups": ["variables", "mips"]
+        }
+        from_list_to_string_keys_content = {
+            "opportunities": ["lead_theme", ],
+            "physical_parameters": ["cf_standard_name", ],
+            "table_identifiers": ["cmip7_frequency", ],
+            "variables": ["cell_methods", "cmip6_frequency", "cmip7_frequency", "esm-bcv", "physical_parameter",
+                          "spatial_shape", "table_identifier", "temporal_shape"]
         }
         for subelt in sorted(list(content)):
             # Remove everything save records
@@ -344,6 +342,8 @@ def transform_content_one_base(content):
         for subelt in sorted(list(content)):
             patterns_to_sort = to_sort_keys_content.get(subelt, list())
             patterns_to_sort = [re.compile(elt) for elt in patterns_to_sort]
+            patterns_to_reshape = from_list_to_string_keys_content.get(subelt, list())
+            patterns_to_reshape = [re.compile(elt) for elt in patterns_to_reshape]
             for uid in sorted(list(content[subelt])):
                 # Sort content of needed keys
                 list_keys = sorted(list(content[subelt][uid]))
@@ -351,7 +351,28 @@ def transform_content_one_base(content):
                                      if any(patt.match(elt) is not None for patt in patterns_to_sort)]
                 for key in list_keys_to_sort:
                     content[subelt][uid][key] = sorted(list(set(content[subelt][uid][key])))
+                # Reshape content if needed
+                list_keys_to_reshape = [elt for elt in list_keys
+                                        if any(patt.match(elt) is not None for patt in patterns_to_reshape)]
+                for key in list_keys_to_reshape:
+                    if isinstance(content[subelt][uid][key], list):
+                        if len(content[subelt][uid][key]) == 1:
+                            content[subelt][uid][key] = content[subelt][uid][key][0]
+                        elif len(content[subelt][uid][key]) == 0:
+                            logger.warning(f"Remove void key {key} from id {uid} of element type {subelt}")
+                            del content[subelt][uid][key]
+                        else:
+                            logger.error(f"Could not reshape key {key} from id {uid} of element type {subelt}: contains several elements")
+                            raise ValueError(f"Could not reshape key {key} from id {uid} of element type {subelt}: contains several elements")
+                    elif isinstance(content[subelt][uid][key], six.string_types):
+                        logger.warning(f"Could not reshape key {key} from id {uid} of element type {subelt}: already a string")
+                    else:
+                        logger.error(f"Could not reshape key {key} from id {uid} of element type {subelt}: not a list")
+                        raise ValueError(f"Could not reshape key {key} from id {uid} of element type {subelt}: not a list")
         return content
+    elif isinstance(content, dict):
+        logger.error("Deal with one base content dict.")
+        raise ValueError("Deal with one base content dict.")
     else:
         logger.error(f"Deal with dict types, not {type(content).__name__}")
         raise TypeError(f"Deal with dict types, not {type(content).__name__}")
@@ -363,7 +384,9 @@ def split_content_one_base(content):
     keys_to_dr_dict = {
         "opportunities": [("experiment_groups", list, list()),
                           ("variable_groups", list, list()),
-                          ("themes", list, list())],
+                          ("data_request_themes", list, list()),
+                          ("time_slice", list, list()),
+                          ("mips", list, list())],
         "variable_groups": [("variables", list, list()),
                             ("mips", list, list()),
                             ("priority_level", (str, type(None)), None)],
@@ -398,7 +421,7 @@ def transform_content(content, version):
             logger.info("Single database case - no structure transformation needed")
         elif len(content) in [3, 4]:
             logger.info("Several databases case - structure transformation needed")
-            content = transform_content_three_bases(content, version=version)
+            content = transform_content_three_bases(content)
         else:
             raise ValueError(f"Could not manage the {len(content):d} bases export file.")
         # Correct dictionaries

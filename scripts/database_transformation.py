@@ -9,17 +9,18 @@ from __future__ import division, print_function, unicode_literals, absolute_impo
 import os
 import sys
 
-add_paths = ['../data_request_api/stable/content/dreq_api/', '../data_request_api/stable/query',
-             '../data_request_api/stable/transform']
+add_paths = ['../data_request_api/stable/content/dreq_api/',
+             '../data_request_api/stable']
 for path in add_paths:
     if path not in sys.path:
         sys.path.append(path)
 
 
 import dreq_content as dc
-from dump_transformation import transform_content
-from tools import write_json_output_file_content
-from logger import change_log_file, change_log_level
+from content.dump_transformation import transform_content
+from query.data_request import DataRequest
+from utilities.tools import write_json_output_file_content
+from utilities.logger import change_log_file, change_log_level
 
 
 # Set up log file (default to stdout) and log level
@@ -36,13 +37,17 @@ use_export_versions = ["raw", "release"]
 output_directory = f'{dc._dreq_res}/{use_dreq_version}'
 for use_export_version in use_export_versions:
     # Download specified version of data request content (if not locally cached)
-    dc.retrieve(use_dreq_version, export=use_export_version)
-    # Load content into python dict
     content = dc.load(use_dreq_version, export=use_export_version, consolidate=False)
 
     ### Step 2: Transform content into DR and VS
     data_request, vocabulary_server = transform_content(content, version=use_dreq_version)
 
     ### Step 3: Write down the two files
-    write_json_output_file_content(os.path.sep.join([output_directory, f"DR_{use_export_version}_content.json"]), data_request)
-    write_json_output_file_content(os.path.sep.join([output_directory, f"VS_{use_export_version}_content.json"]), vocabulary_server)
+    DR_file = os.path.sep.join([output_directory, f"DR_{use_export_version}_content.json"])
+    VS_file = os.path.sep.join([output_directory, f"VS_{use_export_version}_content.json"])
+    write_json_output_file_content(DR_file, data_request)
+    write_json_output_file_content(VS_file, vocabulary_server)
+
+    DR = DataRequest.from_separated_inputs(DR_input=DR_file, VS_input=VS_file)
+
+
