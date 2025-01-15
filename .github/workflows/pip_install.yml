@@ -30,12 +30,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install .
-        continue-on-error: true  # Allow the job to continue even if installation fails
+        continue-on-error: false  # Allow the job to continue even if installation fails
 
       - name: Run tests
         run: |
           pytest --maxfail=1 --disable-warnings -q || exit 1  # Fail this step if tests fail
-        continue-on-error: true  # Allow the job to continue even if tests fail
+        continue-on-error: false  # Allow the job to continue even if tests fail
 
       - name: Output result
         run: |
