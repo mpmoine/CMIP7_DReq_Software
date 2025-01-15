@@ -159,3 +159,9 @@ Or to remove all locally cached versions:
 ```
 dc.delete()
 ```
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=CMIP-Data-Request/CMIP7_DReq_Software)](https://github.com/CMIP-Data-Request/CMIP7_DReq_Software/graphs/contributors/)
+
+Thanks to our contributors!
