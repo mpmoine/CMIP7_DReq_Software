@@ -2,17 +2,10 @@
 '''
 Extract metadata of CMOR variables and write to json
 '''
-import sys
 import json
 import os
 import hashlib
-add_paths = []
-add_paths.append('../content/dreq_api')
-add_paths.append('../transform')
-for path in add_paths:
-    if path not in sys.path:
-        sys.path.append(path)
-import dreq_content as dc
+import data_request_api.stable.content.dreq_api.dreq_content as dc
 import dreq_query as dq
 import dreq_classes
 
