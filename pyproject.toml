@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "pooch", "openpyxl", "requests", "bs4", "coverag
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "CMIP7_AR7_FT_data_request_api"
+name = "CMIP7_data_request_api"
 version = "1.0.1"
 authors = [
   { name="James Anstey"},
@@ -12,7 +12,7 @@ authors = [
   { name="Martin Schupfner"},
   { name="Matthew Mizielinski"}
 ]
-description = "A programatic interface to the CMIP7 AR7 Fast Track Data Request"
+description = "A programatic interface to the CMIP7 Data Request"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
