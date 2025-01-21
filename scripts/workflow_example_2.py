@@ -28,8 +28,8 @@ from collections import defaultdict
 import six
 
 from data_request_api.stable.content import dreq_content as dc
-from data_request_api.stable.transform.data_request import DataRequest
-from data_request_api.stable.transform.logger import change_log_file, change_log_level
+from data_request_api.stable.query.data_request import DataRequest
+from data_request_api.stable.utilities.logger import change_log_file, change_log_level
 
 
 # Set up log file (default to stdout) and log level

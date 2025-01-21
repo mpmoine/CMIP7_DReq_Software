@@ -10,10 +10,10 @@ import copy
 import os
 import unittest
 
-from data_request_api.stable.transform.tools import read_json_input_file_content, write_json_output_file_content
+from data_request_api.stable.utilities.tools import read_json_input_file_content, write_json_output_file_content
 
-from data_request_api.stable.transform.data_request import DRObjects, Theme, ExperimentsGroup, VariablesGroup, Opportunity, DataRequest, version
-from data_request_api.stable.transform.vocabulary_server import VocabularyServer, is_link_id_or_value
+from data_request_api.stable.query.data_request import DRObjects, ExperimentsGroup, VariablesGroup, Opportunity, DataRequest, version
+from data_request_api.stable.query.vocabulary_server import VocabularyServer, is_link_id_or_value
 
 
 class TestDRObjects(unittest.TestCase):

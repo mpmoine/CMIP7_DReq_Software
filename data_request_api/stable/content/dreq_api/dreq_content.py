@@ -11,8 +11,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import consolidate_export as ce
-from .mapping_table import mapping_table
-from ...transform.logger import get_logger  # noqa
+from data_request_api.stable.content.dreq_api.mapping_table import mapping_table
+from data_request_api.stable.utilities.logger import get_logger  # noqa
 
 
 # Suppress pooch info output
