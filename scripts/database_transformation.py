@@ -13,7 +13,7 @@ import data_request_api.stable.content.dreq_api.dreq_content as dc
 from data_request_api.stable.content.dump_transformation import transform_content
 from data_request_api.stable.utilities.tools import write_json_output_file_content
 from data_request_api.stable.utilities.logger import change_log_file, change_log_level
-
+from data_request_api.stable.query.data_request import DataRequest
 
 # Set up log file (default to stdout) and log level
 change_log_file(default=True)
