@@ -88,7 +88,7 @@ we recommend installing the python package using pip (see below) and then using 
 
 ## Pip installation
 
-If you have a conda environment which already has the dependencies of
+If you have a conda or virtual (venv, virtualenv) environment which already has the dependencies of
 this package you can install the code using
 ```bash
 python -m pip install git+https://github.com/CMIP-Data-Request/CMIP7_DReq_Software.git@<tag>
