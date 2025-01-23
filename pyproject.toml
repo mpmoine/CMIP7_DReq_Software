@@ -8,11 +8,11 @@ version = "1.0.1"
 authors = [
   { name="James Anstey"},
   { name="Gaëlle Rigoudy"},
-  { name="Marie-Pierre Moine"},
   { name="Martin Schupfner"},
   { name="Matthew Mizielinski"},
   { name="Daniel Ellis"},
   { name="Elisabeth Dingley"},
+  { name="Marie-Pierre Moine"},
 ]
 description = "A programatic interface to the CMIP7 Data Request"
 readme = "README.md"
