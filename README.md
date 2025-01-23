@@ -82,17 +82,9 @@ and run the the example script:
 python workflow_example.py
 ```
 This will produce a `json` file listing requested variables for each CMIP7 experiment.
-The same functionality is available from a command-line interface. 
-For example:
-```
-./export_dreq_lists_json.py v1.0 dreq_list.json --all_opportunities
-```
-will produce a file a listing the variables requested from all CMIP7 AR7 Fast Track experiments assuming that all Data Request Opportunities are supported.
-The list can be customized by specifying which Opportunities are supported or filtering based on one or more experiment names.
-The `-h` option provides further usage guidance:
-```
-./export_dreq_lists_json.py -h
-```
+The same functionality is available from a command-line interface. To access this interface 
+we recommend installing the python package using pip (see below) and then using the
+`export_dreq_lists_json` command.
 
 ## Pip installation
 
@@ -119,7 +111,7 @@ python -m pip install -e .
 
 The package can be uninstalled using
 ```bash
-python -m pip uninstall CMIP7_AR7_FT_data_request_api
+python -m pip uninstall CMIP7_data_request_api
 ```
 
 ### Development: addition of command line tools

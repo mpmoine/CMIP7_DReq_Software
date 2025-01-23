@@ -5,11 +5,12 @@ Extract metadata of CMOR variables and write to json
 import json
 import os
 import hashlib
-import data_request_api.stable.content.dreq_api.dreq_content as dc
-import dreq_query as dq
-import dreq_classes
-
 from collections import OrderedDict
+
+import data_request_api.stable.content.dreq_api.dreq_content as dc
+import data_request_api.stable.query.dreq_query as dq
+from data_request_api.stable.query import dreq_classes
+
 
 # from importlib import reload
 # reload(dq)

@@ -29,7 +29,7 @@ Usage examples:
     ./export_dreq_lists_json.py v1.0 dreq_list.json --opportunities_file opps.json
 
 '''
-from data_request_api.stable.content import dreq_content as dc
+from data_request_api.stable.content.dreq_api import dreq_content as dc
 from data_request_api.stable.query import dreq_query as dq
 from importlib import reload
 reload(dq)

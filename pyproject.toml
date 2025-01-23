@@ -10,7 +10,9 @@ authors = [
   { name="Gaëlle Rigoudy"},
   { name="Marie-Pierre Moine"},
   { name="Martin Schupfner"},
-  { name="Matthew Mizielinski"}
+  { name="Matthew Mizielinski"},
+  { name="Daniel Ellis"},
+  { name="Elisabeth Dingley"},
 ]
 description = "A programatic interface to the CMIP7 Data Request"
 readme = "README.md"
