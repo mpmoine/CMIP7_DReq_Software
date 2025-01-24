@@ -14,7 +14,7 @@ from collections import defaultdict
 
 from data_request_api.stable.utilities.logger import get_logger, change_log_file, change_log_level
 from data_request_api.stable.content.dump_transformation import transform_content
-from data_request_api.stable.utilities.tools import read_json_file
+from data_request_api.stable.utilities.tools import read_json_file, write_csv_output_file_content
 from data_request_api.stable.query.vocabulary_server import VocabularyServer, is_link_id_or_value, build_link_from_id
 
 version = "1.0.1"
@@ -1025,7 +1025,7 @@ class DataRequest(object):
 			return rep
 
 	def export_data(self, main_data, output_file, filtering_requests=dict(), filtering_operation="all",
-	                filtering_skip_if_missing=False, export_columns_request=list(), sorting_request=list()):
+	                filtering_skip_if_missing=False, export_columns_request=list(), sorting_request=list(), **kwargs):
 		"""
 		Method to export a filtered and sorted list of data to a csv file.
 		:param str main_data: kind of data to be exported
@@ -1035,6 +1035,7 @@ class DataRequest(object):
 		:param bool filtering_skip_if_missing: filtering skip_if_missing to be applied to the list of object of main_data kind
 		:param list export_columns_request: columns to be putted in the output file
 		:param list sorting_request: sorting criteria to be applied
+		:param dict kwargs: additional arguments to be given to function write_csv_output_file_content
 		:return: an output csv file
 		"""
 		filtered_data = self.filter_elements_per_request(element_type=main_data, requests=filtering_requests,
@@ -1044,16 +1045,15 @@ class DataRequest(object):
 
 		export_columns_request.insert(0, "id")
 		content = list()
-		content.append(";".join(export_columns_request))
+		content.append(export_columns_request)
 		for data in sorted_filtered_data:
-			content.append(";".join([str(data.__getattr__(key)) for key in export_columns_request]))
+			content.append([str(data.__getattr__(key)) for key in export_columns_request])
 
-		with open(output_file, "w") as f:
-			f.write(os.linesep.join(content))
+		write_csv_output_file_content(output_file, content, **kwargs)
 
 	def export_summary(self, lines_data, columns_data, output_file, sorting_line="id", title_line="name",
 	                   sorting_column="id", title_column="name", filtering_requests=dict(), filtering_operation="all",
-	                   filtering_skip_if_missing=False):
+	                   filtering_skip_if_missing=False, **kwargs):
 		"""
 		Create a 2D tables of csv kind which give the linked between the two list of elements kinds specified
 		:param str lines_data: kind of data to be put in row
@@ -1066,6 +1066,7 @@ class DataRequest(object):
 		:param dict filtering_requests: filtering request to be applied to the list of object of main_data kind
 		:param str filtering_operation: filtering operation to be applied to the list of object of main_data kind
 		:param bool filtering_skip_if_missing: filtering skip_if_missing to be applied to the list of object of main_data kind
+		:param dict kwargs: additional arguments to be given to function write_csv_output_file_content
 		:return: a csv output file
 		"""
 		logger = get_logger()
@@ -1099,14 +1100,12 @@ class DataRequest(object):
 
 		logger.debug("Format summary")
 		rep = list()
-		rep.append(";".join([table_title, ] + columns_title))
+		rep.append([table_title, ] + columns_title)
 		for line_data in filtered_data:
-			line_data_title = str(line_data.__getattr__(title_line))
-			rep.append(";".join([line_data_title, ] + content[line_data_title]))
+			rep.append([line_data.__getattr__(title_line), ] + content[line_data_title])
 
 		logger.debug("Write summary")
-		with open(output_file, "w") as f:
-			f.write(os.linesep.join(rep))
+		write_csv_output_file_content(output_file, rep, **kwargs)
 
 
 if __name__ == "__main__":
