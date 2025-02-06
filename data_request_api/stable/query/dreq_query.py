@@ -17,7 +17,11 @@ from collections import OrderedDict
 from data_request_api.stable.query.dreq_classes import (
     dreq_table, expt_request, UNIQUE_VAR_NAME, PRIORITY_LEVELS)
 
+# Version of data request content:
 DREQ_VERSION = ''  # if a tagged version is being used, set this in calling script
+
+# Version of software (python API):
+from data_request_api import version as api_version
 
 ###############################################################################
 # Functions to manage data request content input and use it to create python
@@ -930,6 +934,7 @@ def write_requested_vars_json(outfile, expt_vars, use_dreq_version, priority_cut
         'Opportunities supported' : sorted(expt_vars['Header']['Opportunities'], key=str.lower)
     })
 
+    # List supported priority levels
     priority_levels=get_priority_levels()
     priority_cutoff = priority_cutoff.capitalize()
     m = priority_levels.index(priority_cutoff)+1
@@ -939,16 +944,22 @@ def write_requested_vars_json(outfile, expt_vars, use_dreq_version, priority_cut
     for req in expt_vars['experiment'].values():
         for p in priority_levels[m:]:
             assert req[p] == []
-            req.pop(p)
+            req.pop(p) # remove empty lists of unsupported priorities from the output
+
+    # List included experiments
+    Header.update({
+        'Experiments included' : sorted(expt_vars['experiment'].keys(), key=str.lower)
+    })
 
     # Get provenance of content to include in the Header
     # content_path = dc._dreq_content_loaded['json_path']
     with open(content_path, 'rb') as f:
         content_hash = hashlib.sha256(f.read()).hexdigest()
     Header.update({
-        'dreq version' : use_dreq_version,
+        'dreq content version' : use_dreq_version,
         'dreq content file' : os.path.basename(os.path.normpath(content_path)),
         'dreq content sha256 hash' : content_hash,
+        'dreq api version' : api_version,
     })
 
     out = {
@@ -968,4 +979,3 @@ def write_requested_vars_json(outfile, expt_vars, use_dreq_version, priority_cut
         # json.dump(expt_vars, f, indent=4, sort_keys=True)
         json.dump(out, f, indent=4)
         print('\nWrote requested variables to ' + outfile)
-
