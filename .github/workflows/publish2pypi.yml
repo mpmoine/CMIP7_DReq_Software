@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false  # Ensures that one failure doesn't cancel other builds
 
     steps:
       - uses: actions/checkout@v4
@@ -32,8 +33,10 @@ jobs:
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ matrix.os }}
           path: dist/
+
+    continue-on-error: true  # Allows the workflow to continue even if one OS fails
 
   publish-to-pypi:
     name: Publish Python 🐍 distribution 📦 to PyPI
@@ -42,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/CMIP7_data_request_api  # Replace <package-name> with your PyPI project name
+      url: https://pypi.org/p/CMIP7_data_request_api
 
     permissions:
       id-token: write  # Mandatory for trusted publishing
@@ -51,7 +54,8 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          pattern: python-package-distributions-*  # Download all successful builds
+          merge-multiple: true
           path: dist/
 
       - name: Publish distribution 📦 to PyPI
@@ -70,7 +74,8 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          pattern: python-package-distributions-*
+          merge-multiple: true
           path: dist/
 
       - name: Sign the dists with Sigstore
@@ -106,7 +111,8 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          pattern: python-package-distributions-*
+          merge-multiple: true
           path: dist/
 
       - name: Publish distribution 📦 to TestPyPI
