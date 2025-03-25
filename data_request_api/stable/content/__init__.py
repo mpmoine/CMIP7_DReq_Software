@@ -1,4 +1,4 @@
-import consolidate_export
-import dreq_content
-import dump_transformation
-import mapping_table
+from . import consolidate_export
+from . import dreq_content
+from . import dump_transformation
+from . import mapping_table
