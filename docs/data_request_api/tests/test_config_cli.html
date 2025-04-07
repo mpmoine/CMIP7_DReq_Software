@@ -78,6 +78,37 @@ def temp_config_file(tmp_path_factory):
 </details>
 <div class="desc"></div>
 </dd>
+<dt id="data_request_api.tests.test_config_cli.test_config_file_from_env_var"><code class="name flex">
+<span>def <span class="ident">test_config_file_from_env_var</span></span>(<span>temp_config_file, monkeypatch)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_config_file_from_env_var(temp_config_file, monkeypatch):
+    # Set the CMIP7_DR_API_CONFIGFILE environment variable
+    monkeypatch.setenv(&#34;CMIP7_DR_API_CONFIGFILE&#34;, str(temp_config_file))
+
+    # Run your test as usual
+    result = subprocess.run(
+        [
+            sys.executable,
+            &#34;-m&#34;,
+            &#34;data_request_api.command_line.config&#34;,
+            &#34;init&#34;,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert temp_config_file.exists()
+    with open(temp_config_file) as f:
+        config = yaml.safe_load(f)
+    assert config == dreqcfg.DEFAULT_CONFIG</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
 <dt id="data_request_api.tests.test_config_cli.test_init_config"><code class="name flex">
 <span>def <span class="ident">test_init_config</span></span>(<span>temp_config_file, monkeypatch)</span>
 </code></dt>
@@ -123,7 +154,12 @@ def temp_config_file(tmp_path_factory):
         &#34;data_request_api.stable.utilities.config.CONFIG_FILE&#34;, temp_config_file
     )
     result = subprocess.run(
-        [&#34;CMIP7_data_request_api_config&#34;, &#34;init&#34;, &#34;--cfgfile&#34;, str(temp_config_file)],
+        [
+            &#34;CMIP7_data_request_api_config&#34;,
+            &#34;init&#34;,
+            &#34;--cfgfile&#34;,
+            str(temp_config_file),
+        ],
         capture_output=True,
         text=True,
     )
@@ -309,6 +345,7 @@ def temp_config_file(tmp_path_factory):
 <ul class="">
 <li><code><a title="data_request_api.tests.test_config_cli.monkeypatch" href="#data_request_api.tests.test_config_cli.monkeypatch">monkeypatch</a></code></li>
 <li><code><a title="data_request_api.tests.test_config_cli.temp_config_file" href="#data_request_api.tests.test_config_cli.temp_config_file">temp_config_file</a></code></li>
+<li><code><a title="data_request_api.tests.test_config_cli.test_config_file_from_env_var" href="#data_request_api.tests.test_config_cli.test_config_file_from_env_var">test_config_file_from_env_var</a></code></li>
 <li><code><a title="data_request_api.tests.test_config_cli.test_init_config" href="#data_request_api.tests.test_config_cli.test_init_config">test_init_config</a></code></li>
 <li><code><a title="data_request_api.tests.test_config_cli.test_init_config_entry_point" href="#data_request_api.tests.test_config_cli.test_init_config_entry_point">test_init_config_entry_point</a></code></li>
 <li><code><a title="data_request_api.tests.test_config_cli.test_init_config_no_argument" href="#data_request_api.tests.test_config_cli.test_init_config_no_argument">test_init_config_no_argument</a></code></li>

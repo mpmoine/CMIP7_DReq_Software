@@ -57,9 +57,34 @@ el.replaceWith(d);
 
     @functools.wraps(func)
     def decorator(*args, **kwargs):
+        logger = get_logger()
+        logger.debug(
+            &#34;Function &#39;{func.__qualname__}&#39;: Passing **kwargs from config file.&#34;
+        )
+
+        # Get function args
+        sig = inspect.signature(func)
+        bound_args = sig.bind(*args)
+        params = sig.parameters
+
         config = dreqcfg.load_config()
         for key, value in config.items():
-            # Append kwarg if not set
+            if key in params.keys():
+                # Function parameters also configurable in the config file
+                # should not have a default value as the default behaviour
+                # will be defined in the config file
+                if params[key].default is not inspect.Parameter.empty:
+                    warnings.warn(
+                        f&#34;Parameter &#39;{key}&#39; of function &#39;{func.__qualname__}&#39;&#34;
+                        &#34; has a default value, but this default is overridden&#34;
+                        &#34; by the value specified in the configuration file.&#34;
+                    )
+                # Skip overwriting *args with the default config **kwargs
+                #   but perform a sanity check first
+                if key in bound_args.arguments.keys():
+                    _sanity_check(key, bound_args.arguments[key])
+                    continue
+            # Append kwarg if not set - this assigns function args if they have the same name
             kwargs.setdefault(key, value)
         return func(*args, **kwargs)
 

@@ -130,9 +130,49 @@ def temp_config_file(tmp_path_factory):
     monkeypatch.setattr(
         &#34;data_request_api.stable.utilities.config.CONFIG_FILE&#34;, temp_config_file
     )
+    assert temp_config_file.exists()
+    dreqcfg.CONFIG = {}
     config = load_config()
     assert config == DEFAULT_CONFIG
     assert config == dreqcfg.CONFIG</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="data_request_api.tests.test_config.test_load_config_invalid_yaml"><code class="name flex">
+<span>def <span class="ident">test_load_config_invalid_yaml</span></span>(<span>temp_config_file, monkeypatch)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_load_config_invalid_yaml(temp_config_file, monkeypatch):
+    monkeypatch.setattr(
+        &#34;data_request_api.stable.utilities.config.CONFIG_FILE&#34;, temp_config_file
+    )
+    with open(temp_config_file, &#34;w&#34;) as f:
+        f.write(&#34;Just a string not proper yaml&#34;)
+    with pytest.raises(TypeError):
+        load_config()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="data_request_api.tests.test_config.test_load_config_non_dict_yaml"><code class="name flex">
+<span>def <span class="ident">test_load_config_non_dict_yaml</span></span>(<span>temp_config_file, monkeypatch)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_load_config_non_dict_yaml(temp_config_file, monkeypatch):
+    monkeypatch.setattr(
+        &#34;data_request_api.stable.utilities.config.CONFIG_FILE&#34;, temp_config_file
+    )
+    with open(temp_config_file, &#34;w&#34;) as f:
+        f.write(&#34;[&#39;list&#39;, &#39;instead&#39;, &#39;of&#39;, &#39;dict&#39;]&#34;)
+    with pytest.raises(TypeError):
+        load_config()</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -194,7 +234,9 @@ def temp_config_file(tmp_path_factory):
     _sanity_check(&#34;consolidate&#34;, True)
     _sanity_check(&#34;log_level&#34;, &#34;info&#34;)
     _sanity_check(&#34;log_file&#34;, &#34;default&#34;)
-    _sanity_check(&#34;cache_dir&#34;, str(Path.home() / &#34;.CMIP7_data_request_api_cache&#34;))</code></pre>
+    _sanity_check(
+        &#34;cache_dir&#34;, str(Path.home() / &#34;.CMIP7_data_request_api_cache&#34;)
+    )</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -321,6 +363,8 @@ def temp_config_file(tmp_path_factory):
 <li><code><a title="data_request_api.tests.test_config.test_caching" href="#data_request_api.tests.test_config.test_caching">test_caching</a></code></li>
 <li><code><a title="data_request_api.tests.test_config.test_load_config_file_does_not_exist" href="#data_request_api.tests.test_config.test_load_config_file_does_not_exist">test_load_config_file_does_not_exist</a></code></li>
 <li><code><a title="data_request_api.tests.test_config.test_load_config_file_exists" href="#data_request_api.tests.test_config.test_load_config_file_exists">test_load_config_file_exists</a></code></li>
+<li><code><a title="data_request_api.tests.test_config.test_load_config_invalid_yaml" href="#data_request_api.tests.test_config.test_load_config_invalid_yaml">test_load_config_invalid_yaml</a></code></li>
+<li><code><a title="data_request_api.tests.test_config.test_load_config_non_dict_yaml" href="#data_request_api.tests.test_config.test_load_config_non_dict_yaml">test_load_config_non_dict_yaml</a></code></li>
 <li><code><a title="data_request_api.tests.test_config.test_load_custom_config_file" href="#data_request_api.tests.test_config.test_load_custom_config_file">test_load_custom_config_file</a></code></li>
 <li><code><a title="data_request_api.tests.test_config.test_sanity_checks" href="#data_request_api.tests.test_config.test_sanity_checks">test_sanity_checks</a></code></li>
 <li><code><a title="data_request_api.tests.test_config.test_update_config_invalid_key" href="#data_request_api.tests.test_config.test_update_config_invalid_key">test_update_config_invalid_key</a></code></li>
