@@ -23,8 +23,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pdoc3 autopep8
-          pip install -e .
+          pip install pdoc3 autopep8 pytest
+          pip install .
 
       - name: Pep8ify
         run: |
