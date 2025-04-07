@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pdoc autopep8
+          pip install pdoc3 autopep8
           pip install -e .
 
       - name: Pep8ify
@@ -32,7 +32,7 @@ jobs:
 
       - name: Tech documentation generation
         run: |
-          pdoc --html data_request_api/stable --output-dir docs/ --force
+          pdoc --html data_request_api/ --output-dir docs/ --force
 
       - name: Commit All
         uses: WCRP-CMIP/CMIP-LD/actions/commit-all@main
