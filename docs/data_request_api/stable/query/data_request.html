@@ -2572,8 +2572,8 @@ Use to define basic information needed.</p>
                 found = request_value in self.get_time_subsets()
             elif request_type in [&#34;mips&#34;, ]:
                 found = request_value in self.get_mips() or \
-                        self.filter_on_request_list(request_values=request_value,
-                                                    list_to_check=self.get_variable_groups())
+                    self.filter_on_request_list(request_values=request_value,
+                                                list_to_check=self.get_variable_groups())
             elif request_type in [&#34;variables&#34;, &#34;priority_levels&#34;, &#34;cmip6_tables_identifiers&#34;, &#34;temporal_shapes&#34;,
                                   &#34;spatial_shapes&#34;, &#34;structure_titles&#34;, &#34;physical_parameters&#34;, &#34;modelling_realms&#34;, &#34;esm-bcvs&#34;,
                                   &#34;cf_standard_names&#34;, &#34;cell_methods&#34;, &#34;cell_measures&#34;, &#34;max_priority_levels&#34;]:
