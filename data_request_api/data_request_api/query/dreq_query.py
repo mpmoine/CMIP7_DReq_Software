@@ -28,7 +28,8 @@ from data_request_api import version as api_version
 # Functions to manage data request content input and use it to create python
 # objects representing the tables.
 
-def get_dreq_version_tuple(version:str):
+
+def get_dreq_version_tuple(version: str):
     '''
     Parse version string to return tuple giving version major, minor (etc) numbers.
     Examples:
@@ -98,14 +99,14 @@ def _get_base_dict(content, dreq_version, purpose='request', **kwargs):
         }
     dreq_version : str
         Version string identifier for Data Request Content
-    
+
     Returns
     -------
     Dict 'base' whose keys are table names and values are dicts with table content.
     (The base name from the input 'content' dict no longer appears.)
     '''
     # defaults
-    CONFIG = {'consolidate' : True, 'export' : 'release'}
+    CONFIG = {'consolidate': True, 'export': 'release'}
     # override with input args, if given
     CONFIG.update(kwargs)
     consolidate = CONFIG['consolidate']
@@ -498,6 +499,7 @@ def _get_base_dreq_tables(content, dreq_version, purpose='request'):
     else:
         raise TypeError('Expect dict as input')
     return base
+
 
 def get_requested_variables(content, dreq_version,
                             use_opps='all', priority_cutoff='Low',

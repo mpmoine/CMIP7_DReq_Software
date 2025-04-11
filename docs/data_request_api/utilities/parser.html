@@ -53,11 +53,11 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def append_arguments_to_parser(parser):
-        config = dreqcfg.load_config()
-        for (key, value) in config.items():
-                parser.add_argument(f&#34;--{key}&#34;, default=value, type=dreqcfg.DEFAULT_CONFIG_TYPES[key],
-                                    help=dreqcfg.DEFAULT_CONFIG_HELP[key])
-        return parser</code></pre>
+    config = dreqcfg.load_config()
+    for (key, value) in config.items():
+        parser.add_argument(f&#34;--{key}&#34;, default=value, type=dreqcfg.DEFAULT_CONFIG_TYPES[key],
+                            help=dreqcfg.DEFAULT_CONFIG_HELP[key])
+    return parser</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
