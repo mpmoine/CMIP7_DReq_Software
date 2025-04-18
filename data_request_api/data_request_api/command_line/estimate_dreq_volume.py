@@ -15,13 +15,14 @@ import data_request_api.query.dreq_query as dq
 BLOCK_SIZE = 1024  # 1 KB = 1024 B, 1 MB = 1024 KB, etc
 # BLOCK_SIZE = 1000  # 1 KB = 1000 B, 1 MB = 1000 KB, etc
 
+
 def file_size_str(size):
     '''
     Given file size in bytes, return string giving the size in nice
     human-readable units (like ls -h does at the shell prompt).
     '''
     SIZE_SUFFIX = {
-        'B' : 1,
+        'B': 1,
         'KB': BLOCK_SIZE,
         'MB': BLOCK_SIZE**2,
         'GB': BLOCK_SIZE**3,
@@ -29,10 +30,11 @@ def file_size_str(size):
         'PB': BLOCK_SIZE**5,
     }
     # sort size suffixes from largest to smallest
-    uo = sorted([(1./SIZE_SUFFIX[s], s) for s in SIZE_SUFFIX])
+    uo = sorted([(1. / SIZE_SUFFIX[s], s) for s in SIZE_SUFFIX])
     # choose the most sensible size to display
     for tu in uo:
-        if (size*tu[0]) > 1: break
+        if (size * tu[0]) > 1:
+            break
     su = tu[1]
     size *= tu[0]
     sa = str('%.3g' % size)
@@ -59,7 +61,7 @@ def get_variable_size(var_info, dreq_dim_sizes, time_dims, freq_times_per_year, 
             if dim == 'diurnal-cycle':
                 # Special case: diurnal cycle averaged over a month
                 assert frequency == '1hr', 'What frequency is correct for mean diurnal cycle? Received: ' + frequency
-                n = 24*12
+                n = 24 * 12
             else:
                 n = freq_times_per_year[frequency]
             temporal_shape = dim
@@ -216,10 +218,10 @@ years: 1
     # Make lookup table of number of time points per year for each frequency
     days_per_year = 365
     freq_times_per_year = {
-        'subhr': days_per_year*48,
-        '1hr': days_per_year*24,
-        '3hr': days_per_year*8,
-        '6hr': days_per_year*4,
+        'subhr': days_per_year * 48,
+        '1hr': days_per_year * 24,
+        '3hr': days_per_year * 8,
+        '6hr': days_per_year * 4,
         'day': days_per_year,
         'mon': 12,
         'yr': 1,
@@ -261,9 +263,10 @@ years: 1
                     raise ValueError(f'No. of years must be positive, received: {nyr}')
                 size *= nyr
             syr = f'{nyr} year'
-            if nyr > 1: syr += 's'
+            if nyr > 1:
+                syr += 's'
             msg = f'Size of {syr} of {var_name}: {file_size_str(size)}'
-            dim_str = ', '.join([f'{k}={v}' for k,v in dim_sizes.items()])
+            dim_str = ', '.join([f'{k}={v}' for k, v in dim_sizes.items()])
             msg += f' (dimension sizes for 1 year: {dim_str})'
             print(msg)
         print(warning_msg)
@@ -299,8 +302,8 @@ years: 1
     expt_records = {expt_rec.experiment: expt_rec for expt_rec in dreq_tables['expts'].records.values()}
     expt_size = OrderedDict()
     all_vars = defaultdict(set)
-    total_size = OrderedDict({'all priorities' : 0})
-    total_size.update({priority : 0 for priority in dq.get_priority_levels()})
+    total_size = OrderedDict({'all priorities': 0})
+    total_size.update({priority: 0 for priority in dq.get_priority_levels()})
     for expt in expts:
         expt_rec = expt_records[expt]
 
@@ -316,7 +319,7 @@ years: 1
             request_size[priority] = OrderedDict({
                 'no. of variables': len(var_list),
                 'size (bytes)': 0,
-                })
+            })
 
             # Loop over variables requested at this priority level
             for var_name in var_list:
@@ -355,7 +358,7 @@ years: 1
         request_size[priority] = OrderedDict({
             'no. of variables': sum([d['no. of variables'] for d in request_size.values()]),
             'size (bytes)': sum([d['size (bytes)'] for d in request_size.values()]),
-            })
+        })
 
         # Provide sizes more readable units than number of bytes
         for d in request_size.values():
@@ -381,7 +384,7 @@ years: 1
 
     # Show total number of variables (by priority level) across all experiments
     total_vars = OrderedDict({
-        'all priorities' : set()
+        'all priorities': set()
     })
     for priority in dq.get_priority_levels():
         total_vars[priority] = len(all_vars[priority])
@@ -417,6 +420,7 @@ years: 1
         print('Wrote ' + outfile)
 
     print(warning_msg)
+
 
 if __name__ == '__main__':
     main()
