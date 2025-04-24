@@ -58,7 +58,7 @@ el.replaceWith(d);
     human-readable units (like ls -h does at the shell prompt).
     &#39;&#39;&#39;
     SIZE_SUFFIX = {
-        &#39;B&#39; : 1,
+        &#39;B&#39;: 1,
         &#39;KB&#39;: BLOCK_SIZE,
         &#39;MB&#39;: BLOCK_SIZE**2,
         &#39;GB&#39;: BLOCK_SIZE**3,
@@ -66,10 +66,11 @@ el.replaceWith(d);
         &#39;PB&#39;: BLOCK_SIZE**5,
     }
     # sort size suffixes from largest to smallest
-    uo = sorted([(1./SIZE_SUFFIX[s], s) for s in SIZE_SUFFIX])
+    uo = sorted([(1. / SIZE_SUFFIX[s], s) for s in SIZE_SUFFIX])
     # choose the most sensible size to display
     for tu in uo:
-        if (size*tu[0]) &gt; 1: break
+        if (size * tu[0]) &gt; 1:
+            break
     su = tu[1]
     size *= tu[0]
     sa = str(&#39;%.3g&#39; % size)
@@ -106,7 +107,7 @@ human-readable units (like ls -h does at the shell prompt).</p></div>
             if dim == &#39;diurnal-cycle&#39;:
                 # Special case: diurnal cycle averaged over a month
                 assert frequency == &#39;1hr&#39;, &#39;What frequency is correct for mean diurnal cycle? Received: &#39; + frequency
-                n = 24*12
+                n = 24 * 12
             else:
                 n = freq_times_per_year[frequency]
             temporal_shape = dim
@@ -246,10 +247,10 @@ years: 1
     # Make lookup table of number of time points per year for each frequency
     days_per_year = 365
     freq_times_per_year = {
-        &#39;subhr&#39;: days_per_year*48,
-        &#39;1hr&#39;: days_per_year*24,
-        &#39;3hr&#39;: days_per_year*8,
-        &#39;6hr&#39;: days_per_year*4,
+        &#39;subhr&#39;: days_per_year * 48,
+        &#39;1hr&#39;: days_per_year * 24,
+        &#39;3hr&#39;: days_per_year * 8,
+        &#39;6hr&#39;: days_per_year * 4,
         &#39;day&#39;: days_per_year,
         &#39;mon&#39;: 12,
         &#39;yr&#39;: 1,
@@ -291,9 +292,10 @@ years: 1
                     raise ValueError(f&#39;No. of years must be positive, received: {nyr}&#39;)
                 size *= nyr
             syr = f&#39;{nyr} year&#39;
-            if nyr &gt; 1: syr += &#39;s&#39;
+            if nyr &gt; 1:
+                syr += &#39;s&#39;
             msg = f&#39;Size of {syr} of {var_name}: {file_size_str(size)}&#39;
-            dim_str = &#39;, &#39;.join([f&#39;{k}={v}&#39; for k,v in dim_sizes.items()])
+            dim_str = &#39;, &#39;.join([f&#39;{k}={v}&#39; for k, v in dim_sizes.items()])
             msg += f&#39; (dimension sizes for 1 year: {dim_str})&#39;
             print(msg)
         print(warning_msg)
@@ -329,8 +331,8 @@ years: 1
     expt_records = {expt_rec.experiment: expt_rec for expt_rec in dreq_tables[&#39;expts&#39;].records.values()}
     expt_size = OrderedDict()
     all_vars = defaultdict(set)
-    total_size = OrderedDict({&#39;all priorities&#39; : 0})
-    total_size.update({priority : 0 for priority in dq.get_priority_levels()})
+    total_size = OrderedDict({&#39;all priorities&#39;: 0})
+    total_size.update({priority: 0 for priority in dq.get_priority_levels()})
     for expt in expts:
         expt_rec = expt_records[expt]
 
@@ -346,7 +348,7 @@ years: 1
             request_size[priority] = OrderedDict({
                 &#39;no. of variables&#39;: len(var_list),
                 &#39;size (bytes)&#39;: 0,
-                })
+            })
 
             # Loop over variables requested at this priority level
             for var_name in var_list:
@@ -385,7 +387,7 @@ years: 1
         request_size[priority] = OrderedDict({
             &#39;no. of variables&#39;: sum([d[&#39;no. of variables&#39;] for d in request_size.values()]),
             &#39;size (bytes)&#39;: sum([d[&#39;size (bytes)&#39;] for d in request_size.values()]),
-            })
+        })
 
         # Provide sizes more readable units than number of bytes
         for d in request_size.values():
@@ -411,7 +413,7 @@ years: 1
 
     # Show total number of variables (by priority level) across all experiments
     total_vars = OrderedDict({
-        &#39;all priorities&#39; : set()
+        &#39;all priorities&#39;: set()
     })
     for priority in dq.get_priority_levels():
         total_vars[priority] = len(all_vars[priority])

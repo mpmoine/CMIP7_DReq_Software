@@ -257,7 +257,7 @@ render airtable export content as DreqTable objects.</p>
     # Initialize dict having names of all dimensions in the data request (to ensure we don&#39;t miss any).
     # Each entry is a set(), and below we determine dimension sizes by any available method,
     # and then after the fact check to see if the answers were consistent.
-    dim_sizes = OrderedDict({dim : set() for dim in dim_names})
+    dim_sizes = OrderedDict({dim: set() for dim in dim_names})
 
     # Determine dimension sizes based on their records in the Coordinates &amp; Dimensions table.
     for dimension in dreq_tables[&#39;coordinates and dimensions&#39;].records.values():
@@ -266,7 +266,7 @@ render airtable export content as DreqTable objects.</p>
             # Get size based on what type of grid this dimension is labelled as.
             if dimension.grid_class in [&#39;model&#39;, &#39;options&#39;]:
                 dim_sizes[dim].add(dimension.grid_class)
-            elif dimension.grid_class in [&#39;fixedScalar&#39;, &#39;fixedScaler&#39;]: # fixedScaler = typo in Airtable
+            elif dimension.grid_class in [&#39;fixedScalar&#39;, &#39;fixedScaler&#39;]:  # fixedScaler = typo in Airtable
                 dim_sizes[dim].add(1)
             elif dimension.grid_class == &#39;fixed&#39;:
                 dim_sizes[dim].add(dimension.size)
