@@ -151,7 +151,7 @@ def main():
         all_var_info = dq.get_variables_metadata(
             base, use_dreq_version,
             compound_names=all_var_names,
-            #use_dreq_version=use_dreq_version  # TO DEPRECATE
+            # use_dreq_version=use_dreq_version  # TO DEPRECATE
         )
 
         # Write output file(s)
@@ -161,7 +161,7 @@ def main():
                 use_dreq_version,
                 filepath,
                 api_version=data_request_api.version,
-                #use_dreq_version=use_dreq_version,
+                # use_dreq_version=use_dreq_version,
                 content_path=dc._dreq_content_loaded['json_path']
             )
 
