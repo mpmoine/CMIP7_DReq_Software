@@ -1,4 +1,4 @@
-name: cmip7_dreq_env
+name: cmip7_dreq_env_dev
 channels:
   - conda-forge
   - nodefaults
@@ -13,4 +13,4 @@ dependencies:
   - requests
   - pip 
   - pip:
-      - cmip7_data_request_api
+      - .
