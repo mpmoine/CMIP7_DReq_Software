@@ -19,6 +19,7 @@ def test_append_kwargs_from_config(monkeypatch):
 
     def mock_load_config():
         return config
+
     def mock_sanity_check(key, value):
         return
 
