@@ -265,11 +265,11 @@ class Variable(DRObjects):
             elif request_type in ["cell_methods", ]:
                 found = request_value == self.cell_methods
             elif request_type in ["cell_measures", ]:
-	            found = request_value in self.cell_measures
+                found = request_value in self.cell_measures
             elif request_type in ["cmip7_frequencies", ]:
-	            found = request_value == self.cmip7_frequency
+                found = request_value == self.cmip7_frequency
             elif request_type in ["cmip6_frequencies", ]:
-	            found = request_value == self.cmip6_frequency
+                found = request_value == self.cmip6_frequency
             else:
                 filtered_found, found = super().filter_on_request(request_value)
             self.dr.cache_filtering[self.DR_type][self.id][request_type][request_value.id] = (filtered_found, found)
@@ -459,8 +459,8 @@ class Opportunity(DRObjects):
                 found = request_value in self.get_time_subsets()
             elif request_type in ["mips", ]:
                 found = request_value in self.get_mips() or \
-                        (inner and self.filter_on_request_list(request_values=request_value,
-                                                list_to_check=self.get_variable_groups()))
+                    (inner and self.filter_on_request_list(request_values=request_value,
+                                                           list_to_check=self.get_variable_groups()))
             elif request_type in ["variables", "priority_levels", "cmip6_tables_identifiers", "temporal_shapes",
                                   "spatial_shapes", "structure_titles", "physical_parameters", "modelling_realms", "esm-bcvs",
                                   "cf_standard_names", "cell_methods", "cell_measures", "max_priority_levels", "cmip7_frequencies"]:
@@ -896,9 +896,9 @@ class DataRequest(object):
         :return: element corresponding to the specified value of a given type if found, else the default value
         """
         if "priority" in element_type and isinstance(value, int):
-	        key = "value"
+            key = "value"
         if key in ["id", ]:
-	        init_default = default
+            init_default = default
         else:
             init_default = None
         rep = self.find_element_per_identifier_from_vs(element_type=element_type, value=value, key="id",
