@@ -841,9 +841,9 @@ transform into DRObject (True) or alternatively to DRObject if link or ConstantV
         :return: element corresponding to the specified value of a given type if found, else the default value
         &#34;&#34;&#34;
         if &#34;priority&#34; in element_type and isinstance(value, int):
-                key = &#34;value&#34;
+            key = &#34;value&#34;
         if key in [&#34;id&#34;, ]:
-                init_default = default
+            init_default = default
         else:
             init_default = None
         rep = self.find_element_per_identifier_from_vs(element_type=element_type, value=value, key=&#34;id&#34;,
@@ -1655,9 +1655,9 @@ else from vocabulary server.
     :return: element corresponding to the specified value of a given type if found, else the default value
     &#34;&#34;&#34;
     if &#34;priority&#34; in element_type and isinstance(value, int):
-            key = &#34;value&#34;
+        key = &#34;value&#34;
     if key in [&#34;id&#34;, ]:
-            init_default = default
+        init_default = default
     else:
         init_default = None
     rep = self.find_element_per_identifier_from_vs(element_type=element_type, value=value, key=&#34;id&#34;,
@@ -2667,8 +2667,8 @@ Use to define basic information needed.</p>
                 found = request_value in self.get_time_subsets()
             elif request_type in [&#34;mips&#34;, ]:
                 found = request_value in self.get_mips() or \
-                        (inner and self.filter_on_request_list(request_values=request_value,
-                                                list_to_check=self.get_variable_groups()))
+                    (inner and self.filter_on_request_list(request_values=request_value,
+                                                           list_to_check=self.get_variable_groups()))
             elif request_type in [&#34;variables&#34;, &#34;priority_levels&#34;, &#34;cmip6_tables_identifiers&#34;, &#34;temporal_shapes&#34;,
                                   &#34;spatial_shapes&#34;, &#34;structure_titles&#34;, &#34;physical_parameters&#34;, &#34;modelling_realms&#34;, &#34;esm-bcvs&#34;,
                                   &#34;cf_standard_names&#34;, &#34;cell_methods&#34;, &#34;cell_measures&#34;, &#34;max_priority_levels&#34;, &#34;cmip7_frequencies&#34;]:
@@ -2870,11 +2870,11 @@ Use to define basic information needed.</p>
             elif request_type in [&#34;cell_methods&#34;, ]:
                 found = request_value == self.cell_methods
             elif request_type in [&#34;cell_measures&#34;, ]:
-                    found = request_value in self.cell_measures
+                found = request_value in self.cell_measures
             elif request_type in [&#34;cmip7_frequencies&#34;, ]:
-                    found = request_value == self.cmip7_frequency
+                found = request_value == self.cmip7_frequency
             elif request_type in [&#34;cmip6_frequencies&#34;, ]:
-                    found = request_value == self.cmip6_frequency
+                found = request_value == self.cmip6_frequency
             else:
                 filtered_found, found = super().filter_on_request(request_value)
             self.dr.cache_filtering[self.DR_type][self.id][request_type][request_value.id] = (filtered_found, found)
