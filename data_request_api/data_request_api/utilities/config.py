@@ -176,10 +176,10 @@ def check_api_version():
 
     if installed_version != latest_version:
         # Warn user that installed version isn't the same as the latest pypi version
-        msg =  f"Warning: installed {PACKAGE_NAME} version does not match latest pypi version\n"
+        msg = f"Warning: installed {PACKAGE_NAME} version does not match latest pypi version\n"
         msg += f"  Latest pypi version: {latest_version}\n"
         msg += f"  Installed version:   {installed_version}\n"
-        msg +=  "  To install the latest version from pypi:\n"
+        msg += "  To install the latest version from pypi:\n"
         msg += f"    pip install --upgrade {PACKAGE_NAME}"
 
         # Add color to the warning message
