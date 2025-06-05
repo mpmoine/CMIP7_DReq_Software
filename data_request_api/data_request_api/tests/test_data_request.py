@@ -980,7 +980,7 @@ class TestDataRequestFilter(unittest.TestCase):
                                                                     requests=dict(experiment="default_290"),
                                                                     not_requests=dict(
                                                                         opportunity="default_421",
-                                                                        variable=["babb20b4-e5dd-11e5-8482-ac72891c3257","d243ba76-4a9f-11e6-b84e-ac72891c3257"]),
+                                                                        variable=["babb20b4-e5dd-11e5-8482-ac72891c3257", "d243ba76-4a9f-11e6-b84e-ac72891c3257"]),
                                                                     not_request_operation="all_of_any")
         self.assertEqual(len(found_vargrp_allofany), len(list_var_grp))
         self.assertListEqual(found_vargrp_allofany, list_var_grp)
