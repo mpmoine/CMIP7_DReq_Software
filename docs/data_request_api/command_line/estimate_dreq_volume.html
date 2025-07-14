@@ -493,18 +493,29 @@ years: 1
     )
     # Positional arguments
     parser.add_argument(&#39;request&#39;, type=str,
-                        help=&#39;json file specifying variables requested by experiment&#39; +
-                        &#39; (output from export_dreq_lists_json, which specifies the data request version)&#39; +
-                        &#39; OR can be a data request version (e.g. &#34;v1.2&#34;)&#39;)
+                        help=&#39;json file specifying variables requested by experiment \
+                        (output from export_dreq_lists_json, which specifies the data request version) \
+                        OR can be a data request version (e.g. &#34;v1.2&#34;)&#39;)
+
+    sep = &#39;,&#39;
+    def parse_input_list(input_str: str, sep=sep) -&gt; list:
+        &#39;&#39;&#39;Create list of input args separated by separator &#34;sep&#34; (str)&#39;&#39;&#39;
+        input_args = input_str.split(sep)
+        # Guard against leading, trailing, or repeated instances of the separator
+        input_args = [s for s in input_args if s not in [&#39;&#39;]]
+        return input_args
+
     # Optional arguments
-    parser.add_argument(&#39;-v&#39;, &#39;--variables&#39;, nargs=&#39;+&#39;, type=str,
-                        help=&#39;include only the specified variables in the estimate&#39;)
-    parser.add_argument(&#39;-e&#39;, &#39;--experiments&#39;, nargs=&#39;+&#39;, type=str,
-                        help=&#39;include only the specified experiments in the estimate&#39;)
-    parser.add_argument(&#39;-c&#39;, &#39;--config-size&#39;, type=str, default=&#39;size.yaml&#39;,
-                        help=&#39;config file (yaml) giving size parameters to use in the volume estimate&#39;)
     parser.add_argument(&#39;-o&#39;, &#39;--outfile&#39;, type=str,
                         help=&#39;name of output file, default: volume_estimate_{data request version}.json&#39;)
+    parser.add_argument(&#39;-c&#39;, &#39;--config-size&#39;, type=str, default=&#39;size.yaml&#39;,
+                        help=&#39;config file (yaml) giving size parameters to use in the volume estimate&#39;)
+    parser.add_argument(&#39;-v&#39;, &#39;--variables&#39;, type=parse_input_list,
+                        help=f&#39;include only the specified variables in the estimate, \
+                            example: -v Amon.tas{sep}Omon.tos&#39;)
+    parser.add_argument(&#39;-e&#39;, &#39;--experiments&#39;, type=parse_input_list,
+                        help=f&#39;include only the specified experiments in the estimate, \
+                            example: -e historical{sep}piControl&#39;)
     parser.add_argument(&#39;-vso&#39;, &#39;--variable-size-only&#39;, action=&#39;store_true&#39;,
                         help=&#39;show ONLY the sizes of individual variables (ignores experiments)&#39;)
     return parser.parse_args()</code></pre>

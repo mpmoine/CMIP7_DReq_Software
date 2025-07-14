@@ -926,7 +926,7 @@ Its "priority_level" attribute specifies the priority as either string or link t
 </dl></div>
 </dd>
 <dt id="data_request_api.query.dreq_query.get_variables_metadata"><code class="name flex">
-<span>def <span class="ident">get_variables_metadata</span></span>(<span>content, dreq_version, compound_names=None, cmor_tables=None, cmor_variables=None)</span>
+<span>def <span class="ident">get_variables_metadata</span></span>(<span>content,<br>dreq_version,<br>compound_names=None,<br>cmor_tables=None,<br>cmor_variables=None,<br>verbose=True)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -934,7 +934,8 @@ Its "priority_level" attribute specifies the priority as either string or link t
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_variables_metadata(content, dreq_version,
-                           compound_names=None, cmor_tables=None, cmor_variables=None):
+                           compound_names=None, cmor_tables=None, cmor_variables=None,
+                           verbose=True):
     &#39;&#39;&#39;
     Get metadata for CMOR variables (dimensions, cell_methods, out_name, ...).
 
@@ -1032,12 +1033,13 @@ Its "priority_level" attribute specifies the priority as either string or link t
     assert len(var_name_map) == len(dreq_tables[&#39;variables&#39;].records), \
         f&#39;Variable names from UNIQUE_VAR_NAME=&#34;{UNIQUE_VAR_NAME}&#34; do not uniquely map to variable record ids&#39;
 
-    if cmor_tables:
-        print(&#39;Retaining only these CMOR tables: &#39; + &#39;, &#39;.join(cmor_tables))
-    if cmor_variables:
-        print(&#39;Retaining only these CMOR variables: &#39; + &#39;, &#39;.join(cmor_variables))
-    if compound_names:
-        print(&#39;Retaining only these compound names: &#39; + &#39;, &#39;.join(compound_names))
+    if verbose:
+        if cmor_tables:
+            print(&#39;Retaining only these CMOR tables: &#39; + &#39;, &#39;.join(sorted(cmor_tables, key=str.lower)))
+        if cmor_variables:
+            print(&#39;Retaining only these CMOR variables: &#39; + &#39;, &#39;.join(sorted(cmor_variables, key=str.lower)))
+        if compound_names:
+            print(&#39;Retaining only these compound names: &#39; + &#39;, &#39;.join(sorted(compound_names, key=str.lower)))
 
     substitute = {
         # replacement character(s) : [characters to replace with the replacement character]
@@ -1245,6 +1247,15 @@ Its "priority_level" attribute specifies the priority as either string or link t
                 &#39;branded_variable_name&#39;: branded_variable_name,
             })
 
+        # Include hash-like unique identifier string from the CMIP7 dreq Variables table (&#34;UID&#34; column)
+        # example: &#39;bab52da8-e5dd-11e5-8482-ac72891c3257&#39;
+        valid_uid = isinstance(var.uid, str) and len(var.uid) &gt;= 36
+        if not valid_uid:
+            raise ValueError(f&#39;Invalid UID string: {var.uid}&#39;)
+        var_info.update({
+            &#39;uid&#39;: var.uid,
+        })
+
         for k, v in var_info.items():
             v = v.strip()
             for replacement in substitute:
@@ -1450,7 +1461,10 @@ expt_vars is the output dict from dq.get_requested_variables().</p></div>
             rows.append(row)
         write_csv_output_file_content(filepath, rows)
         n = len(all_var_info)
-        print(f&#39;Wrote {filepath} for {n} variables, dreq version = {dreq_version}&#39;)</code></pre>
+        print(f&#39;Wrote {filepath} for {n} variables, dreq version = {dreq_version}&#39;)
+
+    else:
+        raise ValueError(&#39;Unsupported file extension: &#39; + ext)</code></pre>
 </details>
 <div class="desc"></div>
 </dd>

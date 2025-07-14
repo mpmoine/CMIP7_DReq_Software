@@ -22,12 +22,13 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Get lists of requested variables by experiment, and write them to a json file.'
     )
-    
+
     # Positional (mandatory) input arguments
     parser.add_argument('dreq_version', choices=dc.get_versions(), help="data request version")
     parser.add_argument('output_file', help='file to write JSON output to')
 
     sep = ','
+
     def parse_input_list(input_str: str, sep=sep) -> list:
         '''Create list of input args separated by separator "sep" (str)'''
         input_args = input_str.split(sep)
@@ -125,7 +126,7 @@ def main():
         for opp_id in args.opportunity_ids:
             try:
                 opp_id = int(opp_id)
-            except:
+            except BaseException:
                 ValueError('Opportunity ID should be an integer')
             if opp_id in oppid2title:
                 use_opps.append(oppid2title[opp_id])

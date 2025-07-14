@@ -104,6 +104,7 @@ def parse_args():
                         OR can be a data request version (e.g. "v1.2")')
 
     sep = ','
+
     def parse_input_list(input_str: str, sep=sep) -> list:
         '''Create list of input args separated by separator "sep" (str)'''
         input_args = input_str.split(sep)
