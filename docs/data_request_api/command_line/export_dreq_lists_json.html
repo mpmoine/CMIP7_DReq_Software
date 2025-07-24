@@ -123,7 +123,7 @@ el.replaceWith(d);
         for opp_id in args.opportunity_ids:
             try:
                 opp_id = int(opp_id)
-            except:
+            except BaseException:
                 ValueError(&#39;Opportunity ID should be an integer&#39;)
             if opp_id in oppid2title:
                 use_opps.append(oppid2title[opp_id])
@@ -222,12 +222,13 @@ el.replaceWith(d);
     parser = argparse.ArgumentParser(
         description=&#39;Get lists of requested variables by experiment, and write them to a json file.&#39;
     )
-    
+
     # Positional (mandatory) input arguments
     parser.add_argument(&#39;dreq_version&#39;, choices=dc.get_versions(), help=&#34;data request version&#34;)
     parser.add_argument(&#39;output_file&#39;, help=&#39;file to write JSON output to&#39;)
 
     sep = &#39;,&#39;
+
     def parse_input_list(input_str: str, sep=sep) -&gt; list:
         &#39;&#39;&#39;Create list of input args separated by separator &#34;sep&#34; (str)&#39;&#39;&#39;
         input_args = input_str.split(sep)

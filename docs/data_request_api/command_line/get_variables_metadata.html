@@ -107,7 +107,7 @@ el.replaceWith(d);
     parser = argparse.ArgumentParser(
         description=&#39;Get metadata of CMOR variables (e.g., cell_methods, dimensions, ...) and write it to a json file.&#39;
     )
-    
+
     # Positional (mandatory) input arguments
     parser.add_argument(&#39;dreq_version&#39;, choices=dc.get_versions(),
                         help=&#39;data request version&#39;)
@@ -115,6 +115,7 @@ el.replaceWith(d);
                         help=&#39;output file containing metadata of requested variables, can be &#34;.json&#34; or &#34;.csv&#34; file&#39;)
 
     sep = &#39;,&#39;
+
     def parse_input_list(input_str: str, sep=sep) -&gt; list:
         &#39;&#39;&#39;Create list of input args separated by separator &#34;sep&#34; (str)&#39;&#39;&#39;
         input_args = input_str.split(sep)
@@ -129,7 +130,7 @@ el.replaceWith(d);
                         help=f&#39;include only the specified CMOR tables, example: -t Amon{sep}Omon&#39;)
     parser.add_argument(&#39;-v&#39;, &#39;--cmor_variables&#39;, type=parse_input_list,
                         help=f&#39;include only the specified CMOR variable short names, example: -v tas{sep}siconc&#39;)
-    
+
     return parser.parse_args()</code></pre>
 </details>
 <div class="desc"><p>Parse command-line arguments</p></div>

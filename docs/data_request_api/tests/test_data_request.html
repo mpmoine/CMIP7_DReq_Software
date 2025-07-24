@@ -583,7 +583,16 @@ not have a method with the specified name.</p></div>
         self.assertSetEqual(obj.get_filtering_structure(&#34;experiment_groups&#34;), {&#34;opportunities&#34;, })
         self.assertSetEqual(obj.get_filtering_structure(&#34;experiments&#34;), {&#34;opportunities&#34;, &#34;experiment_groups&#34;})
         self.assertSetEqual(obj.get_filtering_structure(&#34;test&#34;), set())
-        self.assertSetEqual(obj.get_filtering_structure(&#34;opportunities&#34;), set())</code></pre>
+        self.assertSetEqual(obj.get_filtering_structure(&#34;opportunities&#34;), set())
+
+    def test_find_element(self):
+        obj = DataRequest(input_database=self.input_database, VS=self.vs)
+        elt1 = obj.find_element(&#34;theme&#34;, &#34;Atmosphere&#34;)
+        self.assertEqual(elt1.DR_type, &#34;data_request_themes&#34;)
+        elt2 = obj.find_element(&#34;priority_level&#34;, &#34;Medium&#34;)
+        self.assertEqual(elt2.DR_type, &#34;priority_levels&#34;)
+        elt3 = obj.find_element(&#34;max_priority_level&#34;, &#34;High&#34;)
+        self.assertEqual(elt3.DR_type, &#34;max_priority_levels&#34;)</code></pre>
 </details>
 <div class="desc"><p>A class whose instances are single test cases.</p>
 <p>By default, the test code itself should be placed in a method named
@@ -650,6 +659,25 @@ not have a method with the specified name.</p></div>
 <pre><code class="python">def test_check(self):
     obj = DataRequest(input_database=self.input_database, VS=self.vs)
     obj.check()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="data_request_api.tests.test_data_request.TestDataRequest.test_find_element"><code class="name flex">
+<span>def <span class="ident">test_find_element</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_find_element(self):
+    obj = DataRequest(input_database=self.input_database, VS=self.vs)
+    elt1 = obj.find_element(&#34;theme&#34;, &#34;Atmosphere&#34;)
+    self.assertEqual(elt1.DR_type, &#34;data_request_themes&#34;)
+    elt2 = obj.find_element(&#34;priority_level&#34;, &#34;Medium&#34;)
+    self.assertEqual(elt2.DR_type, &#34;priority_levels&#34;)
+    elt3 = obj.find_element(&#34;max_priority_level&#34;, &#34;High&#34;)
+    self.assertEqual(elt3.DR_type, &#34;max_priority_levels&#34;)</code></pre>
 </details>
 <div class="desc"></div>
 </dd>
@@ -3721,6 +3749,7 @@ not have a method with the specified name.</p></div>
 <ul class="">
 <li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.setUp" href="#data_request_api.tests.test_data_request.TestDataRequest.setUp">setUp</a></code></li>
 <li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.test_check" href="#data_request_api.tests.test_data_request.TestDataRequest.test_check">test_check</a></code></li>
+<li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.test_find_element" href="#data_request_api.tests.test_data_request.TestDataRequest.test_find_element">test_find_element</a></code></li>
 <li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.test_from_input" href="#data_request_api.tests.test_data_request.TestDataRequest.test_from_input">test_from_input</a></code></li>
 <li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.test_from_separated_inputs" href="#data_request_api.tests.test_data_request.TestDataRequest.test_from_separated_inputs">test_from_separated_inputs</a></code></li>
 <li><code><a title="data_request_api.tests.test_data_request.TestDataRequest.test_get_experiment_group" href="#data_request_api.tests.test_data_request.TestDataRequest.test_get_experiment_group">test_get_experiment_group</a></code></li>
