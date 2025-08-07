@@ -985,7 +985,7 @@ class TestDataRequestFilter(unittest.TestCase):
                                                                         variable=["babb20b4-e5dd-11e5-8482-ac72891c3257", "d243ba76-4a9f-11e6-b84e-ac72891c3257"]),
                                                                     not_request_operation="any_of_all")
         list_vargrp_anyofall = [self.dr.find_element("variable_group", elt)
-                                for elt in ["link::80ab73e2-a698-11ef-914a-613c0433d878","link::dafc7435-8c95-11ef-944e-41a8eb05f654",
+                                for elt in ["link::80ab73e2-a698-11ef-914a-613c0433d878", "link::dafc7435-8c95-11ef-944e-41a8eb05f654",
                                             "link::dafc7436-8c95-11ef-944e-41a8eb05f654", "link::dafc743a-8c95-11ef-944e-41a8eb05f654",
                                             "link::dafc7464-8c95-11ef-944e-41a8eb05f654"]]
         self.assertEqual(len(found_vargrp_anyofall), len(list_vargrp_anyofall))
@@ -1358,7 +1358,7 @@ class TestDataRequestFilter(unittest.TestCase):
         list_any = [self.dr.find_element("opportunities", id)
                     for id in ["dafc739e-8c95-11ef-944e-41a8eb05f654", "dafc739f-8c95-11ef-944e-41a8eb05f654",
                                "dafc73a5-8c95-11ef-944e-41a8eb05f654", "dafc73bd-8c95-11ef-944e-41a8eb05f654"]
-        ]
+                    ]
         self.assertListEqual(self.dr.find_opportunities(operation="all", variable_group=vargrp_id,
                                                         experiments=[exp_id, ]), list_all)
         self.assertListEqual(self.dr.find_opportunities(operation="any", variable_group=vargrp_id,
