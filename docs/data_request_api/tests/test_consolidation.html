@@ -114,7 +114,8 @@ el.replaceWith(d);
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_map_record_id():
+<pre><code class="python">@pytest.mark.skip(reason=&#34;Work on this test deferred to allow release&#34;)
+def test_map_record_id():
     # Read 3-base export
     several_bases_input = read_json_file(filepath(&#34;several_bases_input.json&#34;))
     # Select a variable record to map (day.wap)
