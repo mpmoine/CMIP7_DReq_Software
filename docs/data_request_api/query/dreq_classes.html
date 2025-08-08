@@ -546,7 +546,7 @@ class ExptRequest:
 
     def __repr__(self):
         self.consistency_check()
-        break_up_compound_name = not True
+        break_up_varname_for_display = False
         l = [f&#39;Variables (by priority) for experiment: {self.experiment}&#39;]
         for p in PRIORITY_LEVELS:
             req = getattr(self, p)
@@ -557,8 +557,9 @@ class ExptRequest:
             indent = &#39; &#39; * len(s)
             sortby = str.lower
             req = sorted(req, key=sortby)
-            if break_up_compound_name and UNIQUE_VAR_NAME == &#39;compound name&#39;:
+            if break_up_varname_for_display:
                 # for better readability, show all vars in each cmor table on one line
+                # TO DO: remove this option? probably not ever used
                 separator = &#39;.&#39;
                 lt = [tuple(varname.split(separator)) for varname in req]
                 tables = sorted(set([t[0] for t in lt]), key=sortby)

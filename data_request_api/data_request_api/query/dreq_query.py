@@ -383,6 +383,7 @@ def use_unique_var_name(**kwargs):
     '''
     return format_attribute_name(kwargs['variable_name'])
 
+
 def get_unique_var_name(var):
     '''
     Return name that uniquely identifies a variable.
@@ -399,7 +400,7 @@ def get_unique_var_name(var):
     str that uniquely identifes a variable in the data request
     '''
     var_name_param = use_unique_var_name()
-    
+
     if not hasattr(var, var_name_param):
         raise ValueError(f'Unrecognized unique variable identifier: {var_name_param}'
                          + '\nSet "variable_name" in API configuration')
@@ -961,7 +962,7 @@ def get_variables_metadata(content, dreq_version,
                 if not variableRootDD:
                     # Set variableRootDD if it wasn't already defined
                     variableRootDD = s
-            
+
             # Handle undefined cases, to ensure variableRootDD and branding_label are not left undefined
             # (any such cases are anticipated to vanish in post-v1.2.2 dreq versions)
             if not variableRootDD:
@@ -979,7 +980,7 @@ def get_variables_metadata(content, dreq_version,
                 # For development, not intended as a user option.
                 if branded_variable_name != f'{variableRootDD}_{branding_label}':
                     warnings.warn(f'Inconsistency between branded variable name {branded_variable_name} '
-                                + f'and its components: {variableRootDD}, {branding_label}')
+                                  + f'and its components: {variableRootDD}, {branding_label}')
 
             var_info.update({
                 'variableRootDD': variableRootDD,
@@ -1001,7 +1002,7 @@ def get_variables_metadata(content, dreq_version,
         if check_c7_name:
             # Consistency check on definition of CMIP7 compound name.
             # For development, not intended as a user option.
-            if get_dreq_version_tuple(dreq_version) >= (1,2,2):
+            if get_dreq_version_tuple(dreq_version) >= (1, 2, 2):
                 cn = []
                 cn.append(modeling_realm[0])
                 cn.append(variableRootDD)
