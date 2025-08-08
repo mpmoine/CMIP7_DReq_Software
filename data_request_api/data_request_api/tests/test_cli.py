@@ -42,7 +42,7 @@ def consolidate(request):
 class TestExportDreqListsJson:
     @pytest.fixture(scope="function", autouse=True)
     def setup_method(self, request):
-        # Initialize config and load v1.2 content version
+        # Initialize config and load v1.2.2 content version
         self.temp_config_file = request.getfixturevalue("temp_config_file")
         self.consolidate = request.getfixturevalue("consolidate")
         with open(self.temp_config_file, "w") as fh:
@@ -51,7 +51,7 @@ class TestExportDreqListsJson:
                 "cache_dir": str(self.temp_config_file.parent),
             }
             yaml.dump(config, fh)
-        dc.load("v1.2")
+        dc.load("v1.2.2")
 
     def test_export_dreq_lists_json(self, temp_config_file, consolidate):
         ofile = temp_config_file.parent / "test1.json"
@@ -62,7 +62,7 @@ class TestExportDreqListsJson:
                 "-m",
                 "data_request_api.command_line.export_dreq_lists_json",
                 "--all_opportunities",
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -84,7 +84,7 @@ class TestExportDreqListsJson:
                 "data_request_api.command_line.export_dreq_lists_json",
                 "--opportunities_file",
                 opportunities_file,
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -102,7 +102,7 @@ class TestExportDreqListsJson:
                 "data_request_api.command_line.export_dreq_lists_json",
                 "--opportunities_file",
                 opportunities_file,
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -126,7 +126,7 @@ class TestExportDreqListsJson:
                 "data_request_api.command_line.export_dreq_lists_json",
                 "--opportunities_file",
                 opportunities_file,
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -142,7 +142,7 @@ class TestExportDreqListsJson:
             [
                 "export_dreq_lists_json",
                 "--all_opportunities",
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -161,7 +161,7 @@ class TestExportDreqListsJson:
 class TestGetVariablesMetadata:
     @pytest.fixture(scope="function", autouse=True)
     def setup_method(self, request):
-        # Initialize config and load v1.2 content version
+        # Initialize config and load v1.2.2 content version
         self.temp_config_file = request.getfixturevalue("temp_config_file")
         self.consolidate = request.getfixturevalue("consolidate")
         with open(self.temp_config_file, "w") as fh:
@@ -170,7 +170,7 @@ class TestGetVariablesMetadata:
                 "cache_dir": str(self.temp_config_file.parent),
             }
             yaml.dump(config, fh)
-        dc.load("v1.2")
+        dc.load("v1.2.2")
 
     def test_get_variables_metadata(self, temp_config_file, consolidate):
         ofile = temp_config_file.parent / "test1.json"
@@ -180,7 +180,7 @@ class TestGetVariablesMetadata:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -197,10 +197,11 @@ class TestGetVariablesMetadata:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2",
+                "v1.2.2",
                 ofile,
                 "-cn",
-                "Amon.tas,Omon.sos",
+                # "Amon.tas,Omon.sos",
+                "atmos.tas.tavg-h2m-hxy-u.mon.GLB,ocean.sos.tavg-u-hxy-sea.mon.GLB"
             ],
             capture_output=True,
             text=True,
@@ -216,7 +217,7 @@ class TestGetVariablesMetadata:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2",
+                "v1.2.2",
                 ofile,
                 "-t",
                 "Amon,Omon",
@@ -235,7 +236,7 @@ class TestGetVariablesMetadata:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2",
+                "v1.2.2",
                 ofile,
                 "-v",
                 "tas,siconc",
@@ -252,7 +253,7 @@ class TestGetVariablesMetadata:
         result = subprocess.run(
             [
                 "get_variables_metadata",
-                "v1.2",
+                "v1.2.2",
                 ofile,
             ],
             capture_output=True,
@@ -280,8 +281,9 @@ class TestCompareVariables:
                 "cache_dir": str(self.temp_config_file.parent),
             }
             yaml.dump(config, fh)
-        dc.load("v1.2")
-        dc.load("v1.2.1")
+        # dc.load("v1.2")
+        # dc.load("v1.2.1")
+        dc.load("v1.2.2")
 
     def test_compare_variables(self, temp_config_file, consolidate):
         os.chdir(temp_config_file.parent)
@@ -305,7 +307,8 @@ class TestCompareVariables:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2",
+                # "v1.2",
+                "v1.2.2",
                 ofileA,
             ],
             capture_output=True,
@@ -319,7 +322,8 @@ class TestCompareVariables:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.get_variables_metadata",
-                "v1.2.1",
+                # "v1.2.1",
+                "v1.2.2",
                 ofileB,
             ],
             capture_output=True,
@@ -416,7 +420,7 @@ class TestEstimateDreqVolume:
                 "cache_dir": str(self.temp_config_file.parent),
             }
             yaml.dump(config, fh)
-        dc.load("v1.2")
+        dc.load("v1.2.2")
 
     def test_estimate_dreq_volume(self, temp_config_file, consolidate):
         os.chdir(temp_config_file.parent)
@@ -430,7 +434,7 @@ class TestEstimateDreqVolume:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.estimate_dreq_volume",
-                "v1.2",
+                "v1.2.2",
                 "-o",
                 ofile,
             ],
@@ -446,7 +450,7 @@ class TestEstimateDreqVolume:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.estimate_dreq_volume",
-                "v1.2",
+                "v1.2.2",
                 "-o",
                 ofile,
             ],
@@ -476,7 +480,7 @@ class TestEstimateDreqVolume:
                 sys.executable,
                 "-m",
                 "data_request_api.command_line.estimate_dreq_volume",
-                "v1.2",
+                "v1.2.2",
                 "-o",
                 ofile,
                 "-c",

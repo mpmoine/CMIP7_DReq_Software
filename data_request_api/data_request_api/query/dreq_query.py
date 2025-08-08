@@ -18,7 +18,7 @@ import warnings
 from collections import OrderedDict
 
 from data_request_api.query.dreq_classes import (
-    DreqTable, ExptRequest, UNIQUE_VAR_NAME, PRIORITY_LEVELS, format_attribute_name)
+    DreqTable, ExptRequest, PRIORITY_LEVELS, format_attribute_name)
 from data_request_api.utilities.decorators import append_kwargs_from_config
 from data_request_api.utilities.tools import write_csv_output_file_content
 
@@ -175,11 +175,11 @@ def create_dreq_tables_for_request(content, dreq_version, **kwargs):
     base, content_type = _get_base_dict(content, dreq_version, purpose='request')
     # base, content_type = _get_base_dict(content, dreq_version)
 
-    # config defaults
+    # Config defaults
     CONFIG = {'consolidate': True}
-    # override with input args, if given
+    # Override with input args, if given
     CONFIG.update(kwargs)
-    consolidate = CONFIG['consolidate']
+    # consolidate = CONFIG['consolidate']
 
     # Create objects representing data request tables
     table_id2name = get_table_id2name(base)
@@ -240,22 +240,6 @@ def create_dreq_tables_for_request(content, dreq_version, **kwargs):
         # This check is here because if something changes upstream in Airtable, it might cause
         # the above code to erroneously remove all opportunities.
         raise Exception(' * ERROR *    All Opportunities were removed!')
-
-    # Determine which compound name to use
-    if consolidate:
-        USE_COMPOUND_NAME = 'cmip6_compound_name'
-    else:
-        version_tuple = get_dreq_version_tuple(dreq_version)
-        if version_tuple[:2] >= (1, 2):
-            USE_COMPOUND_NAME = 'cmip6_compound_name'
-        else:
-            USE_COMPOUND_NAME = 'compound_name'
-    if USE_COMPOUND_NAME != 'compound_name':
-        table_name = 'Variables'
-        for rec in base[table_name].records.values():
-            if hasattr(rec, 'compound_name'):
-                raise Exception(f'compound_name attribute is already defined for table "{table_name}"')
-            rec.compound_name = getattr(rec, USE_COMPOUND_NAME)
 
     return base
 
@@ -391,11 +375,19 @@ def get_var_group_priority(var_group, dreq_priorities=None):
     return priority_level
 
 
+@append_kwargs_from_config
+def use_unique_var_name(**kwargs):
+    '''
+    Return parameter name to use to uniquely identify requested variables.
+    This is a user configuration setting.
+    '''
+    return format_attribute_name(kwargs['variable_name'])
+
 def get_unique_var_name(var):
     '''
     Return name that uniquely identifies a variable.
-    Reason to make this a function is to control this choice in one place.
-    E.g., if compound_name is used initially, but something else chosen later.
+    This function should be called whenever a unique variable name is used in the code,
+    so that the choice of name is consistently controlled in one place.
 
     Parameters
     ----------
@@ -406,11 +398,14 @@ def get_unique_var_name(var):
     -------
     str that uniquely identifes a variable in the data request
     '''
-    if UNIQUE_VAR_NAME == 'compound name':
-        return var.compound_name
-    else:
-        raise ValueError('Unknown identifier for UNIQUE_VAR_NAME: ' + UNIQUE_VAR_NAME +
-                         '\nHow should the unique variable name be determined?')
+    var_name_param = use_unique_var_name()
+    
+    if not hasattr(var, var_name_param):
+        raise ValueError(f'Unrecognized unique variable identifier: {var_name_param}'
+                         + '\nSet "variable_name" in API configuration')
+
+    var_name = getattr(var, var_name_param)
+    return var_name
 
 
 def get_opp_expts(opp, expt_groups, expts, verbose=False):
@@ -744,7 +739,7 @@ def get_variables_metadata(content, dreq_version,
     # Check uniqueness of chosen variable names.
     var_name_map = {get_unique_var_name(record): record_id for record_id, record in dreq_tables['variables'].records.items()}
     assert len(var_name_map) == len(dreq_tables['variables'].records), \
-        f'Variable names from UNIQUE_VAR_NAME="{UNIQUE_VAR_NAME}" do not uniquely map to variable record ids'
+        f'Variable names specified by {use_unique_var_name()} do not uniquely map to variable record ids'
 
     if verbose:
         if cmor_tables:
@@ -761,11 +756,11 @@ def get_variables_metadata(content, dreq_version,
     all_var_info = {}
     for var in dreq_tables['variables'].records.values():
 
-        if compound_names:
-            if var.compound_name not in compound_names:
-                continue
-
         var_name = get_unique_var_name(var)
+
+        if compound_names:
+            if var_name not in compound_names:
+                continue
 
         link_table = getattr(var, attr_table)
         if len(link_table) != 1:
@@ -952,17 +947,76 @@ def get_variables_metadata(content, dreq_version,
         # Get info on branded variable name, if available
         if hasattr(var, 'branded_variable_name'):
             branded_variable_name = var.branded_variable_name
-            if branded_variable_name.count('_') != 1:
-                warnings.warn('Expected one (and only one) underscore in branded variable name: ' + branded_variable_name)
 
-            variableRootDD = branded_variable_name.split('_')[0]
+            variableRootDD, branding_label = None, None
+
+            # Get variableRootDD, the short variable name used in the branded name
+            if hasattr(phys_param, 'variablerootdd'):
+                # variableRootDD is included in the Physical Parameter record for this variable
+                variableRootDD = phys_param.variablerootdd
+
+            # Get the branding label by parsing the branded variable name
+            if branded_variable_name.count('_') == 1:
+                s, branding_label = branded_variable_name.split('_')
+                if not variableRootDD:
+                    # Set variableRootDD if it wasn't already defined
+                    variableRootDD = s
+            
+            # Handle undefined cases, to ensure variableRootDD and branding_label are not left undefined
+            # (any such cases are anticipated to vanish in post-v1.2.2 dreq versions)
+            if not variableRootDD:
+                variableRootDD = 'None'
+            if not branding_label:
+                assert var.branded_variable_name_status not in ['Accepted']
+                if branded_variable_name.startswith('unknown'):
+                    branding_label = branded_variable_name
+                else:
+                    branding_label = 'None'
+
+            check_branded_name = False
+            if check_branded_name:
+                # Consistency check on definition of branded name.
+                # For development, not intended as a user option.
+                if branded_variable_name != f'{variableRootDD}_{branding_label}':
+                    warnings.warn(f'Inconsistency between branded variable name {branded_variable_name} '
+                                + f'and its components: {variableRootDD}, {branding_label}')
+
             var_info.update({
                 'variableRootDD': variableRootDD,
+                'branding_label': branding_label,
                 'branded_variable_name': branded_variable_name,
             })
 
+        if hasattr(var, 'region'):
+            var_info['region'] = var.region
+
+        # To help clarify the origin of the "compound name" used as a unique identifier to index
+        # the output dict (all_var_info), include the CMIP6 and CMIP7 compoun names explicitly
+        # as metadata parameters.
+        for attr in ['cmip6_compound_name', 'cmip7_compound_name']:
+            if hasattr(var, attr):
+                var_info[attr] = getattr(var, attr)
+
+        check_c7_name = False
+        if check_c7_name:
+            # Consistency check on definition of CMIP7 compound name.
+            # For development, not intended as a user option.
+            if get_dreq_version_tuple(dreq_version) >= (1,2,2):
+                cn = []
+                cn.append(modeling_realm[0])
+                cn.append(variableRootDD)
+                cn.append(branding_label)
+                cn.append(frequency)
+                cn.append(var_info['region'])
+                sep = '.'
+                s = sep.join(cn)
+                if var_info['cmip7_compound_name'] != s:
+                    warnings.warn(f'Unexpected CMIP7 compound name in {dreq_version}: '
+                                  + var_info['cmip7_compound_name'])
+
         # Include hash-like unique identifier string from the CMIP7 dreq Variables table ("UID" column)
-        # example: 'bab52da8-e5dd-11e5-8482-ac72891c3257'
+        # Example: 'bab52da8-e5dd-11e5-8482-ac72891c3257'
+        # This should also be a unique variable identifier.
         valid_uid = isinstance(var.uid, str) and len(var.uid) >= 36
         if not valid_uid:
             raise ValueError(f'Invalid UID string: {var.uid}')
@@ -1024,7 +1078,15 @@ def get_dimension_sizes(dreq_tables):
             elif dimension.grid_class in ['fixedScalar', 'fixedScaler']:  # fixedScaler = typo in Airtable
                 dim_sizes[dim].add(1)
             elif dimension.grid_class == 'fixed':
-                dim_sizes[dim].add(dimension.size)
+                if hasattr(dimension, 'size'):
+                    dim_sizes[dim].add(dimension.size)
+                elif hasattr(dimension, 'requested_values'):
+                    if not isinstance(dimension.requested_values, str):
+                        raise TypeError(f'Expected space-delimited string for requested_values for dimension {dimension.name}')
+                    dim_sizes[dim].add(len(dimension.requested_values.split()))
+                else:
+                    # raise AttributeError(f'How should the size of dimension {dimension.name} be determined?')
+                    pass
             elif dimension.grid_class == 'fixedExternal':
                 pass
             else:
