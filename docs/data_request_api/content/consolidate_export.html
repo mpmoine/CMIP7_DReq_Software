@@ -380,7 +380,7 @@ el.replaceWith(d);
     elif len(data.keys()) == 1:
         l_version = next(iter(data.keys())).replace(&#34;Data Request&#34;, &#34;&#34;).strip()
         if l_version != version and version != &#34;dev&#34;:
-            logger.warning(
+            raise RuntimeError(
                 &#34;The Data Request version inferred from the content dictionary&#34;
                 f&#34; ({l_version}) is different than the requested version ({version}).&#34;
             )
