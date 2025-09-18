@@ -1086,7 +1086,7 @@ class TestDataRequestFilter(unittest.TestCase):
                           "link::atmos.ts.tavg-u-hxy-u.mon.GLB", "link::atmos.zg.tavg-p19-hxy-air.day.GLB",
                           "link::atmos.zg.tavg-p19-hxy-air.mon.GLB", "link::land.hfdsl.tavg-u-hxy-lnd.3hr.GLB",
                           "link::land.lai.tavg-u-hxy-lnd.mon.GLB", "link::land.mrso.tavg-u-hxy-lnd.mon.GLB",
-                          "link::land.mrsol.tavg-d100cm-hxy-lnd.3hr.GLB",  "land.mrsol.tavg-d10cm-hxy-lnd.mon.GLB",
+                          "link::land.mrsol.tavg-d100cm-hxy-lnd.3hr.GLB", "land.mrsol.tavg-d10cm-hxy-lnd.mon.GLB",
                           "link::land.mrsol.tpt-d10cm-hxy-lnd.3hr.GLB", "link::land.orog.ti-u-hxy-u.fx.GLB",
                           "link::land.rootd.ti-u-hxy-lnd.fx.GLB", "link::land.slthick.ti-sl-hxy-lnd.fx.GLB",
                           "link::land.srfrad.tavg-u-hxy-u.3hr.GLB", "link::land.tran.tavg-u-hxy-u.3hr.GLB",
