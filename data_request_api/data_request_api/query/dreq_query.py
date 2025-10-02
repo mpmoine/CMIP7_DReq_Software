@@ -868,12 +868,16 @@ def get_variables_metadata(content, dreq_version,
         else:
             dimensions = dimensions_linked
 
-        # Get physical parameter record and use its name as out_name.
-        # (Comparison with CMIP6 CMOR tables shows that out_name is the same as physical parameter name
-        # for almost all variables in dreq v1.2.1.)
+        # Get physical parameter record and use its name as out_name
         link = var.physical_parameter[0]
         phys_param = dreq_tables['physical parameters'].get_record(link)
-        out_name = phys_param.name
+        if hasattr(phys_param, 'variablerootdd'):
+            # variableRootDD (aka "root name") is available in DR v1.2.2 onward
+            out_name = phys_param.variablerootdd
+        else:
+            # Comparison with CMIP6 CMOR tables shows that out_name is the same as physical parameter name
+            # for almost all variables in dreq v1.2.1
+            out_name = phys_param.name
 
         if cmor_variables:
             # Filter by CMOR variable name
@@ -909,6 +913,10 @@ def get_variables_metadata(content, dreq_version,
         if hasattr(var, 'description'):
             comment = var.description
 
+        processing_note = ''
+        if hasattr(var, 'processing_note'):
+            processing_note = var.processing_note
+
         var_info = OrderedDict()
         # Insert fields in order given by CMIP6 cmor tables (https://github.com/PCMDI/cmip6-cmor-tables)
         var_info.update({
@@ -926,6 +934,7 @@ def get_variables_metadata(content, dreq_version,
 
             'long_name': var.title,
             'comment': comment,
+            'processing_note': processing_note,
 
             'dimensions': dimensions,
 
